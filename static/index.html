@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Клуб — главная</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; color: #222; }
+  h1 { text-align: center; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 4px; margin-top: 40px; }
+  .card { border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+  .card h3 { margin: 0 0 4px 0; }
+  .muted { color: #777; font-size: 0.9em; }
+  form { display: flex; flex-direction: column; gap: 8px; max-width: 300px; }
+  input, button { padding: 8px; font-size: 1em; }
+  button { cursor: pointer; background: #333; color: #fff; border: none; border-radius: 4px; }
+  button:hover { background: #555; }
+  #applyMsg { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Наш клуб</h1>
+<p style="text-align:center;">Тестовая страница-визитка. Данные ниже загружаются из БД через API.</p>
+
+<h2>Команда</h2>
+<div id="team">Загрузка...</div>
+
+<h2>Новости</h2>
+<div id="news">Загрузка...</div>
+
+<h2>Вступить в клуб</h2>
+<form id="applyForm">
+  <input type="text" id="name" placeholder="Ваше имя" required>
+  <input type="email" id="email" placeholder="Ваша почта" required>
+  <button type="submit">Отправить заявку</button>
+</form>
+<p id="applyMsg"></p>
+
+<script>
+async function loadTeam() {
+  const res = await fetch('/api/team');
+  const data = await res.json();
+  const el = document.getElementById('team');
+  if (!data.length) { el.innerHTML = '<p class="muted">Пока никого нет.</p>'; return; }
+  el.innerHTML = data.map(m => `
+    <div class="card">
+      <h3>${escapeHtml(m.name)}</h3>
+      <p class="muted">${escapeHtml(m.role)}</p>
+    </div>
+  `).join('');
+}
+
+async function loadNews() {
+  const res = await fetch('/api/news');
+  const data = await res.json();
+  const el = document.getElementById('news');
+  if (!data.length) { el.innerHTML = '<p class="muted">Новостей пока нет.</p>'; return; }
+  el.innerHTML = data.map(n => `
+    <div class="card">
+      <h3>${escapeHtml(n.title)}</h3>
+      <p>${escapeHtml(n.content)}</p>
+      <p class="muted">${new Date(n.created_at).toLocaleString()}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('applyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const msg = document.getElementById('applyMsg');
+  msg.textContent = 'Отправка...';
+  try {
+    const res = await fetch('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email })
+    });
+    if (!res.ok) throw new Error();
+    msg.style.color = 'green';
+    msg.textContent = 'Заявка отправлена!';
+    e.target.reset();
+  } catch {
+    msg.style.color = 'red';
+    msg.textContent = 'Ошибка отправки. Попробуйте ещё раз.';
+  }
+});
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+loadTeam();
+loadNews();
+</script>
+
+</body>
+</html>

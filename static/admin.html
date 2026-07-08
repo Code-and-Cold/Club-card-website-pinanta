@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Клуб — админка</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; color: #222; }
+  h1 { text-align: center; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 4px; margin-top: 40px; }
+  .card { border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card .info { flex: 1; }
+  .muted { color: #777; font-size: 0.9em; }
+  form { display: flex; flex-direction: column; gap: 8px; max-width: 400px; margin-bottom: 16px; }
+  input, textarea, button { padding: 8px; font-size: 1em; font-family: inherit; }
+  button { cursor: pointer; background: #333; color: #fff; border: none; border-radius: 4px; }
+  button.danger { background: #a33; }
+  button:hover { opacity: 0.85; }
+  #loginBox { max-width: 300px; margin: 100px auto; }
+  #app { display: none; }
+  #loginMsg { color: red; }
+</style>
+</head>
+<body>
+
+<div id="loginBox">
+  <h1>Вход в админку</h1>
+  <form id="loginForm">
+    <input type="text" id="login" placeholder="Логин" required>
+    <input type="password" id="password" placeholder="Пароль" required>
+    <button type="submit">Войти</button>
+  </form>
+  <p id="loginMsg"></p>
+</div>
+
+<div id="app">
+  <h1>Админ-панель</h1>
+
+  <h2>Команда</h2>
+  <form id="teamForm">
+    <input type="text" id="teamName" placeholder="Имя" required>
+    <input type="text" id="teamRole" placeholder="Роль" >
+    <button type="submit">Добавить участника</button>
+  </form>
+  <div id="teamList">Загрузка...</div>
+
+  <h2>Новости</h2>
+  <form id="newsForm">
+    <input type="text" id="newsTitle" placeholder="Заголовок" required>
+    <textarea id="newsContent" placeholder="Текст новости" rows="3"></textarea>
+    <button type="submit">Добавить новость</button>
+  </form>
+  <div id="newsList">Загрузка...</div>
+
+  <h2>Заявки на вступление</h2>
+  <div id="appsList">Загрузка...</div>
+</div>
+
+<script>
+let authHeader = '';
+
+// ---- Вход ----
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const login = document.getElementById('login').value;
+  const password = document.getElementById('password').value;
+  authHeader = 'Basic ' + btoa(login + ':' + password);
+
+  const res = await fetch('/api/admin/applications', { headers: { Authorization: authHeader } });
+  if (res.ok) {
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('loginMsg').textContent = 'Неверный логин или пароль';
+  }
+});
+
+function loadAll() {
+  loadTeam();
+  loadNews();
+  loadApplications();
+}
+
+// ---- Команда ----
+async function loadTeam() {
+  const res = await fetch('/api/team');
+  const data = await res.json();
+  const el = document.getElementById('teamList');
+  el.innerHTML = data.length ? data.map(m => `
+    <div class="card">
+      <div class="info"><b>${escapeHtml(m.name)}</b> <span class="muted">${escapeHtml(m.role)}</span></div>
+      <button class="danger" onclick="deleteTeam(${m.id})">Удалить</button>
+    </div>
+  `).join('') : '<p class="muted">Пока никого нет.</p>';
+}
+
+document.getElementById('teamForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('teamName').value;
+  const role = document.getElementById('teamRole').value;
+  await fetch('/api/admin/team', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: authHeader },
+    body: JSON.stringify({ name, role })
+  });
+  e.target.reset();
+  loadTeam();
+});
+
+async function deleteTeam(id) {
+  await fetch('/api/admin/team/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
+  loadTeam();
+}
+
+// ---- Новости ----
+async function loadNews() {
+  const res = await fetch('/api/news');
+  const data = await res.json();
+  const el = document.getElementById('newsList');
+  el.innerHTML = data.length ? data.map(n => `
+    <div class="card">
+      <div class="info"><b>${escapeHtml(n.title)}</b><br><span class="muted">${escapeHtml(n.content)}</span></div>
+      <button class="danger" onclick="deleteNews(${n.id})">Удалить</button>
+    </div>
+  `).join('') : '<p class="muted">Новостей пока нет.</p>';
+}
+
+document.getElementById('newsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const title = document.getElementById('newsTitle').value;
+  const content = document.getElementById('newsContent').value;
+  await fetch('/api/admin/news', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: authHeader },
+    body: JSON.stringify({ title, content })
+  });
+  e.target.reset();
+  loadNews();
+});
+
+async function deleteNews(id) {
+  await fetch('/api/admin/news/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
+  loadNews();
+}
+
+// ---- Заявки ----
+async function loadApplications() {
+  const res = await fetch('/api/admin/applications', { headers: { Authorization: authHeader } });
+  const data = await res.json();
+  const el = document.getElementById('appsList');
+  el.innerHTML = data.length ? data.map(a => `
+    <div class="card">
+      <div class="info"><b>${escapeHtml(a.name)}</b> — ${escapeHtml(a.email)}<br><span class="muted">${new Date(a.created_at).toLocaleString()}</span></div>
+      <button class="danger" onclick="deleteApp(${a.id})">Удалить</button>
+    </div>
+  `).join('') : '<p class="muted">Заявок пока нет.</p>';
+}
+
+async function deleteApp(id) {
+  await fetch('/api/admin/applications/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
+  loadApplications();
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+
+</body>
+</html>
