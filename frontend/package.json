@@ -11,6 +11,7 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
+    "format:check": "prettier --check --experimental-cli src/",
     "predeploy": "npm run build",
     "deploy": "vite build && gh-pages -d dist"
   },
