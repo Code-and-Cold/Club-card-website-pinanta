@@ -6,11 +6,7 @@
   </head>
 
   <body>
-    <div class="test">
-      <h1>Здесь будет наш свёрстанный сайт, нужно только подождать...</h1>
-    </div>
-
-    <div class="feedback-section">
+    <section class="section feedback-section">
       <div class="feedback-section__content">
         <h2 class="feedback-section__title">Хочешь тусить с нами?</h2>
 
@@ -18,7 +14,7 @@
 
         <form class="form feedback-section__form" action="#" method="POST">
           <div class="form__field">
-            <input class="feedback-section__form__input" type="text" id="name" placeholder="ФИО" />
+            <input class="form__input" type="text" id="name" placeholder="ФИО" />
           </div>
 
           <select class="form__select" id="department">
@@ -64,7 +60,7 @@
       <div class="feedback-section__media">
         <img class="feedback-section__image" src="" alt="Черемша" />
       </div>
-    </div>
+    </section>
 
     <br /><br /><br /><br /><br />
 
@@ -78,10 +74,13 @@
   </body>
 </template>
 
-<style scoped>
+<style>
+/* FIXME: используйте <style scoped> как только перейдёте на отдельные css файлы, так оставлять нельзя */
+
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -89,9 +88,78 @@ h1 {
   color: white;
 }
 
-div.test {
-  background-color: #002a4c;
-  width: 315px;
-  height: 300px;
+.section {
+  width: 100%; /* Немного адаптива, проверяйте mobile размеры через инструменты разработчика */
+  min-width: 330px; /* При таком размере остаётся читаемым текст формы feedback, остальное не проверено */
+  padding: 50px 20px;
+}
+
+.feedback-section {
+  background-color: #002f55;
+  color: white;
+}
+
+.feedback-section__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.feedback-section__title {
+  font-family: JetBrains Mono;
+  font-size: 35px;
+  font-weight: 400; /* Regular */
+  line-height: 1.1;
+}
+
+.feedback-section__subtitle {
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form__input {
+  padding: 30px 18px;
+  height: 65px;
+
+  border-radius: 20px;
+  border: 2px solid #3bb0e3;
+
+  background-color: #003b6b;
+  color: white;
+
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+}
+
+.form__select {
+  padding: 30px 18px;
+  height: 65px;
+
+  border-radius: 20px;
+  border: 2px solid #3bb0e3;
+
+  background-color: #003b6b;
+  color: white;
+
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+}
+
+::placeholder {
+  color: #3bb0e3; /* Forms placeholder */
+  opacity: 1; /* Firefox */
 }
 </style>
