@@ -36,16 +36,14 @@
 
           <label class="form__checkbox-label">
             <input class="form__checkbox" type="checkbox" />
+            <span class="checkmark"></span>
+
             Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
             <a class="form__link" href="https://www.example.com">персональных данных</a>
           </label>
 
           <div class="form__field">
             <input class="form__input" type="text" id="link" placeholder="Страница Вконтакте" />
-          </div>
-
-          <div class="form__field">
-            <input class="form__input" type="checkbox" id="name" placeholder="ФИО" />
           </div>
 
           <button class="form__submit-button" type="submit">Вступить в клуб</button>
@@ -96,7 +94,13 @@ h1 {
 
 .feedback-section {
   background-color: #002f55;
+
   color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: justify;
+  gap: 30px;
 }
 
 .feedback-section__content {
@@ -143,7 +147,11 @@ h1 {
 }
 
 .form__select {
-  padding: 30px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 18px;
   height: 65px;
 
   border-radius: 20px;
@@ -152,14 +160,130 @@ h1 {
   background-color: #003b6b;
   color: white;
 
+  appearance: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: url('data:image/svg+xml,...'); /* кастомная стрелка */
+  cursor: pointer;
+
   font-family: Inter;
   font-size: 24px;
   font-weight: 400; /* Regular */
   line-height: 1.2;
 }
 
+input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  user-select: none;
+}
+
 ::placeholder {
-  color: #3bb0e3; /* Forms placeholder */
-  opacity: 1; /* Firefox */
+  color: #3bb0e3; /* Forms placeholder font color */
+  opacity: 1;
+}
+
+.form__checkbox-label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400; /* Regular */
+  line-height: 1.5;
+  color: #3bb0e3;
+}
+
+.form__link {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400; /* Regular */
+  line-height: 1.5;
+  color: #3bb0e3;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  border-radius: 10px;
+  border: 2px solid #3bb0e3;
+
+  background-color: #003b6b;
+
+  height: 35px;
+  width: 35px;
+}
+
+/* On mouse-over, add a grey background color; desktop only */
+@media (hover: hover) {
+  .form__checkbox-label:hover input ~ .checkmark {
+    background-color: rgba(59, 176, 227, 0.3);
+  }
+}
+
+/* When the checkbox is checked, add a blue background */
+.form__checkbox-label input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.form__checkbox-label input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.form__submit-button {
+  width: fit-content;
+  height: fit-content;
+
+  border-radius: 20px;
+  border: 0px solid #e3953b;
+
+  padding: 15px 25px;
+
+  background-color: #e3953b;
+
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+  color: white;
+}
+
+.feedback-section__footer {
+  height: fit-content;
+
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+  color: white;
+}
+
+.feedback-section__link {
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+  color: #e3953b;
+}
+
+.feedback-section__image {
+  border-radius: 30px;
+  border: 0px solid #e3953b;
 }
 </style>
