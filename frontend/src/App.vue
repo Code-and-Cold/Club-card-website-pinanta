@@ -58,7 +58,7 @@
       </div>
 
       <div class="feedback-section__media">
-        <img class="feedback-section__image" src="" alt="Черемша" />
+        <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
       </div>
     </section>
 
