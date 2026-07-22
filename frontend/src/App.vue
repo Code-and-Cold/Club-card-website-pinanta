@@ -52,7 +52,7 @@
         </form>
 
         <p class="feedback-section__footer">
-          Или напиши на почту руководителю:
+          Или напиши на почту руководителю: <br />
           <a class="feedback-section__link" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
         </p>
       </div>
@@ -75,7 +75,7 @@
 </template>
 
 <style>
-/* FIXME: используйте <style scoped> как только перейдёте на отдельные css файлы, так оставлять нельзя */
+/* FIXME: используйте <style scoped> как только перейдёте на отдельные css файлы */
 
 * {
   margin: 0;
