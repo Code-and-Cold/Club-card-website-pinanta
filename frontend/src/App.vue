@@ -14,17 +14,17 @@
 
         <form class="form feedback-section__form" action="#" method="POST">
           <div class="form__field">
-            <input class="form__input" type="text" id="name" placeholder="ФИО" />
+            <input class="form__input" type="text" id="name" placeholder="ФИО" required pattern="^[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+)?$">
           </div>
 
-          <select class="form__select" id="department">
+          <select class="form__select" id="department" required>
             <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="1">ВШ 1</option>
             <option class="form__select-item" value="2">ВШ 2</option>
             <option class="form__select-item" value="3">ВШ 3</option>
           </select>
 
-          <select class="form__select" id="course">
+          <select class="form__select" id="course" required>
             <option class="form__select-item" value="" disabled selected>Курс</option>
             <option class="form__select-item" value="1">1</option>
             <option class="form__select-item" value="2">2</option>
@@ -43,7 +43,7 @@
           </label>
 
           <div class="form__field">
-            <input class="form__input" type="text" id="link" placeholder="Страница Вконтакте" />
+            <input class="form__input" type="url" id="link" placeholder="Страница Вконтакте" pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"> <!-- Здесь нужно прописать required для работы pattern -->
           </div>
 
           <button class="form__submit-button" type="submit">Вступить в клуб</button>
