@@ -218,7 +218,7 @@ h1 {
   line-height: 1.2;
 }
 
-.form {
+.feedback-section__form {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -301,6 +301,7 @@ input {
 }
 
 .form__checkbox-panel {
+  margin-top: -5px; /* FIXME: margin не рекомендуется */
   width: 100%;
   height: 65px;
 }
