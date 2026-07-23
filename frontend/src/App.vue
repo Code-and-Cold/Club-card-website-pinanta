@@ -1,4 +1,79 @@
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  document.querySelector('.feedback-section__form').addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    // Собираем данные
+    const name = document.getElementById('name').value
+    //const department = document.getElementById('department').value;
+    //const course = document.getElementById('course').value;
+    //const link = document.getElementById('link').value;
+    const agreement = document.querySelector('.form__checkbox').checked
+
+    const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
+
+    // Элемент для сообщения
+    let msg = document.querySelector('.form__message')
+    if (!msg) {
+      msg = document.createElement('p')
+      msg.className = 'form__message'
+      document.querySelector('.form').appendChild(msg)
+    }
+
+    // Валидация
+    if (!name.trim()) {
+      msg.style.color = 'red'
+      msg.textContent = 'Пожалуйста, введите ФИО'
+      return
+    }
+
+    if (!agreement) {
+      msg.style.color = 'red'
+      msg.textContent = 'Необходимо дать согласие на обработку данных'
+      return
+    }
+
+    msg.textContent = 'Отправка...'
+    msg.style.color = '#3bb0e3'
+
+    try {
+      /* FIXME: использовать полные данные не позволяет API, но вот пример запроса со всеми данными:
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name, 
+          department, 
+          course, 
+          link: link || '',
+          agreement 
+        })
+      }); */
+
+      // FIXME: удалить по обновлнию API:
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      })
+
+      if (!res.ok) throw new Error()
+
+      msg.style.color = 'green'
+      msg.textContent = '✅ Заявка отправлена! С вами свяжутся'
+      e.target.reset()
+
+      // Сброс чекбокса
+      document.querySelector('.form__checkbox').checked = false
+    } catch {
+      msg.style.color = 'red'
+      msg.textContent = '❌ Ошибка отправки. Попробуйте ещё раз.'
+    }
+  })
+})
+</script>
 
 <template>
   <head>
@@ -14,7 +89,14 @@
 
         <form class="form feedback-section__form" action="#" method="POST">
           <div class="form__field">
-            <input class="form__input" type="text" id="name" placeholder="ФИО" required pattern="^[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+)?$">
+            <input
+              class="form__input"
+              type="text"
+              id="name"
+              placeholder="ФИО"
+              required
+              pattern="^[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+)?$"
+            />
           </div>
 
           <select class="form__select" id="department" required>
@@ -35,7 +117,7 @@
           </select>
 
           <label class="form__checkbox-label">
-            <input class="form__checkbox" type="checkbox" />
+            <input class="form__checkbox" type="checkbox" id="policies" />
             <span class="checkmark"></span>
 
             Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
@@ -43,7 +125,14 @@
           </label>
 
           <div class="form__field">
-            <input class="form__input" type="url" id="link" placeholder="Страница Вконтакте" pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"> <!-- Здесь нужно прописать required для работы pattern -->
+            <input
+              class="form__input"
+              type="url"
+              id="link"
+              placeholder="Страница Вконтакте"
+              pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
+            />
+            <!-- Здесь нужно прописать required для работы pattern -->
           </div>
 
           <button class="form__submit-button" type="submit">Вступить в клуб</button>
@@ -59,8 +148,6 @@
         <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
       </div>
     </section>
-
-    <br /><br /><br /><br /><br />
 
     <!-- API -->
     <!--

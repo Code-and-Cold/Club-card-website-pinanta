@@ -145,6 +145,34 @@ ADMIN_LOGIN=admin ADMIN_PASSWORD=admin123 PORT=8081 \
 
 ## Развертывание frontend
 
+### Запуск front + back
+
+```bash
+# Запуск БД
+docker run -d   --name clubsite-postgres   -e POSTGRES_USER=clubuser   -e POSTGRES_PASSWORD=clubpass   -e POSTGRES_DB=clubdb   -p 5432:5432   -v clubdata:/var/lib/postgresql/data   postgres:17
+
+# Запуск API
+cd backend 
+cp .env.example .env
+go run .
+
+cd ..
+
+# Запуск Front
+cd frontend
+npm install
+npm run dev
+```
+
+Сайты должны быть доступны:
+
+- http://localhost:8080/ - backend прототип
+- http://localhost:8080/api - api
+- http://localhost:5174/Club-card-website-pinanta/ - frontend, порт в выводе `npm run dev`
+- http://localhost:5174/api - тоже api, только через front
+
+### Деплой
+
 Деплой будем делать на GitHub pages.
 
 ```bash
