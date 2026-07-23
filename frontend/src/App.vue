@@ -10,7 +10,7 @@ onMounted(() => {
     //const department = document.getElementById('department').value;
     //const course = document.getElementById('course').value;
     //const link = document.getElementById('link').value;
-    const agreement = document.querySelector('.form__checkbox').checked
+    const agreement = document.querySelector('.form__checkbox-input').checked
 
     const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
 
@@ -66,7 +66,7 @@ onMounted(() => {
       e.target.reset()
 
       // Сброс чекбокса
-      document.querySelector('.form__checkbox').checked = false
+      document.querySelector('.form__checkbox-input').checked = false
     } catch {
       msg.style.color = 'red'
       msg.textContent = '❌ Ошибка отправки. Попробуйте ещё раз.'
@@ -99,30 +99,26 @@ onMounted(() => {
             />
           </div>
 
-          <select class="form__select" id="department" required>
-            <option class="form__select-item" value="" disabled selected>Высшая школа</option>
-            <option class="form__select-item" value="1">ВШ 1</option>
-            <option class="form__select-item" value="2">ВШ 2</option>
-            <option class="form__select-item" value="3">ВШ 3</option>
-          </select>
+          <div class="form__field">
+            <select class="form__select" id="department" required>
+              <option class="form__select-item" value="" disabled selected>Высшая школа</option>
+              <option class="form__select-item" value="1">ВШ 1</option>
+              <option class="form__select-item" value="2">ВШ 2</option>
+              <option class="form__select-item" value="3">ВШ 3</option>
+            </select>
+          </div>
 
-          <select class="form__select" id="course" required>
-            <option class="form__select-item" value="" disabled selected>Курс</option>
-            <option class="form__select-item" value="1">1</option>
-            <option class="form__select-item" value="2">2</option>
-            <option class="form__select-item" value="3">3</option>
-            <option class="form__select-item" value="4">4</option>
-            <option class="form__select-item" value="5">5</option>
-            <option class="form__select-item" value="6">6</option>
-          </select>
-
-          <label class="form__checkbox-label">
-            <input class="form__checkbox" type="checkbox" id="policies" />
-            <span class="checkmark"></span>
-
-            Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
-            <a class="form__link" href="https://www.example.com">персональных данных</a>
-          </label>
+          <div class="form__field">
+            <select class="form__select" id="course" required>
+              <option class="form__select-item" value="" disabled selected>Курс</option>
+              <option class="form__select-item" value="1">1</option>
+              <option class="form__select-item" value="2">2</option>
+              <option class="form__select-item" value="3">3</option>
+              <option class="form__select-item" value="4">4</option>
+              <option class="form__select-item" value="5">5</option>
+              <option class="form__select-item" value="6">6</option>
+            </select>
+          </div>
 
           <div class="form__field">
             <input
@@ -133,6 +129,17 @@ onMounted(() => {
               pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
             />
             <!-- Здесь нужно прописать required для работы pattern -->
+          </div>
+
+          <div class="form__checkbox-panel">
+            <label class="form__checkbox-label">
+              <input class="form__checkbox-input" type="checkbox" id="policies" />
+              <span class="form__checkmark"></span>
+              <span class="form__checkbox-text">
+                Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
+                <a class="form__link" href="https://www.example.com">персональных данных</a>
+              </span>
+            </label>
           </div>
 
           <button class="form__submit-button" type="submit">Вступить в клуб</button>
@@ -217,48 +224,68 @@ h1 {
   gap: 15px;
 }
 
-.form__input {
-  padding: 30px 18px;
+.form__field {
+  width: 100%;
   height: 65px;
 
   border-radius: 20px;
   border: 2px solid #3bb0e3;
 
   background-color: #003b6b;
-  color: white;
 
   font-family: Inter;
   font-size: 24px;
-  font-weight: 400; /* Regular */
+  font-weight: 400;
   line-height: 1.2;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+}
+
+.form__input {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: white;
+  font: inherit;
 }
 
 .form__select {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex: 1;
+  width: 100%;
+  height: 100%;
 
-  padding: 0 18px;
-  height: 65px;
+  background: transparent;
+  border: none;
+  outline: none;
 
-  border-radius: 20px;
-  border: 2px solid #3bb0e3;
-
-  background-color: #003b6b;
   color: white;
+  font: inherit;
+
+  cursor: pointer;
 
   appearance: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
   background-image: url('data:image/svg+xml,...'); /* кастомная стрелка */
   cursor: pointer;
+}
 
-  font-family: Inter;
-  font-size: 24px;
-  font-weight: 400; /* Regular */
-  line-height: 1.2;
+.form__select-item {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #003b6b;
 }
 
 input {
@@ -268,69 +295,123 @@ input {
   user-select: none;
 }
 
-::placeholder {
+.form__input::placeholder {
   color: #3bb0e3; /* Forms placeholder font color */
   opacity: 1;
 }
 
+.form__checkbox-panel {
+  width: 100%;
+  height: 65px;
+}
+
 .form__checkbox-label {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
 
   font-family: Inter;
   font-size: 16px;
   font-weight: 400; /* Regular */
   line-height: 1.5;
   color: #3bb0e3;
+}
+
+.form__checkbox-element {
+  height: 35px;
+  width: 35px;
+
+  background-color: red;
+}
+
+.form__checkbox-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .form__link {
-  font-family: Inter;
-  font-size: 16px;
-  font-weight: 400; /* Regular */
-  line-height: 1.5;
   color: #3bb0e3;
 }
 
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
+@media (hover: hover) {
+  .form__link:hover {
+    color: #5cc5f5;
+  }
+}
 
+.form__checkmark {
+  flex-shrink: 0;
+  width: 35px;
+  height: 35px;
   border-radius: 10px;
   border: 2px solid #3bb0e3;
-
   background-color: #003b6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
 
-  height: 35px;
-  width: 35px;
+.form__checkmark::after {
+  content: '✓';
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
 }
 
 /* On mouse-over, add a grey background color; desktop only */
 @media (hover: hover) {
-  .form__checkbox-label:hover input ~ .checkmark {
+  .form__checkbox-label:hover .form__checkmark {
     background-color: rgba(59, 176, 227, 0.3);
+  }
+
+  .form__checkbox-label:hover .form__checkbox-input:checked + .form__checkmark {
+    background-color: #1a7fc9;
+    border-color: #1a7fc9;
   }
 }
 
 /* When the checkbox is checked, add a blue background */
-.form__checkbox-label input:checked ~ .checkmark {
+.form__checkbox-input:checked + .form__checkmark {
   background-color: #2196f3;
+  border-color: #2196f3;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
+  /*
   content: '';
   position: absolute;
   display: none;
+  */
 }
 
 /* Show the checkmark when checked */
-.form__checkbox-label input:checked ~ .checkmark:after {
-  display: block;
+.form__checkbox-input:checked + .form__checkmark::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.form__checkbox-text {
+  flex: 1;
 }
 
 .form__submit-button {
@@ -369,7 +450,15 @@ input {
   color: #e3953b;
 }
 
+.feedback-section__media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
 .feedback-section__image {
+  width: 335px;
   border-radius: 30px;
   border: 0px solid #e3953b;
 }
