@@ -76,102 +76,101 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="section feedback-section">
-      <div class="feedback-section__content">
-        <h2 class="feedback-section__title">Хочешь тусить с нами?</h2>
+  <section class="section feedback-section">
+    <div class="feedback-section__content">
+      <h2 class="feedback-section__title">Хочешь тусить с нами?</h2>
 
-        <h3 class="feedback-section__subtitle">Заполняй анкету и с тобой свяжутся наши шестерки</h3>
+      <h3 class="feedback-section__subtitle">Заполняй анкету и с тобой свяжутся наши шестерки</h3>
 
-        <form class="form feedback-section__form" action="#" method="POST">
-          <div class="form__field">
-            <input
-              class="form__input"
-              type="text"
-              id="name"
-              placeholder="ФИО"
-              required
-              pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
-            />
-          </div>
+      <form class="form feedback-section__form" action="#" method="POST">
+        <div class="form__field">
+          <input
+            class="form__input"
+            type="text"
+            id="name"
+            placeholder="ФИО"
+            required
+            pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
+          />
+        </div>
 
-          <div class="form__field">
-            <select class="form__select" id="department" required>
-              <option class="form__select-item" value="" disabled selected>Высшая школа</option>
-              <option class="form__select-item" value="1">ВШ 1</option>
-              <option class="form__select-item" value="2">ВШ 2</option>
-              <option class="form__select-item" value="3">ВШ 3</option>
-            </select>
-          </div>
+        <div class="form__field">
+          <select class="form__select" id="department" required>
+            <option class="form__select-item" value="" disabled selected>Высшая школа</option>
+            <option class="form__select-item" value="1">ВШ 1</option>
+            <option class="form__select-item" value="2">ВШ 2</option>
+            <option class="form__select-item" value="3">ВШ 3</option>
+          </select>
+        </div>
 
-          <div class="form__field">
-            <select class="form__select" id="course" required>
-              <option class="form__select-item" value="" disabled selected>Курс</option>
-              <option class="form__select-item" value="1">1</option>
-              <option class="form__select-item" value="2">2</option>
-              <option class="form__select-item" value="3">3</option>
-              <option class="form__select-item" value="4">4</option>
-              <option class="form__select-item" value="5">5</option>
-              <option class="form__select-item" value="6">6</option>
-            </select>
-          </div>
+        <div class="form__field">
+          <select class="form__select" id="course" required>
+            <option class="form__select-item" value="" disabled selected>Курс</option>
+            <option class="form__select-item" value="1">1</option>
+            <option class="form__select-item" value="2">2</option>
+            <option class="form__select-item" value="3">3</option>
+            <option class="form__select-item" value="4">4</option>
+            <option class="form__select-item" value="5">5</option>
+            <option class="form__select-item" value="6">6</option>
+          </select>
+        </div>
 
-          <div class="form__field">
-            <input
-              class="form__input"
-              type="url"
-              id="link"
-              placeholder="Страница Вконтакте"
-              pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
-            />
-            <!-- Здесь нужно прописать required для работы pattern -->
-          </div>
+        <div class="form__field">
+          <input
+            class="form__input"
+            type="url"
+            id="link"
+            placeholder="Страница Вконтакте"
+            pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
+          />
+          <!-- Здесь нужно прописать required для работы pattern -->
+        </div>
 
-          <div class="form__checkbox-panel">
-            <label class="form__checkbox-label">
-              <input class="form__checkbox-input" type="checkbox" id="policies" />
-              <span class="form__checkmark"></span>
-              <span class="form__checkbox-text">
-                Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
-                <a class="form__link" href="https://www.example.com">персональных данных</a>
-              </span>
-            </label>
-          </div>
+        <div class="form__checkbox-panel">
+          <label class="form__checkbox-label">
+            <input class="form__checkbox-input" type="checkbox" id="policies" />
+            <span class="form__checkmark"></span>
+            <span class="form__checkbox-text">
+              Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
+              <a class="form__link" href="https://www.example.com">персональных данных</a>
+            </span>
+          </label>
+        </div>
 
-          <button class="form__submit-button" type="submit">Вступить в клуб</button>
-        </form>
+        <button class="form__submit-button" type="submit">Вступить в клуб</button>
+      </form>
 
-        <p class="feedback-section__footer">
-          Или напиши на почту руководителю: <br />
-          <a class="feedback-section__link" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
-        </p>
-      </div>
+      <p class="feedback-section__footer">
+        Или напиши на почту руководителю: <br />
+        <a class="feedback-section__link" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
+      </p>
+    </div>
 
-      <div class="feedback-section__media">
-        <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
-      </div>
-    </section>
+    <div class="feedback-section__media">
+      <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
+    </div>
+  </section>
 
-    <!-- API -->
-    <!--
+  <!-- API -->
+  <!--
 	const res = await fetch('/api/apply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email })
     });-->
-
 </template>
 
-<style>
-/* FIXME: используйте <style scoped> как только перейдёте на отдельные css файлы */
-
-
+<style scoped>
 .feedback-section {
   background-color: #002f55;
+  padding: 50px 20px;
 
   display: flex;
   flex-direction: column;
   align-items: justify;
   gap: 30px;
+
+  border: 1px yellow solid;
 }
 
 .feedback-section__content {
@@ -186,6 +185,7 @@ onMounted(() => {
   font-size: 35px;
   font-weight: 400; /* Regular */
   line-height: 1.1;
+  color: white;
 }
 
 .feedback-section__subtitle {
@@ -193,6 +193,7 @@ onMounted(() => {
   font-size: 24px;
   font-weight: 400; /* Regular */
   line-height: 1.2;
+  color: white;
 }
 
 .feedback-section__form {
@@ -202,8 +203,9 @@ onMounted(() => {
 }
 
 .form__field {
-  width: 100%;
-  height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 18px 30px;
 
   border-radius: 20px;
   border: 2px solid #3bb0e3;
@@ -215,10 +217,6 @@ onMounted(() => {
   font-weight: 400;
   line-height: 1.2;
   color: white;
-
-  display: flex;
-  align-items: center;
-  padding: 0 18px;
 }
 
 .form__input {
