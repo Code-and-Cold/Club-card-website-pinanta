@@ -1,6 +1,6 @@
 <script setup>
-  import Hero from './components/Hero.vue';
-  import FeedbackSection from './components/FeedbackSection.vue';
+import HeroSection from './components/HeroSection.vue'
+import FeedbackSection from './components/FeedbackSection.vue'
 </script>
 
 <template>
@@ -10,11 +10,10 @@
 
   <body>
     <div class="main">
-      <Hero />
+      <HeroSection />
       <FeedbackSection />
     </div>
 
-    
     <br /><br /><br /><br /><br />
 
     <!-- API -->
