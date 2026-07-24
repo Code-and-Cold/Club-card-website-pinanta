@@ -150,14 +150,6 @@ onMounted(() => {
       <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
     </div>
   </section>
-
-  <!-- API -->
-  <!--
-	const res = await fetch('/api/apply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
-    });-->
 </template>
 
 <style scoped>
