@@ -364,7 +364,7 @@ h1 {
   color: white;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   font-size: 35px;
-  font-weight: 200;
+  font-weight: 300;
   letter-spacing: -0.5px;
   text-align: left;
 }
