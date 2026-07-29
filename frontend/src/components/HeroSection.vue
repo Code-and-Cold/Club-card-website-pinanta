@@ -11,14 +11,14 @@
               </a>
             </li>
           </ul>
-
-          <button class="hero__register-btn hero_register-btn--desktop" @click="handleRegister">
-            Вступить в клуб
-          </button>
         </nav>
 
+        <button v-if="isDesktop" class="hero__register-btn hero_register-btn--desktop" @click="handleRegister">
+            Вступить в клуб
+        </button>
+
         <div class="hero__mobile-buttons" v-if="!isDesktop">
-          <button class="hero__vk-link-btn" @click="goToVKGroup">
+          <button v-if="!isMobileMenuOpen" class="hero__vk-link-btn" @click="goToVKGroup">
             <img src="../assets/vector/ri_vk-fill.svg" alt="Группа в ВК" />
           </button>
 
@@ -139,7 +139,7 @@ h1 {
 }
 
 .hero-wrapper {
-  min-height: 100vh;
+  max-height: 100vh;
   background-color: rgba(0, 0, 0, 0);
   display: flex;
   align-items: center;
@@ -158,12 +158,14 @@ h1 {
   border-radius: 30px;
   box-shadow: 0px 0px 0px 50px #002f55;
   isolation: isolate;
+  font-weight: 300;
 }
 
 .hero__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 30px;
   padding: 0;
   position: relative;
   z-index: 101;
@@ -194,7 +196,6 @@ h1 {
   color: white;
   text-decoration: none;
   font-size: 24px;
-  font-weight: 500;
   position: relative;
   padding: auto;
 }
@@ -295,12 +296,13 @@ h1 {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   width: 100%;
-  height: 46%;
-  padding: 100px 30px 30px;
+  max-height: 60%;
+  padding: 100px 0px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 30px;
   animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -323,10 +325,7 @@ h1 {
 .hero__mobile-link {
   color: white;
   text-decoration: none;
-  font-size: 20px;
-  font-weight: 500;
   padding: 15px 20px;
-  border-radius: 12px;
   transition: all 0.3s ease;
   display: block;
   position: relative;
@@ -340,7 +339,7 @@ h1 {
   justify-content: end;
   align-items: center;
   text-align: left;
-  padding: 40px 20px;
+  padding: 30px 0px;
   position: relative;
   z-index: 1;
 }
@@ -351,6 +350,7 @@ h1 {
   box-sizing: content-box;
   justify-content: space-between;
   align-items: end;
+  gap: 30px;
 }
 
 .hero__title {
@@ -359,7 +359,8 @@ h1 {
   line-height: 1.2;
   color: white;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  font-weight: regular;
+  font-size: 35px;
+  font-weight: 200;
   letter-spacing: -0.5px;
   text-align: left;
 }
@@ -367,17 +368,18 @@ h1 {
 .hero__vk-content-btn {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: safe;
   align-items: center;
+  text-align: left;
   background: rgba(0, 47, 85, 0.5);
   border: 1px solid #3bb0e3;
   border-radius: 20px;
   color: white;
   font-size: 24px;
-  font-weight: 500;
-  gap: 10px;
+  font-weight: 300;
+  gap: 15px;
   height: 100%;
-  padding: 25px 15px;
+  padding: 15px 25px;
   max-width: 400px;
   max-height: 100px;
 }
@@ -398,7 +400,7 @@ h1 {
   }
 
   .hero__title {
-    font-size: clamp(28px, 6vw, 40px);
+    font-size: clamp(35px, 6vw, 60px);
   }
 }
 
@@ -418,7 +420,7 @@ h1 {
   }
 
   .hero__title {
-    font-size: 24px;
+    font-size: 35px;
   }
 
   .hero__subtitle {
@@ -428,7 +430,7 @@ h1 {
   .hero__register-btn--mobile {
     min-width: 160px;
     padding: 12px 30px;
-    font-size: 16px;
+    font-size: 22px;
   }
 
   .hero__mobile-nav {
