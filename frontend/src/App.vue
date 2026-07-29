@@ -1,7 +1,7 @@
 <script setup>
 import HeroSection from './components/HeroSection.vue'
 import FeedbackSection from './components/FeedbackSection.vue'
-import PhraseSection from './components/PhraseSection.vue';
+import PhraseSection from './components/PhraseSection.vue'
 </script>
 
 <template>
