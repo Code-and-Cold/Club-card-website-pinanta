@@ -18,7 +18,8 @@ onMounted(() => {
     let msg = document.querySelector('.form__message')
     if (!msg) {
       msg = document.createElement('p')
-      msg.className = 'form__message'
+      msg.className = 'feedback-section__message'
+      msg.setAttribute('data-testid', 'feedback-section__message')
       document.querySelector('.form').appendChild(msg)
     }
 
@@ -76,27 +77,27 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="section feedback-section">
+  <section class="section feedback-section" data-testid="feedback-section">
     <div class="feedback-section__content">
-      <h2 class="feedback-section__title">Хочешь тусить с нами?</h2>
+      <h2 class="feedback-section__title" data-testid="feedback-section__title">Хочешь тусить с нами?</h2>
 
-      <h3 class="feedback-section__subtitle">Заполняй анкету и с тобой свяжутся наши шестерки</h3>
+      <h3 class="feedback-section__subtitle" data-testid="feedback-section__subtitle">Заполняй анкету и с тобой свяжутся наши шестерки</h3>
 
-      <form class="form feedback-section__form" action="#" method="POST">
+      <form class="form feedback-section__form" data-testid="feedback-section__form" action="#" method="POST">
+
+        <input
+          class="form__field"
+          data-testid="feedback-section__input--fullname"
+          type="text"
+          id="name"
+          placeholder="ФИО"
+          required
+          pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
+        />
+
         <div class="form__field">
-          <input
-            class="form__input"
-            type="text"
-            id="name"
-            placeholder="ФИО"
-            required
-            pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
-          />
-        </div>
-
-        <div class="form__field">
-          <select class="form__select" id="department" required>
-            <option class="form__select-item" value="" disabled selected>Высшая школа</option>
+          <select class="form__select" data-testid="feedback-section__input--school" id="department" required placeholder="Высшая школа">
+//            <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="1">ВШ 1</option>
             <option class="form__select-item" value="2">ВШ 2</option>
             <option class="form__select-item" value="3">ВШ 3</option>
@@ -118,9 +119,10 @@ onMounted(() => {
         <div class="form__field">
           <input
             class="form__input"
+            data-testid="feedback-section__input--vk"
             type="url"
             id="link"
-            placeholder="Страница Вконтакте"
+            placeholder="Cтраница Вконтакте"
             pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
           />
           <!-- Здесь нужно прописать required для работы pattern -->
@@ -128,8 +130,8 @@ onMounted(() => {
 
         <div class="form__checkbox-panel">
           <label class="form__checkbox-label">
-            <input class="form__checkbox-input" type="checkbox" id="policies" />
-            <span class="form__checkmark"></span>
+            <input class="form__checkbox-input" data-testid="feedback-section__checkbox--consent" type="checkbox" id="policies" />
+            <span class="form__checkmark" data-testid="feedback-section__checkmark"></span>
             <span class="form__checkbox-text">
               Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
               <a class="form__link" href="https://www.example.com">персональных данных</a>
@@ -137,22 +139,32 @@ onMounted(() => {
           </label>
         </div>
 
-        <button class="form__submit-button" type="submit">Вступить в клуб</button>
+        <button class="form__submit-button" data-testid="feedback-section__button--submit" type="submit">Вступить в клуб</button>
       </form>
 
       <p class="feedback-section__footer">
         Или напиши на почту руководителю: <br />
-        <a class="feedback-section__link" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
+        <a class="feedback-section__link" data-testid="feedback-section__email" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
       </p>
     </div>
 
     <div class="feedback-section__media">
-      <img class="feedback-section__image" src="/src/assets/images/cheremsha.png" alt="Черемша" />
+      <img class="feedback-section__image" data-testid="feedback-section__image--meme" src="/src/assets/images/cheremsha.png" alt="Черемша" />
     </div>
   </section>
 </template>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* TODO: шрифты не везде такие, вынести по готовности тестов */
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+}
+
 .feedback-section {
   background-color: #002f55;
   padding: 50px 20px;
@@ -161,8 +173,6 @@ onMounted(() => {
   flex-direction: column;
   align-items: justify;
   gap: 30px;
-
-  border: 1px yellow solid;
 }
 
 .feedback-section__content {
@@ -196,6 +206,7 @@ onMounted(() => {
 
 .form__field {
   display: flex;
+  width: 100%;
   align-items: center;
   padding: 18px 30px;
 
