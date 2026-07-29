@@ -11,90 +11,214 @@
   .card { border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
   .card h3 { margin: 0 0 4px 0; }
   .muted { color: #777; font-size: 0.9em; }
-  form { display: flex; flex-direction: column; gap: 8px; max-width: 300px; }
-  input, button { padding: 8px; font-size: 1em; }
+  form { display: flex; flex-direction: column; gap: 8px; max-width: 320px; }
+  input, select, button { padding: 8px; font-size: 1em; font-family: inherit; }
+  label { display: flex; align-items: center; gap: 6px; font-size: 0.9em; }
   button { cursor: pointer; background: #333; color: #fff; border: none; border-radius: 4px; }
   button:hover { background: #555; }
+  button:disabled { background: #999; cursor: not-allowed; }
   #applyMsg { font-weight: bold; }
+  #applyMsg.ok { color: green; }
+  #applyMsg.err { color: #a33; }
 </style>
 </head>
 <body>
 
-<h1>Наш клуб</h1>
-<p style="text-align:center;">Тестовая страница-визитка. Данные ниже загружаются из БД через API.</p>
+<h1 id="heroTitle">Наш клуб</h1>
+<p id="heroSubtitle" style="text-align:center;"></p>
+<p style="text-align:center;" class="muted">Тестовая страница-визитка. Данные ниже загружаются из БД через GET /api/site.</p>
 
-<h2>Команда</h2>
+<h2 id="warmupTitle">Разогрев</h2>
+<p id="warmupText" class="muted"></p>
+
+<h2 id="whyUsTitle">Почему у нас классно</h2>
+<div id="whyUsCards">Загрузка...</div>
+
+<h2 id="teamTitle">Команда</h2>
 <div id="team">Загрузка...</div>
 
-<h2>Новости</h2>
+<h2 id="benefitsTitle">Что ты получишь</h2>
+<div id="benefits">Загрузка...</div>
+
+<h2>Цитата</h2>
+<p id="quoteText" class="muted" style="font-style: italic;"></p>
+
+<h2 id="newsBlockTitle">Новости</h2>
 <div id="news">Загрузка...</div>
 
-<h2>Вступить в клуб</h2>
+<h2 id="applyTitle">Вступить в клуб</h2>
+<p id="applyDescription" class="muted"></p>
 <form id="applyForm">
-  <input type="text" id="name" placeholder="Ваше имя" required>
-  <input type="email" id="email" placeholder="Ваша почта" required>
-  <button type="submit">Отправить заявку</button>
+  <input type="text" id="fullName" placeholder="ФИО" required>
+  <select id="school" required>
+    <option value="">Высшая школа...</option>
+  </select>
+  <select id="course" required>
+    <option value="">Курс...</option>
+  </select>
+  <input type="url" id="vkLink" placeholder="Ссылка на страницу ВК" required>
+  <label><input type="checkbox" id="agreement" required> Я согласен(на) на обработку данных</label>
+  <button type="submit" id="applySubmit">Отправить заявку</button>
 </form>
 <p id="applyMsg"></p>
 
 <script>
-async function loadTeam() {
-  const res = await fetch('/api/team');
-  const data = await res.json();
+let siteData = null;
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+async function loadSite() {
+  const res = await fetch('/api/site');
+  siteData = await res.json();
+  renderHero();
+  renderWarmup();
+  renderWhyUs();
+  renderTeam();
+  renderBenefits();
+  renderQuote();
+  renderNews();
+  renderApplyBlock();
+  renderDropdowns();
+}
+
+function renderHero() {
+  const hero = siteData.hero || {};
+  document.getElementById('heroTitle').textContent = hero.title || 'Наш клуб';
+  document.getElementById('heroSubtitle').textContent = hero.subtitle || '';
+}
+
+function renderWarmup() {
+  const warmup = siteData.warmup || {};
+  document.getElementById('warmupText').textContent = warmup.slogan || '';
+}
+
+function renderWhyUs() {
+  const whyUs = siteData.why_us || {};
+  document.getElementById('whyUsTitle').textContent = whyUs.title || 'Почему у нас классно';
+  const cards = siteData.why_us_cards || [];
+  const el = document.getElementById('whyUsCards');
+  el.innerHTML = cards.length ? cards.map(card => `
+    <div class="card">
+      <h3>${escapeHtml(card.title)}</h3>
+      <p>${escapeHtml(card.description)}</p>
+    </div>
+  `).join('') : '<p class="muted">Пока пусто.</p>';
+}
+
+function renderTeam() {
+  const team = siteData.team || {};
+  document.getElementById('teamTitle').textContent = team.title || 'Команда';
+  const members = siteData.team_members || [];
   const el = document.getElementById('team');
-  if (!data.length) { el.innerHTML = '<p class="muted">Пока никого нет.</p>'; return; }
-  el.innerHTML = data.map(m => `
+  el.innerHTML = members.length ? members.map(m => `
     <div class="card">
       <h3>${escapeHtml(m.name)}</h3>
       <p class="muted">${escapeHtml(m.role)}</p>
+      <p>${escapeHtml(m.description)}</p>
+      ${m.contacts ? `<p class="muted">${escapeHtml(m.contacts)}</p>` : ''}
     </div>
-  `).join('');
+  `).join('') : '<p class="muted">Пока никого нет.</p>';
 }
 
-async function loadNews() {
-  const res = await fetch('/api/news');
-  const data = await res.json();
+function renderBenefits() {
+  const benefits = siteData.benefits || {};
+  document.getElementById('benefitsTitle').textContent = benefits.title || 'Что ты получишь';
+  const items = siteData.benefits_items || [];
+  const el = document.getElementById('benefits');
+  el.innerHTML = items.length ? items.map(b => `
+    <div class="card">
+      <h3>${escapeHtml(b.title)}</h3>
+      <p>${escapeHtml(b.description)}</p>
+    </div>
+  `).join('') : '<p class="muted">Пока пусто.</p>';
+}
+
+function renderQuote() {
+  const quote = siteData.quote || {};
+  document.getElementById('quoteText').textContent = quote.text ? '«' + quote.text + '»' : '';
+}
+
+function renderNews() {
+  const newsBlock = siteData.news_block || {};
+  document.getElementById('newsBlockTitle').textContent = newsBlock.title || 'Новости';
+  const items = siteData.news || [];
   const el = document.getElementById('news');
-  if (!data.length) { el.innerHTML = '<p class="muted">Новостей пока нет.</p>'; return; }
-  el.innerHTML = data.map(n => `
+  el.innerHTML = items.length ? items.map(n => `
     <div class="card">
       <h3>${escapeHtml(n.title)}</h3>
-      <p>${escapeHtml(n.content)}</p>
+      <p>${escapeHtml(n.short_desc)}</p>
       <p class="muted">${new Date(n.created_at).toLocaleString()}</p>
     </div>
-  `).join('');
+  `).join('') : '<p class="muted">Новостей пока нет.</p>';
+}
+
+function renderApplyBlock() {
+  const applyBlock = siteData.apply_block || {};
+  document.getElementById('applyTitle').textContent = applyBlock.title || 'Вступить в клуб';
+  document.getElementById('applyDescription').textContent = applyBlock.description || '';
+}
+
+function renderDropdowns() {
+  const schoolSelect = document.getElementById('school');
+  (siteData.schools || []).forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o.value;
+    opt.textContent = o.value;
+    schoolSelect.appendChild(opt);
+  });
+  const courseSelect = document.getElementById('course');
+  (siteData.courses || []).forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o.value;
+    opt.textContent = o.value;
+    courseSelect.appendChild(opt);
+  });
 }
 
 document.getElementById('applyForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
   const msg = document.getElementById('applyMsg');
+  const submitBtn = document.getElementById('applySubmit');
+  msg.className = '';
   msg.textContent = 'Отправка...';
+  submitBtn.disabled = true;
+
+  const payload = {
+    full_name: document.getElementById('fullName').value.trim(),
+    school: document.getElementById('school').value,
+    course: document.getElementById('course').value,
+    vk_link: document.getElementById('vkLink').value.trim(),
+    agreement: document.getElementById('agreement').checked,
+  };
+
   try {
     const res = await fetch('/api/apply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
+      body: JSON.stringify(payload)
     });
-    if (!res.ok) throw new Error();
-    msg.style.color = 'green';
-    msg.textContent = 'Заявка отправлена!';
+    const data = await res.json();
+    if (!res.ok) {
+      msg.className = 'err';
+      msg.textContent = data.message || 'Форма не отправлена. Проверьте введённые данные.';
+      return;
+    }
+    msg.className = 'ok';
+    msg.textContent = data.message || 'Заявка успешно отправлена!';
     e.target.reset();
   } catch {
-    msg.style.color = 'red';
-    msg.textContent = 'Ошибка отправки. Попробуйте ещё раз.';
+    msg.className = 'err';
+    msg.textContent = 'Ошибка сети. Попробуйте ещё раз.';
+  } finally {
+    submitBtn.disabled = false;
   }
 });
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-loadTeam();
-loadNews();
+loadSite();
 </script>
 
 </body>
