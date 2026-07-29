@@ -132,6 +132,12 @@ onUnmounted(() => {
 </script>
 
 <style lang="css" scoped>
+/* TODO: Вынести в HeroSection как будут готовы тесты */
+h1 {
+  text-align: center;
+  color: white;
+}
+
 .hero-wrapper {
   min-height: 100vh;
   background-color: rgba(0, 0, 0, 0);
@@ -355,6 +361,7 @@ onUnmounted(() => {
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   font-weight: regular;
   letter-spacing: -0.5px;
+  text-align: left;
 }
 
 .hero__vk-content-btn {
