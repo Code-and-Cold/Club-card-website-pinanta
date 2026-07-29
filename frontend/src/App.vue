@@ -23,6 +23,4 @@ import FeedbackSection from './components/FeedbackSection.vue'
   background-image: url('./assets/images/Space-Background-Images.jpg');
   background-attachment: fixed;
 }
-
-
 </style>

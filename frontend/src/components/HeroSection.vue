@@ -13,8 +13,12 @@
           </ul>
         </nav>
 
-        <button v-if="isDesktop" class="hero__register-btn hero_register-btn--desktop" @click="handleRegister">
-            Вступить в клуб
+        <button
+          v-if="isDesktop"
+          class="hero__register-btn hero_register-btn--desktop"
+          @click="handleRegister"
+        >
+          Вступить в клуб
         </button>
 
         <div class="hero__mobile-buttons" v-if="!isDesktop">
