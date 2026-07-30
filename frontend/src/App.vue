@@ -2,6 +2,7 @@
 import HeroSection from './components/HeroSection.vue'
 import FeedbackSection from './components/FeedbackSection.vue'
 import PhraseSection from './components/PhraseSection.vue'
+import PhraseBottomSection from './components/PhraseBottomSection.vue'
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import PhraseSection from './components/PhraseSection.vue'
     <div class="main">
       <HeroSection />
       <PhraseSection />
+      <PhraseBottomSection />
       <FeedbackSection />
     </div>
   </body>

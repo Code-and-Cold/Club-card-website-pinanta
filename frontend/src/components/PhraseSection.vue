@@ -10,9 +10,11 @@
 <style scoped>
 .phrase {
   margin: 0;
+  /*TODO: сделать padding равный отсутпу текста от границы в блоке hero*/
   padding: 0 30px;
   display: flex;
   background-color: #002f55;
+  /*TODO: сделать min-height как: "min-height: calc(100vh - 60px)"*/
   min-height: clamp(470px, 2.5vw, 100vh);
   align-items: center;
   justify-content: center;
