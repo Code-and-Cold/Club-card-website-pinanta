@@ -22,7 +22,7 @@ export default defineConfig({
     globals: true,
     include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
-    testTimeout: 10000,
+    testTimeout: 2000,
   },
 
   resolve: {
