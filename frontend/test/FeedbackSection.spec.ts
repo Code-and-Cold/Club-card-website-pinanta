@@ -1,11 +1,10 @@
 import { describe, expect, test } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { page } from '@vitest/browser/context'
-import { userEvent } from 'vitest/browser'
+import { page, userEvent } from 'vitest/browser'
+
 import FeedbackSection from '../src/components/FeedbackSection.vue'
 
 import '../src/assets/styles/global.css'
-import '../src/assets/styles/test.css'
 
 describe('FeedbackSection', () => {
   test('должен корректно рендерить все элементы на мобильном viewport (375px)', async () => {

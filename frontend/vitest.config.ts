@@ -1,14 +1,12 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import { playwright } from '@vitest/browser-playwright'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vitest/config';
+import { playwright } from '@vitest/browser-playwright';
+import vue from '@vitejs/plugin-vue';
 
-// https://vite.dev/config/
 export default defineConfig({
-  base: "/Club-card-website-pinanta/",
   plugins: [vue()],
-
+  
   test: {
     browser: {
       enabled: true,
@@ -17,17 +15,22 @@ export default defineConfig({
         { browser: 'chromium' },
       ],
     },
-
+    
     environment: 'jsdom',
     globals: true,
+    
     include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
+    
     testTimeout: 2000,
+    hookTimeout: 10000,
+    
+    setupFiles: ['./vitest.setup.ts'],
   },
-
+  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-})
+});
