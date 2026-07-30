@@ -4,7 +4,7 @@ import { page } from '@vitest/browser/context'
 import { userEvent } from 'vitest/browser'
 import FeedbackSection from '../src/components/FeedbackSection.vue'
 
-import '../src/assets/global.css'
+import '../src/assets/styles/global.css'
 import '../src/assets/styles/test.css'
 
 describe('FeedbackSection', () => {
