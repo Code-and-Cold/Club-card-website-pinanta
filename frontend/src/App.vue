@@ -21,7 +21,7 @@ import PhraseBottomSection from './components/PhraseBottomSection.vue'
 </template>
 
 <style>
-@import url('./assets/global.css');
+@import url('./assets/styles/global.css');
 
 .main {
   background-image: url('./assets/images/Space-Background-Images.jpg');
