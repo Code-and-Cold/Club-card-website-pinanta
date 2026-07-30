@@ -10,8 +10,8 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/",
-    "format:check": "prettier --check --experimental-cli src/",
+    "format": "prettier --write --experimental-cli src/ test/",
+    "format:check": "prettier --check --experimental-cli src/ test/",
     "predeploy": "npm run build",
     "deploy": "vite build && gh-pages -d dist",
     "test:system": "vitest"
