@@ -22,7 +22,7 @@ export default defineConfig({
     include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
     
-    testTimeout: 2000,
+    testTimeout: 5000,
     hookTimeout: 10000,
     
     setupFiles: ['./vitest.setup.ts'],

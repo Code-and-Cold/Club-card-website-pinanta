@@ -56,7 +56,7 @@ jobs:
       working-directory: frontend
 
     - name: System testing # TODO: Paralelize tessting and other ci activities
-      run: npm run test:system
+      run: npm run test:ci
       working-directory: frontend
 
 #    - run: npm test # No tests yet
