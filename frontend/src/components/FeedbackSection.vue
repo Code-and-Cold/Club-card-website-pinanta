@@ -93,17 +93,19 @@ onMounted(() => {
         action="#"
         method="POST"
       >
-        <input
-          class="form__field"
-          data-testid="feedback-section__input--fullname"
-          type="text"
-          id="name"
-          placeholder="ФИО"
-          required
-          pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
-        />
+        <div class="form__field" data-testid="feedback-section__field--fullname">
+          <input
+            class="form__input"
+            data-testid="feedback-section__input--fullname"
+            type="text"
+            id="name"
+            placeholder="ФИО"
+            required
+            pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
+          />
+        </div>
 
-        <div class="form__field">
+        <div class="form__field" data-testid="feedback-section__field--school">
           <select
             class="form__select"
             data-testid="feedback-section__input--school"
@@ -111,7 +113,6 @@ onMounted(() => {
             required
             placeholder="Высшая школа"
           >
-            //
             <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="1">ВШ 1</option>
             <option class="form__select-item" value="2">ВШ 2</option>
@@ -119,8 +120,14 @@ onMounted(() => {
           </select>
         </div>
 
-        <div class="form__field">
-          <select class="form__select" id="course" required>
+        <div class="form__field" data-testid="feedback-section__field--course">
+          <select
+            class="form__select"
+            data-testid="feedback-section__input--course"
+            id="course"
+            required
+            placeholder="Курс"
+          >
             <option class="form__select-item" value="" disabled selected>Курс</option>
             <option class="form__select-item" value="1">1</option>
             <option class="form__select-item" value="2">2</option>
@@ -131,20 +138,20 @@ onMounted(() => {
           </select>
         </div>
 
-        <div class="form__field">
+        <div class="form__field" data-testid="feedback-section__field--vk">
           <input
             class="form__input"
             data-testid="feedback-section__input--vk"
             type="url"
             id="link"
-            placeholder="Cтраница Вконтакте"
+            placeholder="Страница Вконтакте"
             pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
           />
           <!-- Здесь нужно прописать required для работы pattern -->
         </div>
 
         <div class="form__checkbox-panel">
-          <label class="form__checkbox-label">
+          <label class="form__checkbox-label" data-testid="feedback-section__checkbox-text">
             <input
               class="form__checkbox-input"
               data-testid="feedback-section__checkbox--consent"
@@ -207,7 +214,6 @@ onMounted(() => {
 
   display: flex;
   flex-direction: column;
-  align-items: justify;
   gap: 30px;
 }
 
