@@ -1,79 +1,64 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 
-onMounted(() => {
-  document.querySelector('.feedback-section__form').addEventListener('submit', async (e) => {
-    e.preventDefault()
-
-    // Собираем данные
-    const name = document.getElementById('name').value
-    //const department = document.getElementById('department').value;
-    //const course = document.getElementById('course').value;
-    //const link = document.getElementById('link').value;
-    const agreement = document.querySelector('.form__checkbox-input').checked
-
-    const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
-
-    // Элемент для сообщения
-    let msg = document.querySelector('.form__message')
-    if (!msg) {
-      msg = document.createElement('p')
-      msg.className = 'feedback-section__message'
-      msg.setAttribute('data-testid', 'feedback-section__message')
-      document.querySelector('.form').appendChild(msg)
-    }
-
-    // Валидация
-    if (!name.trim()) {
-      msg.style.color = 'red'
-      msg.textContent = 'Пожалуйста, введите ФИО'
-      return
-    }
-
-    if (!agreement) {
-      msg.style.color = 'red'
-      msg.textContent = 'Необходимо дать согласие на обработку данных'
-      return
-    }
-
-    msg.textContent = 'Отправка...'
-    msg.style.color = '#3bb0e3'
-
-    try {
-      /* FIXME: использовать полные данные не позволяет API, но вот пример запроса со всеми данными:
-      const res = await fetch('/api/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          name, 
-          department, 
-          course, 
-          link: link || '',
-          agreement 
-        })
-      }); */
-
-      // FIXME: удалить по обновлнию API:
-      const res = await fetch('/api/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
-      })
-
-      if (!res.ok) throw new Error()
-
-      msg.style.color = 'green'
-      msg.textContent = '✅ Заявка отправлена! С вами свяжутся'
-      e.target.reset()
-
-      // Сброс чекбокса
-      document.querySelector('.form__checkbox-input').checked = false
-    } catch {
-      msg.style.color = 'red'
-      msg.textContent = '❌ Ошибка отправки. Попробуйте ещё раз.'
-    }
-  })
+const formData = reactive({
+  name: '',
+  department: '',
+  course: '',
+  link: '',
+  agreement: false,
 })
+
+const message = ref('')
+const isLoading = ref(false)
+const messageColor = ref('')
+
+const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
+
+async function submitForm() {
+  if (!formData.name.trim()) {
+    message.value = 'Пожалуйста, введите ФИО'
+    messageColor.value = 'red'
+    return
+  }
+
+  if (!formData.agreement) {
+    message.value = 'Необходимо дать согласие на обработку данных'
+    messageColor.value = 'red'
+    return
+  }
+
+  isLoading.value = true
+  message.value = 'Отправка...'
+  messageColor.value = '#3bb0e3'
+
+  try {
+    const res = await fetch('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // body: JSON.stringify(formData)
+      body: JSON.stringify({ name: formData.name, mail: email }), // FIXME: обновить вместе с API
+    })
+
+    if (!res.ok) throw new Error()
+
+    message.value = '✅ Заявка отправлена! С вами свяжутся'
+    messageColor.value = 'green'
+
+    Object.assign(formData, {
+      name: '',
+      department: '',
+      course: '',
+      link: '',
+      agreement: false,
+    })
+  } catch {
+    message.value = '❌ Ошибка отправки. Попробуйте ещё раз.'
+    messageColor.value = 'red'
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -90,15 +75,13 @@ onMounted(() => {
       <form
         class="form feedback-section__form"
         data-testid="feedback-section__form"
-        action="#"
-        method="POST"
+        @submit.prevent="submitForm"
       >
         <div class="form__field" data-testid="feedback-section__field--fullname">
           <input
             class="form__input"
             data-testid="feedback-section__input--fullname"
-            type="text"
-            id="name"
+            v-model="formData.name"
             placeholder="ФИО"
             required
             pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
@@ -109,9 +92,8 @@ onMounted(() => {
           <select
             class="form__select"
             data-testid="feedback-section__input--school"
-            id="department"
+            v-model="formData.department"
             required
-            placeholder="Высшая школа"
           >
             <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="1">ВШ 1</option>
@@ -124,9 +106,8 @@ onMounted(() => {
           <select
             class="form__select"
             data-testid="feedback-section__input--course"
-            id="course"
+            v-model="formData.course"
             required
-            placeholder="Курс"
           >
             <option class="form__select-item" value="" disabled selected>Курс</option>
             <option class="form__select-item" value="1">1</option>
@@ -143,7 +124,7 @@ onMounted(() => {
             class="form__input"
             data-testid="feedback-section__input--vk"
             type="url"
-            id="link"
+            v-model="formData.link"
             placeholder="Страница Вконтакте"
             pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
           />
@@ -156,7 +137,7 @@ onMounted(() => {
               class="form__checkbox-input"
               data-testid="feedback-section__checkbox--consent"
               type="checkbox"
-              id="policies"
+              v-model="formData.agreement"
             />
             <span class="form__checkmark" data-testid="feedback-section__checkmark"></span>
             <span class="form__checkbox-text">
@@ -170,9 +151,19 @@ onMounted(() => {
           class="form__submit-button"
           data-testid="feedback-section__button--submit"
           type="submit"
+          :disabled="isLoading"
         >
-          Вступить в клуб
+          {{ isLoading ? 'Отправка...' : 'Вступить в клуб' }}
         </button>
+
+        <p
+          v-if="message"
+          class="form__message"
+          data-testid="feedback-section__message"
+          :style="{ color: messageColor }"
+        >
+          {{ message }}
+        </p>
       </form>
 
       <p class="feedback-section__footer">

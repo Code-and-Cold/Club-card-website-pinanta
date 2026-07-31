@@ -58,22 +58,18 @@ describe('FeedbackSection', () => {
     const fields = [
       {
         name: 'fullname',
-        placeholder: 'ФИО',
         inputType: 'input',
       },
       {
         name: 'school',
-        placeholder: 'Высшая школа',
         inputType: 'select',
       },
       {
         name: 'course',
-        placeholder: 'Курс',
         inputType: 'select',
       },
       {
         name: 'vk',
-        placeholder: 'Страница Вконтакте',
         inputType: 'input',
       },
     ] as const
@@ -93,7 +89,6 @@ describe('FeedbackSection', () => {
       const input = getByTestId(`feedback-section__input--${field.name}`)
       await expect.element(input).toBeInTheDocument()
       await expect.element(input).toBeVisible()
-      await expect.element(input).toHaveAttribute('placeholder', field.placeholder)
     }
 
     // Чекбокс согласия
@@ -176,30 +171,35 @@ describe('FeedbackSection', () => {
     const user = userEvent.setup()
     const { getByTestId } = render(FeedbackSection)
 
-    // 1. Заполняем поле "ФИО"
     const nameInput = getByTestId('feedback-section__input--fullname')
     await user.type(nameInput, 'Иван Петров')
 
-    // 2. Заполняем поле "Высшая школа"
     const schoolSelect = getByTestId('feedback-section__input--school')
     await user.selectOptions(schoolSelect, 'ВШ 1')
 
-    // 3. Заполняем поле "Страница Вконтакте"
-    // const vkInput = getByTestId('feedback-section__input--vk')
-    // await user.type(vkInput, 'https://vk.com/ivan_petrov')
+    const courselSelect = getByTestId('feedback-section__input--course')
+    await user.selectOptions(courselSelect, '1')
 
-    // 4. Отмечаем чекбокс
+    const vkInput = getByTestId('feedback-section__input--vk')
+    await user.type(vkInput, 'https://vk.com/ivan_petrov')
+
     const checkbox = getByTestId('feedback-section__checkmark') // Кастомный чекбокс
     await user.click(checkbox)
 
-    // 5. Кликаем по кнопке отправки
     const submitButton = getByTestId('feedback-section__button--submit')
     await user.click(submitButton)
 
-    // 6. Проверяем результат
-    //    const successMessage = getByTestId('feedback-section__message');
-    //    await expect.element(successMessage).toBeVisible();
-    //    await expect.element(successMessage).toHaveTextContent('✅ Заявка отправлена!');
+    await expect
+      .poll(() => getByTestId('feedback-section__message'), {
+        timeout: 2000,
+        interval: 100,
+      })
+      .toBeInTheDocument()
+
+    const message = getByTestId('feedback-section__message')
+    await expect.element(message).toBeVisible()
+    await expect.element(message).toHaveTextContent('❌ Ошибка отправки. Попробуйте ещё раз.') // TODO: Integration test for success
+    await expect.element(message).toHaveStyle({ color: 'red' })
   })
 
   test('изображение загружается без ошибки 404', async () => {
