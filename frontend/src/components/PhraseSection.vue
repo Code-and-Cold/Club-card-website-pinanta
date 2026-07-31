@@ -16,7 +16,7 @@
 .phrase {
   margin: 0;
   /*TODO: сделать padding равный отсутпу текста от границы в блоке hero*/
-  padding: 0 30px;
+  padding: 0 20px;
   display: flex;
   background-color: #002f55;
   /*TODO: сделать min-height как: "min-height: calc(100vh - 60px)"*/
