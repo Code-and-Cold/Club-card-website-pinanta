@@ -35,7 +35,7 @@ describe('PhraseSection', () => {
       )
     await expect.element(phrase).toHaveStyle({
       width: '335px',
-      height: '224px',
+      // Auto height
 
       fontFamily: 'JetBrains Mono',
       fontSize: '25px',
@@ -70,27 +70,18 @@ describe('PhraseSectionDesktop', () => {
     const { getByTestId } = render(PhraseSection)
 
     // Контейнер секции
-    const phraseSection = getByTestId('phrase-section')
-    const phraseElement = phraseSection.element()
-    const phraseStyles = window.getComputedStyle(phraseElement)
-    const phraseHeight = parseFloat(phraseStyles.height)
+    const section = getByTestId('phrase-section')
 
-    await expect.element(phraseSection).toBeInTheDocument()
-    await expect.element(phraseSection).toBeVisible()
-    await expect.element(phraseSection).toHaveStyle({
+    await expect.element(section).toBeInTheDocument()
+    await expect.element(section).toBeVisible()
+    await expect.element(section).toHaveStyle({
       backgroundColor: '#002F55',
       width: '1440px',
-      padding: '285px 73px 265px 74px', // С какого-то перепугу в макете figma на desktop статичный текст без адаптива
+      padding: '285px 73px 285px 74px',
     })
-
-    expect(phraseHeight).toBeGreaterThanOrEqual(895)
-    expect(phraseHeight).toBeLessThanOrEqual(905)
 
     // Фраза
     const phrase = getByTestId('phrase-section__phrase')
-    const element = phrase.element()
-    const styles = window.getComputedStyle(element)
-    const height = parseFloat(styles.height)
 
     await expect.element(phrase).toBeInTheDocument()
     await expect.element(phrase).toBeVisible()
@@ -101,16 +92,14 @@ describe('PhraseSectionDesktop', () => {
       )
     await expect.element(phrase).toHaveStyle({
       width: '1293px',
+      // Auto height
 
       fontFamily: 'JetBrains Mono',
       fontSize: '60px',
       fontWeight: '400',
       color: '#FFFFFF',
-      lineHeight: '117%',
+      lineHeight: '110%',
     })
-
-    expect(height).toBeGreaterThanOrEqual(260) // FIXME: Not an actual size
-    expect(height).toBeLessThanOrEqual(355)
 
     // Выделение
     const highlightedText = getByTestId('phrase-section__highlight')

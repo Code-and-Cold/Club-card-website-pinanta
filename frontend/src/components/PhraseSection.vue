@@ -43,12 +43,12 @@
 
 @media (min-width: 1024px) {
   .phrase {
-    padding: 285px 73px 265px 74px;
+    padding: 285px 73px 285px 74px;
     min-height: 900px;
   }
   .phrase__text {
     font-size: 60px;
-    line-height: 117%;
+    line-height: 110%;
   }
 }
 </style>
