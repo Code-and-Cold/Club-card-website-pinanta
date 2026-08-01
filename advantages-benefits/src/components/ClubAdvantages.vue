@@ -62,19 +62,29 @@ defineProps({
   padding-inline: clamp(0px, 8vw, 95px);
 }
 
-.advantage-card:nth-child(3) {
+.advantage-card {
   display: flex;
   flex-direction: column;
   min-height: clamp(210px, 23vw, 285px);
   padding: clamp(20px, 2.4vw, 30px);
   border-radius: 16px;
-  background: var(--card-bg);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+
+  background-color: var(--card-bg);
+  color: var(--text-main);
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.advantage-card:nth-child(3):hover {
+.advantage-card:hover {
+  background-color: #002f55;
+  color: #ffffff;
+
   transform: translateY(-4px);
-  box-shadow: 0 16px 35px rgb(7 59 99 / 10%);
+  box-shadow: 0 16px 35px rgb(0 47 85 / 18%);
 }
 
 .advantage-card__content {
