@@ -1,9 +1,9 @@
 <template>
-  <section class="hero-wrapper">
+  <section class="hero-wrapper" data-testid="hero-section">
     <div class="hero">
-      <header class="hero__header">
-        <div class="hero__logo">Лого сафу и клуба</div>
-        <nav v-if="isDesktop" class="hero__nav-desktop">
+      <header class="hero__header" data-testid="hero-section__header">
+        <div class="hero__logo" data-testid="hero-section__logo--club">Лого сафу и клуба</div>
+        <nav v-if="isDesktop" class="hero__nav-desktop" data-testid="hero-section__nav">
           <ul class="hero__nav-list">
             <li v-for="item in menuItems" :key="item.id">
               <a :href="item.href" class="hero__nav-link">
@@ -16,18 +16,25 @@
         <button
           v-if="isDesktop"
           class="hero__register-btn hero_register-btn--desktop"
+          data-testid="hero-section__button--cta"
           @click="handleRegister"
         >
           Вступить в клуб
         </button>
 
         <div class="hero__mobile-buttons" v-if="!isDesktop">
-          <button v-if="!isMobileMenuOpen" class="hero__vk-link-btn" @click="goToVKGroup">
+          <button
+            v-if="!isMobileMenuOpen"
+            class="hero__vk-link-btn"
+            data-testid="hero-section__logo--vk"
+            @click="goToVKGroup"
+          >
             <img src="../assets/vector/ri_vk-fill.svg" alt="Группа в ВК" />
           </button>
 
           <button
             class="hero__burger"
+            data-testid="hero-section__burger"
             @click="toggleMobileMenu"
             :aria-label="isMobileMenuOpen ? 'Закрыть меню' : 'Открыть меню'"
           >
@@ -48,26 +55,40 @@
       </header>
 
       <div v-if="isMobileMenuOpen" class="hero__mobile-overlay" @click="closeMobileMenu">
-        <nav class="hero__mobile-nav" @click.stop>
+        <nav class="hero__mobile-nav" data-testid="hero-section__burger-menu" @click.stop>
           <div></div>
-          <ul class="hero__mobile-list">
+          <ul class="hero__mobile-list" data-testid="hero-section__burger-nav">
             <li v-for="item in menuItems" :key="item.id">
               <a :href="item.href" class="hero__mobile-link" @click="closeMobileMenu">
                 {{ item.label }}
               </a>
             </li>
           </ul>
-          <button v-if="!isDesktop" class="hero__vk-content-btn" @click="goToVKGroup">
+          <button
+            v-if="!isDesktop"
+            class="hero__vk-content-btn"
+            data-testid="hero-section__burger-vk"
+            @click="goToVKGroup"
+          >
             <p>Подписывайтесь на группу Вконтакте</p>
-            <img src="../assets/vector/Vector.svg" />
+            <img src="../assets/vector/Vector.svg" data-testid="hero-section__burger-vk-icon" />
           </button>
         </nav>
       </div>
 
       <div class="hero__content">
         <div class="hero__content-row">
-          <h1 class="hero__title">Пишем код. Согреваем атмосферой. Создаём твоё портфолио.</h1>
-          <button v-if="isDesktop" class="hero__vk-content-btn" @click="goToVKGroup">
+          <h1 class="hero__title" data-testid="hero-section__title">
+            Пишем код. Согреваем атмосферой. Создаём твоё портфолио.
+          </h1>
+          <button
+            v-if="isDesktop"
+            class="hero__vk-content-btn"
+            data-testid="hero-section__logo--vk"
+            @click="goToVKGroup"
+          >
+            <!-- TODO: Объединить hero__vk-link-btn и hero__vk-content-btn, стилизовать через @media или использовать модификаторы -->
+
             <p>Подписывайтесь на группу Вконтакте</p>
             <img src="../assets/vector/Vector.svg" />
           </button>
@@ -75,6 +96,7 @@
         <button
           v-if="!isDesktop"
           class="hero__register-btn hero__register-btn--mobile"
+          data-testid="hero-section__button--cta"
           @click="handleRegister"
         >
           Вступить в клуб
@@ -136,7 +158,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="css" scoped>
-/* TODO: Вынести в HeroSection как будут готовы тесты */
 h1 {
   text-align: center;
   color: white;
