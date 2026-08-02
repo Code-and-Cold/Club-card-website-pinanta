@@ -14,6 +14,7 @@
 
 - На хостинге [GitHub pages](https://code-and-cold.github.io/Club-card-website-pinanta/).
 - В макете [Figma](https://www.figma.com/design/QO5qKvgzRQCtMwVDZXz4md/%D0%9A%D0%BE%D0%B4-%D0%B8-%D0%A5%D0%BE%D0%BB%D0%BE%D0%B4?node-id=52-2).
+- В системе управления проктами [Битрикс 24](https://code-and-cold.bitrix24.ru)
 
 # Требования
 
@@ -70,7 +71,7 @@ go run .
 
 Типичный день frontend разработчика:
 
-1. Запустим сайт для быстрой обратной связи, тесты для реализации TDD и защиты от регрессии, открваем фигму, битрикс и вк:
+1. Запустим сайт для быстрой обратной связи, тесты для реализации TDD и защиты от регрессии, открываем фигму, битрикс и вк:
 
 ```
 cd frontend
