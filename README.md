@@ -14,7 +14,7 @@
 
 - На хостинге [GitHub pages](https://code-and-cold.github.io/Club-card-website-pinanta/).
 - В макете [Figma](https://www.figma.com/design/QO5qKvgzRQCtMwVDZXz4md/%D0%9A%D0%BE%D0%B4-%D0%B8-%D0%A5%D0%BE%D0%BB%D0%BE%D0%B4?node-id=52-2).
-- В системе управления проектами [Битрикс 24](https://code-and-cold.bitrix24.ru)
+- В системе управления проектами [Битрикс 24](https://code-and-cold.bitrix24.ru).
 
 # Требования
 
@@ -51,7 +51,7 @@ npm run dev
 
 ## Бекенд
 
-Работа с базой данных реализована через API написанный на Go.
+Работа с базой данных реализована через API, написанный на Go.
 
 Запуск БД, API и панели администратора:
 
@@ -71,7 +71,7 @@ go run .
 
 Типичный день frontend разработчика:
 
-1. Запустим сайт для быстрой обратной связи, тесты для реализации TDD и защиты от регрессии, открываем фигму, битрикс и вк:
+1. Запустим сайт для быстрой обратной связи, тесты для реализации TDD и защиты от регрессии, откроем фигму, битрикс и вк:
 
 ```
 cd frontend
@@ -79,7 +79,7 @@ npm run dev
 npm run test:system
 ```
 
-2. Выбираем задачу и решаем её (опционально через TDD, см. тестирование в проекте):
+2. Выберем задачу и решим её (опционально через TDD, см. тестирование в проекте):
 
 ```
 git checkout -b feat/frontend/very-important-feature
@@ -87,15 +87,15 @@ git add -A
 git commit -m "feat(frontend): very important section of right-most pixel"
 ```
 
-3. Вовремя вспоминаем о том, что линтинг и форматирование при CI/CD не пройдут,
-а кто-то очень ленивый не написал `pre-commit-hooks` (TODO: настроить `pre-commit-hooks`):
+3. Вовремя вспомним о том, что линтинг и форматирование при CI/CD не пройдут,
+а кто-то очень ленивый не настроил `pre-commit-hooks` (TODO: настроить `pre-commit-hooks`):
 
 ```
 npm run lint && npm run format
 npm run test:ci
 ```
 
-4. Сохраняем изменения, корректируя историю при необходимости:
+4. Сохраним изменения, корректируя историю при необходимости:
 
 ```
 git add -A
@@ -106,7 +106,7 @@ git rebase feat/frontend/very-important-feature
 git push
 ```
 
-4. (Опционально) Выкладываем наше творение ~~в даркнет~~ на GitHub Pages:
+4. (Опционально) Выложим наше творение ~~в даркнет~~ на GitHub Pages:
 
 ```
 npm run deploy
