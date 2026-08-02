@@ -1,5 +1,5 @@
 
-[![Node.js CI](https://github.com/Code-and-Cold/Club-card-website-pinanta/actions/workflows/node.js.yml/badge.svg)](https://github.com/ваш-репозиторий/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/Code-and-Cold/Club-card-website-pinanta/actions/workflows/node.js.yml/badge.svg)](https://github.com/Code-and-Cold/Club-card-website-pinanta/actions/workflows/node.js.yml)
 [![Vue](https://img.shields.io/badge/vue-3.x-4FC08D?logo=vue.js)](https://vuejs.org/)
 [![Vite](https://img.shields.io/badge/vite-6.x-646CFF?logo=vite)](https://vitejs.dev/)
 [![Go](https://img.shields.io/badge/go-1.26.5-00ADD8?logo=go)](https://golang.org/)
