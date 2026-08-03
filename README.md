@@ -1,186 +1,124 @@
-# Сайт-визитка клуба
 
-Сайт пиньята для клуба программистов. Содержит одну публичную страницу (команда, новости, форма заявки) + админку для редактирования этих данных.
-Фронт залит на GitHub pages (TODO: Здесь ссылка).
+[![Node.js CI](https://github.com/Code-and-Cold/Club-card-website-pinanta/actions/workflows/node.js.yml/badge.svg)](https://github.com/Code-and-Cold/Club-card-website-pinanta/actions/workflows/node.js.yml)
+[![Vue](https://img.shields.io/badge/vue-3.x-4FC08D?logo=vue.js)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/vite-6.x-646CFF?logo=vite)](https://vitejs.dev/)
+[![Go](https://img.shields.io/badge/go-1.26.5-00ADD8?logo=go)](https://golang.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Стек
+# Сайт-визитка клуба программистов "Код и Холод"
 
-Backend:
+Образовательный проект для студентов, желающих получить практику в области разработки программного обеспечения.
 
-- Go: язык программирования.
-- Echo: быстрый и простой Go web framework
-- Postgres 16: современная БД.
+В данном репозитории находится SPA сайт-визитка клуба со всеми зависимостями.
+Проект находится в разработке, текущий статус можно узнать:
 
-Frontend:
+- На хостинге [GitHub pages](https://code-and-cold.github.io/Club-card-website-pinanta/).
+- В макете [Figma](https://www.figma.com/design/QO5qKvgzRQCtMwVDZXz4md/%D0%9A%D0%BE%D0%B4-%D0%B8-%D0%A5%D0%BE%D0%BB%D0%BE%D0%B4?node-id=52-2).
+- В системе управления проектами [Битрикс 24](https://code-and-cold.bitrix24.ru).
 
-- Vue: JS framework для создания пользовательских интерфейсов.
-  Пока используется вместе с набором инструментов Vite.
+# Требования
 
-## Структура
+Для работы проекта необходимы следующие компоненты:
 
-Backend:
+- [Node.js 24+](https://nodejs.org/en/download)
+- [Go 1.26.5+](https://go.dev/doc/install)
+- [Docker 26.1.5+](https://docs.docker.com/engine/install/)
+
+# Быстрый старт
+
+## Полный деплой
+
+Развертывание проекта через Docker Compose:
 
 ```
-main.go               - маршруты, запуск сервера, basic-auth для /api/admin/*
-db.go                 - подключение к Postgres, авто-создание таблиц
-models.go             - структуры TeamMember / News / Application
-handlers_public.go    - GET /api/team, GET /api/news, POST /api/apply
-handlers_admin.go     - CRUD для команды/новостей, просмотр заявок (под basic-auth)
-static/index.html     - публичная страница
-static/admin.html     - админка
-schema.sql            - та же схема БД отдельным файлом (для справки)
-```
-
-## Быстрый старт
-
-TODO: полное развертывание back+front в dev режиме (docker compose?)
-
-## Развертывание backend
-
-Перейди в backend директорию:
-
-`cd backend`
-
-### 1. Поднимаем Postgres в Docker
-
-Здесь используется `docker run`, а не `docker compose`
-
-**Базовый вариант (стандартный порт 5432):**
-
-```bash
-docker run -d \
-  --name clubsite-postgres \
-  -e POSTGRES_USER=clubuser \
-  -e POSTGRES_PASSWORD=clubpass \
-  -e POSTGRES_DB=clubdb \
-  -p 5432:5432 \
-  -v clubdata:/var/lib/postgresql/data \
-  postgres:16
-```
-
-**Второй контейнер на нестандартном порту**. Здесь на хосте используется порт `5433`, внутри контейнера Postgres всё так же слушает `5432`:
-
-```bash
-docker run -d \
-  --name clubsite-postgres-2 \
-  -e POSTGRES_USER=clubuser \
-  -e POSTGRES_PASSWORD=clubpass \
-  -e POSTGRES_DB=clubdb \
-  -p 5433:5432 \
-  -v clubdata2:/var/lib/postgresql/data \
-  postgres:16
-```
-
-Оба контейнера могут работать одновременно — у них разные имена (`clubsite-postgres` / `clubsite-postgres-2`), разные volume (`clubdata` / `clubdata2`) и разные порты на хосте (`5432` / `5433`).
-
-**Полезные команды:**
-
-```bash
-docker ps                        # какие контейнеры сейчас работают
-docker start clubsite-postgres   # запустить ранее созданный, но остановленный контейнер
-docker stop clubsite-postgres    # остановить
-docker rm -f clubsite-postgres   # удалить контейнер (данные в volume останутся)
-docker volume rm clubdata        # удалить volume, если нужно начать с чистой БД
-```
-
-Если удобнее compose — `docker-compose.yml` в репозитории тоже рабочий:
-```bash
-docker compose up -d      # если есть плагин compose
-# или
-docker-compose up -d      # если стоит старая отдельная утилита
-```
-
-### 2. Настраиваем переменные окружения
-
-Скопируй `.env.example` в `.env` и поправь при необходимости (логин/пароль админки, строку подключения к БД). Если поднял второй Postgres на порту `5433`, укажи это в `DATABASE_URL`.
-
-### 3. Собираем и запускаем сервер
-
-```bash
-go mod tidy
-go build -o clubsite .
-```
-
-Запуск с БД на стандартном порту 5432:
-```bash
-DATABASE_URL=postgres://clubuser:clubpass@localhost:5432/clubdb?sslmode=disable \
-ADMIN_LOGIN=admin ADMIN_PASSWORD=admin123 PORT=8080 \
-./clubsite
-```
-
-Запуск с БД на порту 5433 (второй контейнер):
-```bash
-DATABASE_URL=postgres://clubuser:clubpass@localhost:5433/clubdb?sslmode=disable \
-ADMIN_LOGIN=admin ADMIN_PASSWORD=admin123 PORT=8081 \
-./clubsite
-```
-(порт сервера `PORT=8081` тоже стоит поменять, если хочешь запустить второй экземпляр сервера параллельно с первым)
-
-### 4. Открываем в браузере
-
-- http://localhost:8080/            — публичная страница
-- http://localhost:8080/admin.html  — админка (логин/пароль по умолчанию: admin / admin123)
-
-## API
-
-Публичное:
-- `GET /api/team` — список команды
-- `GET /api/news` — список новостей
-- `POST /api/apply` — заявка на вступление, body: `{"name": "...", "email": "..."}`
-
-Админское (Basic Auth):
-- `POST/PUT/DELETE /api/admin/team[/:id]`
-- `POST/PUT/DELETE /api/admin/news[/:id]`
-- `GET /api/admin/applications`
-- `DELETE /api/admin/applications/:id`
-
-## Что упрощено намеренно
-
-- Авторизация админки — HTTP Basic Auth с логином/паролем из переменных окружения (без сессий, JWT, ролей).
-- Верификации почты в заявке нет.
-- Фото участников — просто URL-строка (загрузки файлов нет).
-- Нет пагинации, поиска, валидации помимо базовой проверки "поле не пустое".
-
-Этого достаточно для тестового прототипа; для продакшена стоит добавить нормальную аутентификацию, HTTPS, валидацию и, возможно, миграции через отдельный инструмент (goose/golang-migrate).
-
-## Развертывание frontend
-
-### Запуск front + back
-
-```bash
-# Запуск БД
-docker run -d   --name clubsite-postgres   -e POSTGRES_USER=clubuser   -e POSTGRES_PASSWORD=clubpass   -e POSTGRES_DB=clubdb   -p 5432:5432   -v clubdata:/var/lib/postgresql/data   postgres:17
-
-# Запуск API
-cd backend 
 cp .env.example .env
-go run .
+docker compose up -d
+```
 
-cd ..
+## Фронтенд
 
-# Запуск Front
+Проект является одностраничником (SPA) на Node.js реализованным с применением JS фреймворка Vue со стандартным композитором Vite.
+
+Запуск сайта без БД и API:
+
+```
 cd frontend
 npm install
 npm run dev
 ```
 
-Сайты должны быть доступны:
+Сайт доступен по адресу http://localhost:5173/Club-card-website-pinanta/. Порт может быть другим, если исходный занят.
 
-- http://localhost:8080/ - backend прототип
-- http://localhost:8080/api - api
-- http://localhost:5174/Club-card-website-pinanta/ - frontend, порт в выводе `npm run dev`
-- http://localhost:5174/api - тоже api, только через front
+## Бекенд
 
-### Деплой
+Работа с базой данных реализована через API, написанный на Go.
 
-Деплой будем делать на GitHub pages.
+Запуск БД, API и панели администратора:
 
-```bash
+```
+docker run -d --name clubsite-postgres \
+  -e POSTGRES_USER=clubuser \
+  -e POSTGRES_PASSWORD=clubpass \
+  -e POSTGRES_DB=clubdb \
+  -p 5432:5432 postgres:17-alpine
+
+cd backend
+cp .env.example .env
+go run .
+```
+
+# Сценарий разработки
+
+Типичный день frontend разработчика:
+
+1. Запустим сайт для быстрой обратной связи, тесты для реализации TDD и защиты от регрессии, откроем фигму, битрикс и вк:
+
+```
 cd frontend
-# Устанавливаем зависимости:
-npm install
-# Build:
-npm run predeploy
-# Deploy на GitHub pages (обновляет ветку gh-pages)
+npm run dev
+npm run test:system
+```
+
+2. Выберем задачу и решим её (опционально через TDD, см. тестирование в проекте):
+
+```
+git checkout -b feat/frontend/very-important-feature
+git add -A
+git commit -m "feat(frontend): very important section of right-most pixel"
+```
+
+3. Вовремя вспомним о том, что линтинг и форматирование при CI/CD не пройдут,
+а кто-то очень ленивый не настроил `pre-commit-hooks` (TODO: настроить `pre-commit-hooks`):
+
+```
+npm run lint && npm run format
+npm run test:ci
+```
+
+4. Сохраним изменения, корректируя историю при необходимости:
+
+```
+git add -A
+git commit --amend --no-edit
+
+git checkout develop
+git rebase feat/frontend/very-important-feature
+git push
+```
+
+4. (Опционально) Выложим наше творение ~~в даркнет~~ на GitHub Pages:
+
+```
 npm run deploy
 ```
+
+TODO: Пнуть backend-ра для получения глубинного знания и пополнения инструкций.
+
+# Дополнительные материалы (WIP)
+
+- Принципы Frontend разработки в проекте
+- Принципы Backend разработки в проекте
+- Спецификация API
+- Тестирование в проекте
+- Методики управление проектом
+- Принципы обеспечения безопасности
