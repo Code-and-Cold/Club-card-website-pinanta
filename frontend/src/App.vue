@@ -5,6 +5,73 @@ import PhraseSection from './components/PhraseSection.vue'
 import PhraseBottomSection from './components/PhraseBottomSection.vue'
 import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
 import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
+import Team from './components/Team.vue'
+import RecentEvents from './components/RecentEvents.vue'
+
+const team = [
+  {
+    id: 1,
+    photo: "src/assets/images/1.png",
+    name: 'За Лупкин',
+    position: 'Директор',
+  },
+  {
+    id: 2,
+    photo: "src/assets/images/1.png",
+    name: 'Яша Лава',
+    position: 'Уже уволен',
+  },
+  {
+    id: 3,
+    photo: "src/assets/images/3.jpg",
+    name: 'Спайдер мент',
+    position: 'Офицер',
+  },
+  {
+    id: 4,
+    photo: "src/assets/images/4.png",
+    name: 'Пупу Пу',
+    position: 'ОАО',
+  },
+  {
+    id: 5,
+    photo: "src/assets/images/5.png",
+    name: 'ААААААААААААААА',
+    position: 'ААААААААА',
+  },
+]
+
+const recentEvents = [
+  {
+    id: 1,
+    photo: "src/assets/images/1.png",
+    title: 'Проекты, которыми пользуются',
+    text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    fullText: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    data: '23.07.2026',
+  },
+  {
+    id: 2,
+    photo: "src/assets/images/6.jpg",
+    title: 'Проекты, которыми пользуются',
+    text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    data: '23.07.2026',
+  },
+  {
+    id: 3,
+    photo: "src/assets/images/6.jpg",
+    title: 'Проекты, которыми пользуются',
+    text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    data: '23.07.2026',
+  },
+  {
+    id: 4,
+    photo: "src/assets/images/6.jpg",
+    title: 'Проекты, которыми пользуются',
+    text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    data: '23.07.2026',
+  },
+]
 </script>
 
 <template>
@@ -17,8 +84,10 @@ import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
       <HeroSection />
       <PhraseSection />
       <ClubAdvantagesSection />
+      <Team :items="team" />
       <MemberBenefitsSection />
       <PhraseBottomSection />
+      <RecentEvents :items="recentEvents" />
       <FeedbackSection />
     </div>
   </body>
