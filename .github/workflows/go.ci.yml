@@ -2,7 +2,7 @@ name: Go CI
 
 on:
   push:
-    branches: [ "main", "develop", "feat/**" ]
+    branches: [ "main", "develop", "feat/backend/**" ]
   pull_request:
     branches: [ "main", "develop" ]
 
