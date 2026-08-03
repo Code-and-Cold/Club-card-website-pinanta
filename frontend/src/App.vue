@@ -3,7 +3,8 @@ import HeroSection from './components/HeroSection.vue'
 import FeedbackSection from './components/FeedbackSection.vue'
 import PhraseSection from './components/PhraseSection.vue'
 import PhraseBottomSection from './components/PhraseBottomSection.vue'
-import AdvantagesBenefitsSections from './components/AdvantagesBenefitsSections.vue'
+import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
+import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
 </script>
 
 <template>
@@ -15,7 +16,8 @@ import AdvantagesBenefitsSections from './components/AdvantagesBenefitsSections.
     <div class="main">
       <HeroSection />
       <PhraseSection />
-      <AdvantagesBenefitsSections />
+      <ClubAdvantagesSection />
+      <MemberBenefitsSection />
       <PhraseBottomSection />
       <FeedbackSection />
     </div>
