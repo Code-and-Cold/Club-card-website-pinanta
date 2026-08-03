@@ -1,0 +1,58 @@
+name: Go CI
+
+on:
+  push:
+    branches: [ "main", "develop", "feat/backend/**" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: clubuser
+          POSTGRES_PASSWORD: clubpass
+          POSTGRES_DB: clubdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Set up Go
+      uses: actions/setup-go@v7
+      with:
+        go-version: '1.26.5'
+
+    - name: Start API server
+      run: |
+        go run . &
+
+        for i in {1..10}; do
+          if curl -s http://localhost:8080 > /dev/null; then
+            echo "✅ API сервер запущен"
+            break
+          fi
+          echo "⏳ Ожидание запуска API... (попытка $i)"
+          sleep 2
+        done
+      working-directory: backend
+      env:
+        DATABASE_URL: postgres://clubuser:clubpass@localhost:5432/clubdb?sslmode=disable
+
+    - name: Build
+      run: go build -v ./...
+      working-directory: backend
+
+    - name: Test
+      run: go test -v ./...
+      working-directory: backend
