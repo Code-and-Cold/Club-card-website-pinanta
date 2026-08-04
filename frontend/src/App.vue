@@ -5,37 +5,37 @@ import PhraseSection from './components/PhraseSection.vue'
 import PhraseBottomSection from './components/PhraseBottomSection.vue'
 import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
 import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
-import Team from './components/Team.vue'
+import TeamSection from './components/TeamSection.vue'
 import RecentEvents from './components/RecentEvents.vue'
 
 const team = [
   {
     id: 1,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     name: 'За Лупкин',
     position: 'Директор',
   },
   {
     id: 2,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     name: 'Яша Лава',
     position: 'Уже уволен',
   },
   {
     id: 3,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     name: 'Спайдер мент',
     position: 'Офицер',
   },
   {
     id: 4,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     name: 'Пупу Пу',
     position: 'ОАО',
   },
   {
     id: 5,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     name: 'ААААААААААААААА',
     position: 'ААААААААА',
   },
@@ -44,29 +44,30 @@ const team = [
 const recentEvents = [
   {
     id: 1,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
-    fullText: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    fullText:
+      'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 2,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 3,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 4,
-    photo: "src/assets/images/cheremsha.png",
+    photo: 'src/assets/images/cheremsha.png',
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
@@ -84,7 +85,7 @@ const recentEvents = [
       <HeroSection />
       <PhraseSection />
       <ClubAdvantagesSection />
-      <Team :items="team" />
+      <TeamSection :items="team" />
       <MemberBenefitsSection />
       <PhraseBottomSection />
       <RecentEvents :items="recentEvents" />

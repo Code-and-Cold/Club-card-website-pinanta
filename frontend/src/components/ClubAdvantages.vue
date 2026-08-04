@@ -19,11 +19,7 @@ defineProps({
       <h2 id="advantages-title" class="advantages__title">{{ title }}</h2>
 
       <div class="advantages__grid">
-        <article
-          v-for="(item, index) in items"
-          :key="item.id ?? index"
-          class="advantage-card"
-        >
+        <article v-for="(item, index) in items" :key="item.id ?? index" class="advantage-card">
           <ClubIcon variant="badge" />
 
           <div class="advantage-card__content">

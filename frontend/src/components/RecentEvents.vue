@@ -53,8 +53,17 @@ const handleKeydown = (e) => {
       <h2 id="events-title" class="events__title">{{ title }}</h2>
       <div class="events__slider-wraper">
         <div ref="event__swiper-button-prev" class="event__swiper-button-prev">
-          <svg ref="event__swiper-navigation-icon-prev" class="event__swiper-navigation-icon-prev" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10.4341 20.0762C10.7053 19.805 10.7053 19.3654 10.4341 19.0942L1.61953 10.2796L10.4341 1.46497C10.7053 1.19379 10.7053 0.754138 10.4341 0.482966C10.1629 0.211794 9.72329 0.211794 9.45212 0.482966L0.38296 9.55214C-0.0188039 9.9539 -0.0188039 10.6053 0.38296 11.007L9.45212 20.0762C9.72329 20.3474 10.1629 20.3474 10.4341 20.0762Z" fill="currentColor"/>
+          <svg
+            ref="event__swiper-navigation-icon-prev"
+            class="event__swiper-navigation-icon-prev"
+            viewBox="0 0 11 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.4341 20.0762C10.7053 19.805 10.7053 19.3654 10.4341 19.0942L1.61953 10.2796L10.4341 1.46497C10.7053 1.19379 10.7053 0.754138 10.4341 0.482966C10.1629 0.211794 9.72329 0.211794 9.45212 0.482966L0.38296 9.55214C-0.0188039 9.9539 -0.0188039 10.6053 0.38296 11.007L9.45212 20.0762C9.72329 20.3474 10.1629 20.3474 10.4341 20.0762Z"
+              fill="currentColor"
+            />
           </svg>
         </div>
         <Swiper
@@ -62,22 +71,22 @@ const handleKeydown = (e) => {
           :breakpoints="{
             375: { slidesPerView: 1, spaceBetween: 10 },
             640: { slidesPerView: 2, spaceBetween: 10 },
-            1024: { slidesPerView: 3, spaceBetween: 20 }
+            1024: { slidesPerView: 3, spaceBetween: 20 },
           }"
           :navigation="{
             prevEl: '.event__swiper-button-prev',
-            nextEl: '.event__swiper-button-next'
+            nextEl: '.event__swiper-button-next',
           }"
           class="event__swiper"
         >
-          <SwiperSlide 
+          <SwiperSlide
             v-for="(item, index) in items"
             :key="item.id ?? index"
             class="event-card"
             @click="openModal(item)"
           >
             <div class="event-card__content">
-              <img :src="item.photo" class="event-card__photo" :alt="item.title">
+              <img :src="item.photo" class="event-card__photo" :alt="item.title" />
               <h3 class="event-card__name">{{ item.title }}</h3>
               <p class="event-card__text">{{ item.text }}</p>
               <p class="event-card__data">{{ item.data }}</p>
@@ -85,8 +94,17 @@ const handleKeydown = (e) => {
           </SwiperSlide>
         </Swiper>
         <div ref="event__swiper-button-next" class="event__swiper-button-next">
-          <svg ref="event__swiper-navigation-icon-next" class="event__swiper-navigation-icon-next" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8359 9.9539 10.8359 10.6053 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z" fill="currentColor"/>
+          <svg
+            ref="event__swiper-navigation-icon-next"
+            class="event__swiper-navigation-icon-next"
+            viewBox="0 0 11 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8359 9.9539 10.8359 10.6053 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z"
+              fill="currentColor"
+            />
           </svg>
         </div>
       </div>
@@ -94,7 +112,7 @@ const handleKeydown = (e) => {
 
     <Teleport to="body">
       <Transition name="modal">
-        <div 
+        <div
           v-if="isModalOpen"
           class="modal-overlay"
           @click="handleOverlayClick"
@@ -104,16 +122,17 @@ const handleKeydown = (e) => {
           <div class="modal-content" role="dialog" aria-modal="true">
             <button class="modal-close" @click="closeModal" aria-label="Закрыть новость">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
               </svg>
             </button>
-            
+
             <div v-if="selectedItem" class="modal-body">
-              <img 
-                :src="selectedItem.photo" 
-                class="modal-image" 
-                :alt="selectedItem.title"
-              >
+              <img :src="selectedItem.photo" class="modal-image" :alt="selectedItem.title" />
               <h2 class="modal-title">{{ selectedItem.title }}</h2>
               <p v-if="selectedItem.fullText" class="modal-full-text">
                 {{ selectedItem.fullText }}
@@ -132,7 +151,7 @@ const handleKeydown = (e) => {
 .events {
   padding-block: clamp(48px, 7vw, 108px);
   flex: 0 0 auto;
-  background-color: #F0F0F1;
+  background-color: #f0f0f1;
 }
 
 .events__container {
@@ -146,7 +165,7 @@ const handleKeydown = (e) => {
   font-weight: bold;
   line-height: 1.08;
   letter-spacing: 0.015em;
-  color: #002F55;
+  color: #002f55;
 }
 
 .events__slider-wraper {
@@ -168,14 +187,16 @@ const handleKeydown = (e) => {
   min-height: clamp(210px, 23vw, 285px);
   padding: clamp(20px, 2.4vw, 30px);
   border-radius: 16px;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
   height: 100%;
   cursor: pointer;
 }
 
 .event-card:hover {
   transform: translateY(-4px);
-  background-color: #E8E8E8;
+  background-color: #e8e8e8;
 }
 
 .event-card__content {
@@ -194,7 +215,7 @@ const handleKeydown = (e) => {
 .event-card__data {
   font-size: clamp(13px, 1.15vw, 17px);
   line-height: 1.15;
-  color: #002F55;
+  color: #002f55;
 }
 
 .event-card__name {
@@ -217,8 +238,8 @@ const handleKeydown = (e) => {
   height: 50px;
   margin-top: 0;
   flex-shrink: 0;
-  color: #002F55;
-  background: #E7E7E7;
+  color: #002f55;
+  background: #e7e7e7;
   border-radius: 50%;
   transition: all 200ms ease;
   cursor: pointer;
@@ -229,7 +250,7 @@ const handleKeydown = (e) => {
 
 .event__swiper-button-prev:hover,
 .event__swiper-button-next:hover {
-    color: #3BB0E3;
+  color: #3bb0e3;
 }
 .event__swiper-button-prev {
   left: 10px;
@@ -313,27 +334,27 @@ const handleKeydown = (e) => {
 .modal-title {
   font-size: clamp(24px, 3vw, 32px);
   font-weight: bold;
-  color: #002F55;
+  color: #002f55;
   margin: 8px 0 0 0;
 }
 
 .modal-date {
   font-size: 14px;
-  color: #002F55;
+  color: #002f55;
   margin: 0;
 }
 
 .modal-text {
   font-size: 16px;
   line-height: 1.6;
-  color: #002F55;
+  color: #002f55;
   margin: 0;
 }
 
 .modal-full-text {
   font-size: 16px;
   line-height: 1.8;
-  color: #002F55;
+  color: #002f55;
   margin: 8px 0 0 0;
   padding-top: 16px;
   border-top: 1px solid #eee;
@@ -384,7 +405,7 @@ const handleKeydown = (e) => {
   .modal-content {
     padding: 20px;
   }
-  
+
   .modal-close {
     top: 12px;
     right: 12px;
