@@ -86,7 +86,7 @@ const handleKeydown = (e) => {
             @click="openModal(item)"
           >
             <div class="event-card__content">
-              <img src="/src/assets/images/cheremsha.png" class="event-card__photo" :alt="item.title" />
+              <img :src="item.photo" class="event-card__photo" :alt="item.title" />
               <h3 class="event-card__name">{{ item.title }}</h3>
               <p class="event-card__text">{{ item.text }}</p>
               <p class="event-card__data">{{ item.data }}</p>
