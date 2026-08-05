@@ -9,6 +9,24 @@ const formData = reactive({
   agreement: false,
 })
 
+const errors = reactive({
+  name: '',
+  department: '',
+  course: '',
+  link: '',
+  agreement: false,
+})
+
+const errorMessages = {
+  name: 'Это поле обязательно к заполнению.',
+  department: 'Пожалуйста, выберите высшую школу.',
+  link: '',
+  course: 'Пожалуйста, выберите курс.',
+  agreement: 'Необходимо дать согласие на обработку данных.',
+}
+
+const requiredFields = ['name', 'department', 'course', 'agreement']
+
 const message = ref('')
 const isLoading = ref(false)
 const messageColor = ref('')
@@ -16,17 +34,18 @@ const messageColor = ref('')
 const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
 
 async function submitForm() {
-  if (!formData.name.trim()) {
-    message.value = 'Пожалуйста, введите ФИО'
-    messageColor.value = 'red'
-    return
+  Object.assign(errors, { name: '', department: '', course: '', link: '', agreement: false })
+
+  let hasError = false
+
+  for (const field of requiredFields) {
+    if (!formData[field] || (typeof formData[field] === 'string' && !formData[field].trim())) {
+      errors[field] = errorMessages[field]
+      hasError = true
+    }
   }
 
-  if (!formData.agreement) {
-    message.value = 'Необходимо дать согласие на обработку данных'
-    messageColor.value = 'red'
-    return
-  }
+  if (hasError) return
 
   isLoading.value = true
   message.value = 'Отправка...'
@@ -80,34 +99,51 @@ async function submitForm() {
         <div class="form__field" data-testid="feedback-section__field--fullname">
           <input
             class="form__input"
+            :class="{ 'form__field--error': errors.name }"
             data-testid="feedback-section__input--fullname"
             v-model="formData.name"
             placeholder="ФИО"
-            required
-            pattern="^[А-ЯЁа-яё][А-ЯЁа-яё]+\s[А-ЯЁа-яё][А-ЯЁа-яё]+(?:\s[А-ЯЁа-яё][А-ЯЁа-яё]+)?$"
           />
+
+          <div
+            v-if="errors.name"
+            class="form__field-error"
+            data-testid="feedback-section__field-error--fullname"
+          >
+            <span class="form__field-error-icon form__field-error-icon--error"></span>
+            <span class="form__field-error-text">{{ errors.name }}</span>
+          </div>
         </div>
 
         <div class="form__field" data-testid="feedback-section__field--school">
           <select
             class="form__select"
-            data-testid="feedback-section__input--school"
+            :class="{ 'form__field--error': errors.department }"
+            name="Высшая школа"
             v-model="formData.department"
-            required
           >
             <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="1">ВШ 1</option>
             <option class="form__select-item" value="2">ВШ 2</option>
             <option class="form__select-item" value="3">ВШ 3</option>
           </select>
+
+          <div
+            v-if="errors.department"
+            class="form__field-error"
+            data-testid="feedback-section__field-error--department"
+          >
+            <span class="form__field-error-icon form__field-error-icon--error"></span>
+            <span class="form__field-error-text">{{ errors.department }}</span>
+          </div>
         </div>
 
         <div class="form__field" data-testid="feedback-section__field--course">
           <select
             class="form__select"
+            :class="{ 'form__field--error': errors.course }"
             data-testid="feedback-section__input--course"
             v-model="formData.course"
-            required
           >
             <option class="form__select-item" value="" disabled selected>Курс</option>
             <option class="form__select-item" value="1">1</option>
@@ -117,6 +153,15 @@ async function submitForm() {
             <option class="form__select-item" value="5">5</option>
             <option class="form__select-item" value="6">6</option>
           </select>
+
+          <div
+            v-if="errors.course"
+            class="form__field-error"
+            data-testid="feedback-section__field-error--course"
+          >
+            <span class="form__field-error-icon form__field-error-icon--error"></span>
+            <span class="form__field-error-text">{{ errors.course }}</span>
+          </div>
         </div>
 
         <div class="form__field" data-testid="feedback-section__field--vk">
@@ -126,9 +171,17 @@ async function submitForm() {
             type="url"
             v-model="formData.link"
             placeholder="Страница Вконтакте"
-            pattern="^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$"
           />
-          <!-- Здесь нужно прописать required для работы pattern -->
+
+          <div
+            v-if="errors.link"
+            class="form__field-error"
+            :class="{ 'form__field--error': errors.link }"
+            data-testid="feedback-section__field-error--link"
+          >
+            <span class="form__field-error-icon form__field-error-icon--error"></span>
+            <span class="form__field-error-text">{{ errors.link }}</span>
+          </div>
         </div>
 
         <div class="form__checkbox-panel">
@@ -139,12 +192,25 @@ async function submitForm() {
               type="checkbox"
               v-model="formData.agreement"
             />
-            <span class="form__checkmark" data-testid="feedback-section__checkmark"></span>
+            <span
+              class="form__checkmark"
+              :class="{ 'form__field--error': errors.agreement }"
+              data-testid="feedback-section__checkmark"
+            ></span>
             <span class="form__checkbox-text">
               Даю <a class="form__link" href="https://www.example.com">согласие</a> на обработку
               <a class="form__link" href="https://www.example.com">персональных данных</a>
             </span>
           </label>
+
+          <div
+            v-if="errors.agreement"
+            class="form__field-error"
+            data-testid="feedback-section__field-error--agreement"
+          >
+            <span class="form__field-error-icon form__field-error-icon--error"></span>
+            <span class="form__field-error-text">{{ errors.agreement }}</span>
+          </div>
         </div>
 
         <button
@@ -240,19 +306,58 @@ async function submitForm() {
 .form__field {
   display: flex;
   width: 100%;
-  align-items: center;
-  padding: 18px 30px;
-
-  border-radius: 20px;
-  border: 2px solid #3bb0e3;
-
-  background-color: #003b6b;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 0px 0px;
 
   font-family: Inter;
   font-size: 24px;
   font-weight: 400;
   line-height: 1.2;
   color: white;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.form__field-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 0px;
+
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+
+  color: #d33434;
+}
+
+.form__field--error {
+  border-color: #d33434 !important; /* FIXME */
+}
+
+.form__field-error-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.form__field-error-icon--success {
+  color: #51cf66;
+}
+
+.form__field-error-icon--error {
+  background-image: url('@/assets/vector/red_cross.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-right: 0px;
+}
+
+.form__field-error-text {
+  flex: 1;
 }
 
 .form__input {
@@ -260,9 +365,11 @@ async function submitForm() {
   width: 100%;
   height: 100%;
 
-  background: transparent;
-  border: none;
-  outline: none;
+  background-color: #003b6b;
+  border-radius: 20px;
+  border: 1px solid #3bb0e3;
+
+  padding: 18px 30px;
 
   color: white;
   font: inherit;
@@ -273,11 +380,13 @@ async function submitForm() {
   width: 100%;
   height: 100%;
 
-  background: transparent;
-  border: none;
-  outline: none;
+  background-color: #003b6b;
+  border-radius: 20px;
+  border: 1px solid #3bb0e3;
 
-  color: white;
+  padding: 18px 30px;
+
+  color: #3bb0e3;
   font: inherit;
 
   cursor: pointer;
@@ -314,7 +423,11 @@ input {
 .form__checkbox-panel {
   margin-top: -5px; /* FIXME: margin не рекомендуется */
   width: 100%;
-  height: 65px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .form__checkbox-label {
@@ -367,14 +480,11 @@ input {
   width: 35px;
   height: 35px;
   border-radius: 10px;
-  border: 2px solid #3bb0e3;
+  border: 1px solid #3bb0e3;
   background-color: #003b6b;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
 }
 
 .form__checkmark::after {
