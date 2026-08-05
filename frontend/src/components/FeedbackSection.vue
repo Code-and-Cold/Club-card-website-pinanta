@@ -447,19 +447,10 @@ input {
   color: #3bb0e3;
 }
 
-.form__checkbox-element {
-  height: 35px;
-  width: 35px;
-
-  background-color: red;
-}
-
 .form__checkbox-input {
   position: absolute;
   width: 1px;
   height: 1px;
-  padding: 0;
-  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
@@ -482,21 +473,12 @@ input {
   border-radius: 10px;
   border: 1px solid #3bb0e3;
   background-color: #003b6b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.form__checkmark::after {
-  content: '✓';
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  opacity: 0;
-  transform: scale(0.5);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
   transition:
-    opacity 0.2s,
-    transform 0.2s;
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 /* On mouse-over, add a grey background color; desktop only */
@@ -511,25 +493,14 @@ input {
   }
 }
 
-/* When the checkbox is checked, add a blue background */
+.form__checkbox-input:not(:checked) + .form__checkmark {
+  background-image: none;
+}
+
 .form__checkbox-input:checked + .form__checkmark {
-  background-color: #2196f3;
+  background-image: url('@/assets/vector/checkmark.svg');
+
   border-color: #2196f3;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  /*
-  content: '';
-  position: absolute;
-  display: none;
-  */
-}
-
-/* Show the checkmark when checked */
-.form__checkbox-input:checked + .form__checkmark::after {
-  opacity: 1;
-  transform: scale(1);
 }
 
 .form__checkbox-text {
