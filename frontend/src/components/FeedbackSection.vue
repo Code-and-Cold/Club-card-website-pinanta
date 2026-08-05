@@ -194,7 +194,7 @@ async function submitForm() {
             />
             <span
               class="form__checkmark"
-              :class="{ 'form__field--error': errors.agreement }"
+              :class="{ 'form__field--error': errors.agreement && !formData.agreement }"
               data-testid="feedback-section__checkmark"
             ></span>
             <span class="form__checkbox-text">
