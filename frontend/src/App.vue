@@ -18,25 +18,41 @@ const team = [
   },
   {
     id: 2,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     name: 'Яша Лава',
     position: 'Уже уволен',
   },
   {
     id: 3,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     name: 'Спайдер мент',
     position: 'Офицер',
   },
   {
     id: 4,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     name: 'Пупу Пу',
     position: 'ОАО',
   },
   {
     id: 5,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     name: 'ААААААААААААААА',
     position: 'ААААААААА',
   },
@@ -45,7 +61,11 @@ const team = [
 const recentEvents = [
   {
     id: 1,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     fullText:
@@ -54,21 +74,33 @@ const recentEvents = [
   },
   {
     id: 2,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 3,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 4,
+<<<<<<< Updated upstream
     photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
+=======
+    photo: '/src/assets/images/cheremsha.png',
+>>>>>>> Stashed changes
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',

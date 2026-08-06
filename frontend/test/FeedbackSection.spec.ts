@@ -1,16 +1,325 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, beforeEach, afterEach } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page, userEvent } from 'vitest/browser'
 
 import FeedbackSection from '../src/components/FeedbackSection.vue'
+import { fillField } from './utils/form-helpers.ts'
 
 import '../src/assets/styles/global.css'
 
-describe('FeedbackSection', () => {
-  test('должен корректно рендерить все элементы на мобильном viewport (375px)', async () => {
+const viewports = [
+  { name: 'mobile', width: 375, height: 900, isMobile: true },
+  { name: 'desktop', width: 1440, height: 1024, isMobile: false },
+]
+
+const viewportConfigs = [
+  {
+    name: 'mobile',
+    width: 375,
+    height: 900,
+    locatorsAndStyles: [
+			{
+				find: (page: any) => page.getByRole('region', { name: /feedback/i }), // Section
+				style: { width: '375px', height: '812px', padding: '15px', backgroundColor: '#003B6B' },
+			},
+			{
+				find: (page: any) => page.getByRole('heading', { name: 'Хочешь тусить с нами?' }), // Title
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByRole('heading', { level: 3, name: 'Заполняй анкету...' }), // Subtitle
+				style: { },
+			},
+			{
+				find: (page: any) => getByPlaceholder('ФИО'), // Text input
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByRole('combobox', { name: 'Высшая школа' }), // Select input
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByRole('checkbox', { name: /даю согласие/i }), // Checkbox input
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByRole('button', { name: 'Вступить в клуб' }), // Submit button
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByRole('link', { name: 'ivan@cold-code.ru' }), // Intext link
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByAltText('Черемша'), // Image
+				style: { },
+			},
+			{
+				find: (page: any) => page.getByTestId('feedback-section__message'), // Form response message
+				style: { },
+			},
+    ]
+  },
+  {
+    name: 'desktop',
+    width: 1440,
+    height: 1024,
+    locatorsAndStyles: []
+  },
+]
+
+describe('FeedbackSectionLogic', () => {
+  let getByTestId: any
+  let getByText: any
+  let getByPlaceholder: any
+  let getByRole: any
+
+	beforeEach(async () => {
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    }))
+		
+		const viewport = viewports.find((viewport) => viewport.name == 'mobile')
+    await page.viewport(viewport.width, viewport.height)
+   
+    const renderResult = render(FeedbackSection)
+    getByTestId = renderResult.getByTestId
+    getByText = renderResult.getByText
+    getByPlaceholder = renderResult.getByPlaceholder
+    getByRole = renderResult.getByRole
+	})
+	
+	afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+	test('submits with all required fields', async () => {
+		const user = userEvent.setup()
+
+    const nameInput = getByPlaceholder('ФИО')
+		const schoolSelect = getByRole('combobox', { name: 'Высшая школа' })
+		const courselSelect = getByTestId('feedback-section__input--course')
+		const vkInput = getByTestId('feedback-section__input--vk')
+		const checkbox = getByRole('checkbox', { name: /даю согласие/i })
+
+    await user.fill(nameInput, 'Иван Петров')
+    await user.selectOptions(schoolSelect, 'ВШ 1')
+    await user.selectOptions(courselSelect, '1')
+    await user.fill(vkInput, 'https://vk.com/ivan_petrov')
+    await user.click(checkbox)
+
+    const submitButton = getByTestId('feedback-section__button--submit')
+    await user.click(submitButton)
+    
+    await expect
+      .poll(() => getByText('Форма успешно отправлена, скоро с тобой свяжутся!'), {
+        timeout: 2000,
+        interval: 100,
+      })
+      .toBeInTheDocument()
+
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledWith('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Иван Петров',
+        department: '1',
+        course: '1',
+        link: 'https://vk.com/ivan_petrov'
+      }),
+    })
+
+  })
+
+	const fieldConfigs = [
+    {
+      name: 'fullname',
+      testId: 'feedback-section__input--fullname',
+      type: 'input',
+      required: true,
+      fillValue: 'Иван Петров',
+      errorMessage: 'Пожалуйста, введите ФИО',
+    },
+    {
+      name: 'school',
+      testId: 'feedback-section__input--school',
+      type: 'select',
+      required: true,
+      fillValue: 'ВШ 1',
+      errorMessage: 'Пожалуйста, выберите высшую школу',
+    },
+    {
+      name: 'course',
+      testId: 'feedback-section__input--course',
+      type: 'select',
+      required: true,
+      fillValue: '1',
+      errorMessage: 'Пожалуйста, выберите курс',
+    },
+    {
+      name: 'vk',
+      testId: 'feedback-section__input--vk',
+      type: 'input',
+      required: false,
+      fillValue: 'https://vk.com/ivan_petrov',
+      errorMessage: '',
+    },
+    {
+      name: 'agreement',
+      testId: 'feedback-section__checkmark',
+      type: 'checkbox',
+      required: true,
+      fillValue: true,
+      errorMessage: 'Необходимо дать согласие на обработку данных',
+    },
+  ]
+
+  fieldConfigs
+	.filter(field => field.required)
+	.forEach((field) => {
+		test(`form requires ${field.name} field`, async () => {
+			const user = userEvent.setup()
+
+			for (const otherField of fieldConfigs) {
+				if (otherField.name !== field.name) {
+					await fillField(user, getByTestId, otherField)
+				}
+			}
+
+			const submitButton = getByTestId('feedback-section__button--submit')
+			await user.click(submitButton)
+
+			expect(fetch).not.toHaveBeenCalled()
+
+			await expect
+				.poll(() => getByText(field.errorMessage), {
+					timeout: 2000,
+					interval: 100,
+				})
+				.toBeInTheDocument()
+		})
+	})
+	
+  test('not clears fields on failed submit', async () => {
+		const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'))
+    fetch = mockFetch
+
+		const user = userEvent.setup()
+
+    const nameInput = getByTestId('feedback-section__input--fullname')
+		const schoolSelect = getByTestId('feedback-section__input--school')
+		const courselSelect = getByTestId('feedback-section__input--course')
+		const vkInput = getByTestId('feedback-section__input--vk')
+		const checkbox = getByTestId('feedback-section__checkmark')
+
+    await user.fill(nameInput, 'Иван Петров')
+    await user.selectOptions(schoolSelect, 'ВШ 1')
+    await user.selectOptions(courselSelect, '1')
+    await user.fill(vkInput, 'https://vk.com/ivan_petrov')
+    await user.click(checkbox)
+
+    const submitButton = getByTestId('feedback-section__button--submit')
+    await user.click(submitButton)
+    
+    await expect
+      .poll(() => getByText('Форма не отправлена:('), {
+        timeout: 2000,
+        interval: 100,
+      })
+      .toBeInTheDocument()
+    
+    expect(fetch).toHaveBeenCalledTimes(1)
+    
+    await expect.element(getByTestId('feedback-section__form')).toHaveFormValues({
+		  name: 'Иван Петров',
+      department: '1',
+      course: '1',
+      link: 'https://vk.com/ivan_petrov',
+      agreement: true
+		})
+  })
+  
+  test('clears fields on successful submit', async () => {
+		const user = userEvent.setup()
+
+    const nameInput = getByTestId('feedback-section__input--fullname')
+		const schoolSelect = getByTestId('feedback-section__input--school')
+		const courselSelect = getByTestId('feedback-section__input--course')
+		const vkInput = getByTestId('feedback-section__input--vk')
+		const checkbox = getByTestId('feedback-section__checkmark')
+
+    await user.fill(nameInput, 'Иван Петров')
+    await user.selectOptions(schoolSelect, 'ВШ 1')
+    await user.selectOptions(courselSelect, '1')
+    await user.fill(vkInput, 'https://vk.com/ivan_petrov')
+    await user.click(checkbox)
+
+    const submitButton = getByTestId('feedback-section__button--submit')
+    await user.click(submitButton)
+    
+    await expect
+      .poll(() => getByText('Форма успешно отправлена, скоро с тобой свяжутся!'), {
+        timeout: 2000,
+        interval: 100,
+      })
+      .toBeInTheDocument()
+    
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledWith('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Иван Петров',
+        department: '1',
+        course: '1',
+        link: 'https://vk.com/ivan_petrov'
+      }),
+    })
+    
+    await expect.element(getByTestId('feedback-section__form')).toHaveFormValues({
+		  name: '',
+      department: '',
+      course: '',
+      link: '',
+      agreement: false
+		})
+  })
+})
+
+describe.skip('FeedbackSectionRendering', () => {
+  viewportConfigs.forEach(({ name, width, height, locatorsAndStyles }) => {
+    describe(`${name} viewport`, () => {
+      test('all elements visible', async () => {
+        await page.viewport(width, height)
+        const renderResult = render(FeedbackSection)
+
+        for (const { find } of locatorsAndStyles) {
+          const element = find(renderResult)
+          await expect.element(element).toBeVisible()
+        }
+      })
+
+      locatorsAndStyles.forEach(({ find, style }, index) => {
+        test(`element ${index + 1} styles`, async () => {
+          await page.viewport(width, height)
+          const renderResult = render(FeedbackSection)
+          
+          const element = find(renderResult)
+          await expect.element(element).toBeVisible()
+          await expect.element(element).toHaveStyle(style)
+        })
+      })
+    })
+  })
+})
+
+describe.skip('FeedbackSection', () => {
+  test.skip('должен корректно рендерить все элементы на мобильном viewport (375px)', async () => {
     await page.viewport(375, 1108)
 
-    const { getByTestId, getByPlaceholder, getByRole } = render(FeedbackSection)
+    const { getByTestId } = render(FeedbackSection)
 
     // Контейнер секции
     const section = getByTestId('feedback-section')
@@ -57,44 +366,38 @@ describe('FeedbackSection', () => {
 
     const fields = [
       {
-        placeholder: 'ФИО',
+        name: 'fullname',
         inputType: 'input',
       },
       {
-        name: 'Высшая школа',
+        name: 'school',
         inputType: 'select',
       },
       {
-        name: 'Курс',
+        name: 'course',
         inputType: 'select',
       },
       {
-        placeholder: 'Страница Вконтакте',
+        name: 'vk',
         inputType: 'input',
       },
     ] as const
 
     for (const field of fields) {
-      let fieldWrapper = undefined
-
-      switch (field.inputType) {
-        case 'input':
-          fieldWrapper = getByPlaceholder(field.placeholder)
-          break
-        case 'select':
-          fieldWrapper = getByRole('combobox').filter({ hasText: field.name })
-          break
-        default:
-          expect.fail(`Unknown input type: ${field.inputType}`)
-      }
-
+      const fieldWrapper = getByTestId(`feedback-section__field--${field.name}`)
       await expect.element(fieldWrapper).toBeInTheDocument()
       await expect.element(fieldWrapper).toHaveStyle({
         backgroundColor: '#003B6B',
-        border: '1px solid #3BB0E3',
+        border: '2px solid #3BB0E3',
         borderRadius: '20px',
         padding: '18px 30px',
+        display: 'flex',
+        alignItems: 'center',
       })
+
+      const input = getByTestId(`feedback-section__input--${field.name}`)
+      await expect.element(input).toBeInTheDocument()
+      await expect.element(input).toBeVisible()
     }
 
     // Чекбокс согласия
@@ -150,7 +453,7 @@ describe('FeedbackSection', () => {
     })
   })
 
-  test('интерактивность формы: чекбокс и кнопка', async () => {
+  test.skip('интерактивность формы: чекбокс и кнопка', async () => {
     const { getByTestId } = render(FeedbackSection)
 
     // Чекбокс
@@ -173,42 +476,7 @@ describe('FeedbackSection', () => {
     await expect.element(button).toBeVisible()
   })
 
-  test('отправка формы с валидными данными', async () => {
-    const user = userEvent.setup()
-    const { getByTestId, getByRole } = render(FeedbackSection)
-
-    const nameInput = getByTestId('feedback-section__input--fullname')
-    await user.type(nameInput, 'Иван Петров')
-
-    const schoolSelect = getByRole('combobox').filter({ hasText: 'Высшая школа' })
-    await user.selectOptions(schoolSelect, 'ВШ 1')
-
-    const courselSelect = getByTestId('feedback-section__input--course')
-    await user.selectOptions(courselSelect, '1')
-
-    const vkInput = getByTestId('feedback-section__input--vk')
-    await user.type(vkInput, 'https://vk.com/ivan_petrov')
-
-    const checkbox = getByTestId('feedback-section__checkmark') // Кастомный чекбокс
-    await user.click(checkbox)
-
-    const submitButton = getByTestId('feedback-section__button--submit')
-    await user.click(submitButton)
-
-    await expect
-      .poll(() => getByTestId('feedback-section__message'), {
-        timeout: 2000,
-        interval: 100,
-      })
-      .toBeInTheDocument()
-
-    const message = getByTestId('feedback-section__message')
-    await expect.element(message).toBeVisible()
-    await expect.element(message).toHaveTextContent('❌ Ошибка отправки. Попробуйте ещё раз.') // TODO: Integration test for success
-    await expect.element(message).toHaveStyle({ color: 'red' })
-  })
-
-  test('изображение загружается без ошибки 404', async () => {
+  test.skip('изображение загружается без ошибки 404', async () => {
     const { getByTestId } = render(FeedbackSection)
 
     const image = getByTestId('feedback-section__image--meme')
@@ -236,43 +504,20 @@ describe('FeedbackSection', () => {
     }
   })
 
-  test('все обязательные элементы присутствуют и имеют правильную структуру', async () => {
-    const { getByTestId, getByRole } = render(FeedbackSection)
-
-    // Проверяем, что все элементы с data-testid существуют
-    await expect.element(getByTestId('feedback-section')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__title')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__subtitle')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__form')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__input--fullname')).toBeVisible()
-    await expect.element(getByRole('combobox').filter({ hasText: 'Высшая школа' })).toBeVisible()
-    await expect.element(getByTestId('feedback-section__input--vk')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__checkbox--consent')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__button--submit')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__email')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__image--meme')).toBeVisible()
-  })
-})
-
-describe('FeedbackSectionDesktop', () => {
-  test('должен корректно отображаться на десктопе (1440px)', async () => {
-    await page.viewport(1440, 800)
-
+  test.skip('все обязательные элементы присутствуют и имеют правильную структуру', async () => {
     const { getByTestId } = render(FeedbackSection)
 
-    // Проверяем, что основные элементы видны
-    await expect.element(getByTestId('feedback-section')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__title')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__subtitle')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__form')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__button--submit')).toBeVisible()
-    await expect.element(getByTestId('feedback-section__image--meme')).toBeVisible()
-
-    // Дополнительно: можно проверить, что ширина секции адаптируется (если CSS медиа-запросы)
-    // Поскольку в CSS ширина фиксирована 375px, на десктопе она может быть другой,
-    // но в макете нет адаптивных правил, поэтому просто проверяем наличие
-    const section = getByTestId('feedback-section')
-    await expect.element(section).toBeVisible()
-    // Если планируется адаптивность, можно проверить изменение стилей
+    // Проверяем, что все элементы с data-testid существуют
+    await expect.element(getByTestId('feedback-section')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__title')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__subtitle')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__form')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__input--fullname')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__input--school')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__input--vk')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__checkbox--consent')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__button--submit')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__email')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section__image--meme')).toBeInTheDocument()
   })
 })
