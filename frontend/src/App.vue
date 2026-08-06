@@ -7,6 +7,7 @@ import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
 import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
 import TeamSection from './components/TeamSection.vue'
 import RecentEvents from './components/RecentEvents.vue'
+import FooterSection from './components/FooterSection.vue'
 
 const team = [
   {
@@ -90,6 +91,7 @@ const recentEvents = [
       <PhraseBottomSection />
       <RecentEvents :items="recentEvents" />
       <FeedbackSection />
+      <FooterSection />
     </div>
   </body>
 </template>
