@@ -6,7 +6,7 @@
 
   /* Шрифт такой основной, поэтому кидаем сюда. В частных случаях описываем по блокам */
   font-family: 'JetBrains Mono';
-  font-style: normal;
+  font-style: normal; /* FIXME */
 }
 
 .section {
@@ -19,7 +19,6 @@
 
 .title {
   font-family: JetBrains Mono;
-  font-size: 35px;
   font-size: clamp(35px, calc((100vw - 375px) / (1440px - 375px) * (60px - 35px) + 35px), 60px);
   font-weight: 400; /* Regular */
   line-height: 1.1;
