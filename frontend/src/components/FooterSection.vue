@@ -25,15 +25,6 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-
-  padding-top: clamp(30px, calc((100vh - 667px) / (1024px - 667px) * (90px - 30px) + 30px), 90px);
-  padding-right: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 75px);
-  padding-bottom: clamp(
-    40px,
-    calc((100vh - 667px) / (1024px - 667px) * (50px - 40px) + 40px),
-    50px
-  );
-  padding-left: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 75px);
 }
 
 .footer__row {
