@@ -7,7 +7,7 @@
       <img class="footer__vk-icon" src="../assets/vector/ri_vk-fill.svg" alt="Группа в ВК" />
     </div>
     <hr class="footer__divider" />
-    <div class="footer__row footer__bottom">
+    <div class="footer__row footer__bottom text">
       <p>Политика конфиденциальности</p>
       <p>© Код и Холод 2026</p>
     </div>
@@ -38,6 +38,7 @@
 }
 
 .footer__top {
+  /* Здесь в макете шрифт, отличный от title, subtitle, text */
   font-family: Inter;
   font-size: clamp(25px, calc((100vw - 375px) / (1440px - 375px) * (35px - 25px) + 25px), 35px);
   font-weight: 400; /* Regular */
@@ -51,12 +52,6 @@
 }
 
 .footer__bottom {
-  font-family: Inter;
-  font-size: 16px;
-  font-weight: 400; /* Regular */
-  line-height: 1.05;
-  color: white;
-
   flex-wrap: wrap;
 }
 
