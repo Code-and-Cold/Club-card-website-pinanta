@@ -18,7 +18,6 @@
 .footer {
   min-height: clamp(221px, 30vh, 300px);
 
-  color: white;
   background-color: #002f55;
 
   display: flex;
