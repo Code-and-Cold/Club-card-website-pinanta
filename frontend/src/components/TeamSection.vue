@@ -18,7 +18,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="team" aria-labelledby="team-title">
+  <section class="team" id="team-section" aria-labelledby="team-title">
     <div class="team__container">
       <h2 id="team-title" class="team__title">{{ title }}</h2>
       <div class="team__slider-wraper">

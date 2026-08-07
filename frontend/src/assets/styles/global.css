@@ -4,6 +4,8 @@
   padding: 0;
   box-sizing: border-box;
 
+  scroll-behavior: smooth;
+
   /* Шрифт такой основной, поэтому кидаем сюда. В частных случаях описываем по блокам */
   font-family: 'JetBrains Mono';
   font-style: normal; /* FIXME */
