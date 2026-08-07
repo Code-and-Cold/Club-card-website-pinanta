@@ -116,5 +116,10 @@
         background: #3BB0E3;
         border-radius: 15px;
         border-width: 0;
+        transition: background-color 0.4s ease;
+    }
+
+    .cookie-message__accept-button:hover {
+        background: #33b9f3;
     }
 </style>
