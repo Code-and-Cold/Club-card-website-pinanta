@@ -6,7 +6,7 @@
         <nav v-if="isDesktop" class="hero__nav-desktop">
           <ul class="hero__nav-list">
             <li v-for="item in menuItems" :key="item.id">
-              <a :href="item.href" class="hero__nav-link">
+              <a :href="item.href" class="hero__nav-link subtitle">
                 {{ item.label }}
               </a>
             </li>
@@ -66,10 +66,10 @@
 
       <div class="hero__content">
         <div class="hero__content-row">
-          <h1 class="hero__title">Пишем код. Согреваем атмосферой. Создаём твоё портфолио.</h1>
+          <h1 class="hero__title title">Пишем код. Согреваем атмосферой. Создаём твоё портфолио.</h1>
           <button v-if="isDesktop" class="hero__vk-content-btn" @click="goToVKGroup">
             <p>Подписывайтесь на группу Вконтакте</p>
-            <img src="../assets/vector/Vector.svg" />
+            <img class="vk-logo-blue" src="../assets/vector/Vector.svg" />
           </button>
         </div>
         <button
@@ -148,17 +148,24 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: clamp(15px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 30px);
 }
 
 .hero {
   width: 100%;
   min-height: calc(100vh - 60px);
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 47, 85, 0.7) 100%);
-  padding: 20px 40px;
   display: flex;
   flex-direction: column;
   position: relative;
-  margin: clamp(10px, 2.5vw, 30px);
+  
+  margin: 0;
+  padding-left: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
+  padding-right: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
+  padding-bottom: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
+  padding-top: 0;
+
   border-radius: 30px;
   box-shadow: 0px 0px 0px 50px #002f55;
   isolation: isolate;
@@ -166,6 +173,7 @@ h1 {
 }
 
 .hero__header {
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,19 +187,18 @@ h1 {
   /* Пока настройки текста*/
   color: white;
   font-size: 26px;
-  font-weight: regular;
 }
 
 .hero__nav-desktop {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 50px;
 }
 
 .hero__nav-list {
   display: flex;
   list-style: none;
-  gap: 25px;
+  gap: 50px;
   margin: 0;
   padding: 0;
 }
@@ -199,7 +206,6 @@ h1 {
 .hero__nav-link {
   color: white;
   text-decoration: none;
-  font-size: 24px;
   position: relative;
   padding: auto;
 }
@@ -208,11 +214,17 @@ h1 {
   background: #e3953b;
   color: white;
   border: none;
-  padding: 25px 15px;
+  padding: 15px 25px;
   border-radius: 15px;
   box-sizing: content-box;
   font-size: 24px;
-  height: 100%;
+  line-height: 105%;
+
+  transition: background-color 0.4s ease;
+}
+
+.hero__register-btn:hover {
+  background: #3BB0E3;
 }
 
 .hero__register-btn--desktop {
@@ -307,7 +319,6 @@ h1 {
   justify-content: space-between;
   align-items: center;
   gap: 30px;
-  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 100;
@@ -343,9 +354,10 @@ h1 {
   justify-content: end;
   align-items: center;
   text-align: left;
-  padding: 30px 0px;
+  padding-top: 30px;
   position: relative;
   z-index: 1;
+  gap: 18px;
 }
 
 .hero__content-row {
@@ -358,67 +370,48 @@ h1 {
 }
 
 .hero__title {
-  font-size: clamp(32px, 5vw, 60px);
-  margin: 0 0 20px;
-  line-height: 1.2;
-  color: white;
+  margin: 0;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  font-size: 35px;
-  font-weight: 300;
-  letter-spacing: -0.5px;
   text-align: left;
 }
 
 .hero__vk-content-btn {
   display: flex;
   flex-direction: row;
-  justify-content: safe;
+
+  box-sizing: border-box;
   align-items: center;
   text-align: left;
   background: rgba(0, 47, 85, 0.5);
   border: 1px solid #3bb0e3;
   border-radius: 20px;
   color: white;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
   gap: 15px;
-  height: 100%;
   padding: 15px 25px;
   max-width: 400px;
-  max-height: 100px;
+}
+
+@media (min-width: 950px) {
+  .vk-logo-blue {
+    height: 60px;
+    width: 60px;
+  }
 }
 
 @media (max-width: 950px) {
-  .hero-wrapper {
-    padding: 15px;
-  }
 
-  .hero {
-    min-height: calc(100vh - 30px);
-    padding: 15px 20px;
-    border-radius: 20px;
+  .hero__header {
+    height: 75px;
   }
 
   .hero__logo-text {
     font-size: 24px;
   }
-
-  .hero__title {
-    font-size: clamp(35px, 6vw, 60px);
-  }
 }
 
 @media (max-width: 480px) {
-  .hero-wrapper {
-    padding: 10px;
-  }
-
-  .hero {
-    min-height: calc(100vh - 20px);
-    padding: 10px 15px;
-    border-radius: 15px;
-  }
-
   .hero__logo-text {
     font-size: 20px;
   }
@@ -438,7 +431,6 @@ h1 {
   }
 
   .hero__mobile-nav {
-    width: 85%;
     padding: 80px 20px 20px;
   }
 
