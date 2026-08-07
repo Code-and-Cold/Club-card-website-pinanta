@@ -88,9 +88,9 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const menuItems = [
-  { id: 1, label: 'Преимущества' },
-  { id: 2, label: 'Команда' },
-  { id: 3, label: 'Плюшки' },
+  { id: 1, label: 'Преимущества', href: '#benefits-section' },
+  { id: 2, label: 'Команда', href: '#team-section' },
+  { id: 3, label: 'Плюшки', href: '#advantages-section' },
 ]
 
 const isMobileMenuOpen = ref(false)

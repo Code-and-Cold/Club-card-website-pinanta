@@ -26,7 +26,7 @@ const memberBenefits = [
 </script>
 
 <template>
-  <div class="member-benefits-section">
+  <div class="member-benefits-section" id="benefits-section">
     <MemberBenefits :items="memberBenefits" />
   </div>
 </template>
