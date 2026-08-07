@@ -39,8 +39,8 @@ defineProps({
 }
 
 .club-icon--badge {
-  width: 46px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
 }
 
 .club-icon--cat {

@@ -49,6 +49,7 @@ defineProps({
 
 .advantages__title {
   margin-bottom: clamp(28px, 4vw, 54px);
+  font-family: 'JetBrains Mono', monospace;
   font-size: clamp(28px, 4.1vw, 52px);
   font-weight: 400;
   line-height: 1.08;
@@ -88,7 +89,9 @@ defineProps({
 }
 
 .advantage-card__content {
-  margin-top: auto;
+  /* Фиксируем начало текста относительно верха карточки:
+     длина описания больше не двигает заголовок вверх/вниз. */
+  margin-top: clamp(18px, 2vw, 24px);
 }
 
 .advantage-card__title,
@@ -99,39 +102,51 @@ defineProps({
 }
 
 .advantage-card__title {
-  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
 }
 
 .advantage-card__accent {
   color: var(--accent-orange);
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .advantage-card__text {
   margin-top: 7px;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(10px, 0.82vw, 13px);
+  font-weight: 400;
   line-height: 1.25;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .advantages__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
     padding-inline: 0;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   .advantages__container {
     width: min(100% - 24px, 1180px);
   }
 
   .advantages__grid {
     grid-template-columns: 1fr;
+    width: min(100%, 320px);
+    margin-inline: auto;
   }
 
   .advantage-card {
-    min-height: 190px;
+    min-height: 200px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 760px) {
+  .advantages__grid {
+    width: min(100%, 360px);
   }
 }
 
