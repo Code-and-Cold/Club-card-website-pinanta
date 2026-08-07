@@ -50,7 +50,7 @@ const handleKeydown = (e) => {
 <template>
   <section class="events" aria-labelledby="events-title">
     <div class="events__container">
-      <h2 id="events-title" class="events__title">{{ title }}</h2>
+      <h2 id="events-title" class="events__title title">{{ title }}</h2>
       <div class="events__slider-wraper">
         <div ref="event__swiper-button-prev" class="event__swiper-button-prev">
           <svg
@@ -69,9 +69,12 @@ const handleKeydown = (e) => {
         <Swiper
           :modules="[Navigation, Pagination]"
           :breakpoints="{
-            375: { slidesPerView: 1, spaceBetween: 10 },
-            640: { slidesPerView: 2, spaceBetween: 10 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
+            350: { slidesPerView: 1.2, 
+              spaceBetween: 0,
+              centeredSlides: false, 
+            },
+            640: { slidesPerView: 2, spaceBetween: 0 },
+            950: { slidesPerView: 3, spaceBetween: 0 },
           }"
           :navigation="{
             prevEl: '.event__swiper-button-prev',
@@ -87,9 +90,9 @@ const handleKeydown = (e) => {
           >
             <div class="event-card__content">
               <img :src="item.photo" class="event-card__photo" :alt="item.title" />
-              <h3 class="event-card__name">{{ item.title }}</h3>
-              <p class="event-card__text">{{ item.text }}</p>
-              <p class="event-card__data">{{ item.data }}</p>
+              <h3 class="event-card__name subtitle">{{ item.title }}</h3>
+              <p class="event-card__text text">{{ item.text }}</p>
+              <p class="event-card__data text">{{ item.data }}</p>
             </div>
           </SwiperSlide>
         </Swiper>
@@ -120,26 +123,25 @@ const handleKeydown = (e) => {
           tabindex="0"
         >
           <div class="modal-content" role="dialog" aria-modal="true">
-            <button class="modal-close" @click="closeModal" aria-label="Закрыть новость">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M18 6L6 18M6 6L18 18"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
-
             <div v-if="selectedItem" class="modal-body">
-              <img :src="selectedItem.photo" class="modal-image" :alt="selectedItem.title" />
-              <h2 class="modal-title">{{ selectedItem.title }}</h2>
-              <p v-if="selectedItem.fullText" class="modal-full-text">
-                {{ selectedItem.fullText }}
-              </p>
-              <p v-else class="modal-text">{{ selectedItem.text }}</p>
-              <p class="modal-date">{{ selectedItem.data }}</p>
+                <div class="modal-image-wrapper">
+                <img 
+                  :src="selectedItem.photo" 
+                  class="modal-image" 
+                  :alt="selectedItem.title"
+                >
+              </div>
+              <div class="modal-alltext-content">
+                <h2 class="modal-title">{{ selectedItem.title }}</h2>
+                <div class="modal-text-content">
+                    <p class="modal-text">{{ selectedItem.text }}</p>
+                    <p v-if="selectedItem.fullText" class="modal-full-text">
+                    {{ selectedItem.fullText }}
+                    </p>
+                    <p class="modal-date">{{ selectedItem.data }}</p>
+                </div>
             </div>
+          </div>
           </div>
         </div>
       </Transition>
@@ -160,12 +162,8 @@ const handleKeydown = (e) => {
 }
 
 .events__title {
-  margin-bottom: clamp(28px, 4vw, 54px);
-  font-size: clamp(28px, 4.1vw, 52px);
-  font-weight: bold;
-  line-height: 1.08;
-  letter-spacing: 0.015em;
   color: #002f55;
+  margin-left: 5px;
 }
 
 .events__slider-wraper {
@@ -185,17 +183,16 @@ const handleKeydown = (e) => {
   display: flex;
   flex-direction: column;
   min-height: clamp(210px, 23vw, 285px);
-  padding: clamp(20px, 2.4vw, 30px);
   border-radius: 16px;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease;
   height: 100%;
   cursor: pointer;
+  width: 430px;
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
   background-color: #e8e8e8;
 }
 
@@ -204,29 +201,19 @@ const handleKeydown = (e) => {
 }
 
 .event-card__photo {
-  width: 312px;
+  width: 100%;
   height: 209px;
+  object-fit: cover;
   margin: auto;
-  height: 480px;
   clip-path: inset(2% 2% 2% 2% round 20px);
+  margin-bottom: 15px;
 }
 .event-card__name,
 .event-card__text,
 .event-card__data {
-  font-size: clamp(13px, 1.15vw, 17px);
-  line-height: 1.15;
   color: #002f55;
-}
-
-.event-card__name {
-  font-weight: bold;
-}
-
-.event-card__text,
-.event-card__data {
-  margin-top: 7px;
-  font-size: clamp(10px, 0.82vw, 13px);
-  line-height: 1.25;
+  margin-left: 5px;
+  margin-bottom: 5px;  
 }
 
 .event__swiper-button-prev,
@@ -253,12 +240,12 @@ const handleKeydown = (e) => {
   color: #3bb0e3;
 }
 .event__swiper-button-prev {
-  left: 10px;
+  left: -50px;
   right: auto;
 }
 
 .event__swiper-button-next {
-  right: 10px;
+  right: -50px;
   left: auto;
 }
 
@@ -266,6 +253,11 @@ const handleKeydown = (e) => {
 .event__swiper-navigation-icon-next {
   width: 11px;
   height: 20px;
+  margin: auto;
+}
+
+.swiper-button-disabled {
+    opacity: 0;
 }
 
 .modal-overlay {
@@ -274,8 +266,7 @@ const handleKeydown = (e) => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 47, 85, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -286,13 +277,15 @@ const handleKeydown = (e) => {
 .modal-content {
   background: white;
   border-radius: 24px;
-  max-width: 700px;
+  max-width: 1220px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
   position: relative;
   padding: 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
 .modal-close {
@@ -321,77 +314,75 @@ const handleKeydown = (e) => {
 .modal-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modal-alltext-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modal-image-wrapper {
+  flex-shrink: 0;
 }
 
 .modal-image {
   width: 100%;
-  max-height: 400px;
+  height: 208px;
   object-fit: cover;
   border-radius: 16px;
 }
 
+.modal-text-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+  margin-top: 20px;
+}
+
+.modal-text-content::-webkit-scrollbar-track {
+    color: orange;
+}
+
 .modal-title {
-  font-size: clamp(24px, 3vw, 32px);
-  font-weight: bold;
   color: #002f55;
   margin: 8px 0 0 0;
 }
 
 .modal-date {
-  font-size: 14px;
   color: #002f55;
-  margin: 0;
+  margin-top: 20px;
 }
 
 .modal-text {
-  font-size: 16px;
-  line-height: 1.6;
   color: #002f55;
   margin: 0;
 }
 
 .modal-full-text {
-  font-size: 16px;
-  line-height: 1.8;
   color: #002f55;
   margin: 8px 0 0 0;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.3s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.modal-enter-to,
-.modal-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+@media (min-width: 901px) {
+  .modal-body {
+    flex-direction: row;
+    height: 680px;
+  }
+  .modal-image {
+    width: 485px;
+    height: 326px;
+    margin-right: 30px;
+  }
+  .modal-title {
+    font-size: 60px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -402,6 +393,10 @@ const handleKeydown = (e) => {
 }
 
 @media (max-width: 600px) {
+  .events__container {
+    width: 100%;
+    margin-left: 10px;
+  }
   .modal-content {
     padding: 20px;
   }
@@ -412,6 +407,15 @@ const handleKeydown = (e) => {
     width: 36px;
     height: 36px;
   }
+  .event__swiper-button-prev {
+    left: 0;
+    top: 40%;
+  }
+
+  .event__swiper-button-next {
+    right: 10px;
+    top: 40%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -421,5 +425,11 @@ const handleKeydown = (e) => {
   .modal-leave-active {
     transition: none;
   }
+}
+</style>
+
+<style>
+::-webkit-scrollbar-track {
+    color: orange;
 }
 </style>

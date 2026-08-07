@@ -20,7 +20,7 @@ defineProps({
 <template>
   <section class="team" id="team-section" aria-labelledby="team-title">
     <div class="team__container">
-      <h2 id="team-title" class="team__title">{{ title }}</h2>
+      <h2 id="team-title" class="team__title title">{{ title }}</h2>
       <div class="team__slider-wraper">
         <div ref="team__swiper-button-prev" class="team__swiper-button-prev">
           <svg
@@ -39,9 +39,12 @@ defineProps({
         <Swiper
           :modules="[Navigation, Pagination]"
           :breakpoints="{
-            375: { slidesPerView: 1, spaceBetween: 10 },
-            640: { slidesPerView: 2, spaceBetween: 10 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
+            350: { slidesPerView: 1.2, 
+              spaceBetween: 0,
+              centeredSlides: false, 
+            },
+            640: { slidesPerView: 3, spaceBetween: 0 },
+            950: { slidesPerView: 4, spaceBetween: 0 },
           }"
           :navigation="{
             prevEl: '.team__swiper-button-prev',
@@ -56,8 +59,8 @@ defineProps({
                 class="member-card__photo"
                 alt="Здесь могла быть ваша реклама"
               />
-              <h3 class="member-card__name">{{ item.name }}</h3>
-              <p class="member-card__position">{{ item.position }}</p>
+              <p class="member-card__name subtitle">{{ item.name }}</p>
+              <p class="member-card__position text">{{ item.position }}</p>
             </div>
           </SwiperSlide>
         </Swiper>
@@ -93,13 +96,8 @@ defineProps({
 }
 
 .team__title {
-  font: 'JetBrains Mono';
-  font-size: clamp(28px, 4.1vw, 52px);
   color: #002f55;
-  font-weight: 350;
-  line-height: 1.05;
-  letter-spacing: 0;
-  text-align: justify;
+  margin-left: 5px;
 }
 
 .team__slider-wraper {
@@ -126,7 +124,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   min-height: clamp(210px, 23vw, 285px);
-  padding: clamp(20px, 2.4vw, 30px);
+  /* padding: clamp(20px, 2.4vw, 30px); */
   border-radius: 16px;
   transition:
     transform 180ms ease,
@@ -135,7 +133,6 @@ defineProps({
 }
 
 .member-card:hover {
-  transform: translateY(-4px);
   background-color: #e8e8e8;
 }
 .member-card__content {
@@ -143,28 +140,18 @@ defineProps({
 }
 
 .member-card__photo {
-  width: 312px;
-  height: 412px;
-  object-fit: fill;
+  width: 100%;
+  height: 407px;
+  object-fit: cover;
   margin: auto;
   clip-path: inset(2% 2% 2% 2% round 20px);
 }
 
 .member-card__name,
 .member-card__position {
-  font-size: clamp(13px, 1.15vw, 17px);
-  line-height: 1.1;
-  color: #002f55;
-}
-
-.member-card__name {
-  font-weight: 240;
-}
-
-.member-card__position {
-  margin-top: 7px;
-  font-size: clamp(10px, 0.82vw, 13px);
-  line-height: 1.25;
+  color: #002F55;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 
 .team__swiper-button-prev,
@@ -192,12 +179,12 @@ defineProps({
 }
 
 .team__swiper-button-prev {
-  left: 10px;
+  left: -20px;
   right: auto;
 }
 
 .team__swiper-button-next {
-  right: 10px;
+  right: -20px;
   left: auto;
 }
 
@@ -205,6 +192,20 @@ defineProps({
 .team__swiper-navigation-icon-next {
   width: 11px;
   height: 20px;
+  margin: auto;
+}
+
+.swiper-button-disabled {
+    opacity: 0;
+}
+
+.swiper-wrapper {
+  transform: translate3d(-361px, 0px, 0px); 
+  transition-duration: 0ms; 
+  transition-delay: 0ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {
@@ -216,7 +217,8 @@ defineProps({
 
 @media (max-width: 600px) {
   .team__container {
-    width: min(100% - 24px, 1180px);
+    width: 100%;
+    margin-left: 10px;
   }
 
   .team__grid {
@@ -225,6 +227,14 @@ defineProps({
 
   .member-card {
     min-height: 190px;
+  }
+
+  .team__swiper-button-prev {
+    left: 0;
+  }
+
+  .team__swiper-button-next {
+    right: 30px;
   }
 }
 
