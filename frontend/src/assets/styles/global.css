@@ -6,11 +6,37 @@
 
   /* Шрифт такой основной, поэтому кидаем сюда. В частных случаях описываем по блокам */
   font-family: 'JetBrains Mono';
-  font-style: normal;
+  font-style: normal; /* FIXME */
 }
 
 .section {
   width: 100%; /* Немного адаптива, проверяйте mobile размеры через инструменты разработчика */
   min-width: 330px; /* При таком размере остаётся читаемым текст формы feedback, остальное не проверено */
-  padding: 50px 20px;
+
+  padding: clamp(60px, calc((100vh - 667px) / (1024px - 667px) * (90px - 60px) + 60px), 90px)
+    clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 75px);
+}
+
+.title {
+  font-family: JetBrains Mono;
+  font-size: clamp(35px, calc((100vw - 375px) / (1440px - 375px) * (60px - 35px) + 35px), 60px);
+  font-weight: 400; /* Regular */
+  line-height: 1.1;
+  color: white;
+}
+
+.subtitle {
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-weight: 400; /* Regular */
+  line-height: 1.2;
+  color: white;
+}
+
+.text {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400; /* Regular */
+  line-height: 1.5;
+  color: white;
 }

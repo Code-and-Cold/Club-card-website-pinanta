@@ -21,11 +21,7 @@ defineProps({
       </h2>
 
       <div class="member-benefits__list">
-        <article
-          v-for="(item, index) in items"
-          :key="item.id ?? index"
-          class="member-benefit"
-        >
+        <article v-for="(item, index) in items" :key="item.id ?? index" class="member-benefit">
           <ClubIcon variant="cat" />
 
           <div>

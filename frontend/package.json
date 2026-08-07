@@ -12,7 +12,7 @@
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/ test/",
     "format:check": "prettier --check --experimental-cli src/ test/",
-    "predeploy": "npm run build",
+    "predeploy": "rm -rf dist .vite",
     "deploy": "vite build && gh-pages -d dist",
     "test:system": "vitest",
     "test:ci": "CI=true vitest run --config vitest.config.ts"

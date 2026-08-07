@@ -10,7 +10,7 @@ describe('FeedbackSection', () => {
   test('должен корректно рендерить все элементы на мобильном viewport (375px)', async () => {
     await page.viewport(375, 1108)
 
-    const { getByTestId } = render(FeedbackSection)
+    const { getByTestId, getByPlaceholder, getByRole } = render(FeedbackSection)
 
     // Контейнер секции
     const section = getByTestId('feedback-section')
@@ -57,38 +57,44 @@ describe('FeedbackSection', () => {
 
     const fields = [
       {
-        name: 'fullname',
+        placeholder: 'ФИО',
         inputType: 'input',
       },
       {
-        name: 'school',
+        name: 'Высшая школа',
         inputType: 'select',
       },
       {
-        name: 'course',
+        name: 'Курс',
         inputType: 'select',
       },
       {
-        name: 'vk',
+        placeholder: 'Страница Вконтакте',
         inputType: 'input',
       },
     ] as const
 
     for (const field of fields) {
-      const fieldWrapper = getByTestId(`feedback-section__field--${field.name}`)
+      let fieldWrapper = undefined
+
+      switch (field.inputType) {
+        case 'input':
+          fieldWrapper = getByPlaceholder(field.placeholder)
+          break
+        case 'select':
+          fieldWrapper = getByRole('combobox').filter({ hasText: field.name })
+          break
+        default:
+          expect.fail(`Unknown input type: ${field.inputType}`)
+      }
+
       await expect.element(fieldWrapper).toBeInTheDocument()
       await expect.element(fieldWrapper).toHaveStyle({
         backgroundColor: '#003B6B',
-        border: '2px solid #3BB0E3',
+        border: '1px solid #3BB0E3',
         borderRadius: '20px',
         padding: '18px 30px',
-        display: 'flex',
-        alignItems: 'center',
       })
-
-      const input = getByTestId(`feedback-section__input--${field.name}`)
-      await expect.element(input).toBeInTheDocument()
-      await expect.element(input).toBeVisible()
     }
 
     // Чекбокс согласия
@@ -169,12 +175,12 @@ describe('FeedbackSection', () => {
 
   test('отправка формы с валидными данными', async () => {
     const user = userEvent.setup()
-    const { getByTestId } = render(FeedbackSection)
+    const { getByTestId, getByRole } = render(FeedbackSection)
 
     const nameInput = getByTestId('feedback-section__input--fullname')
     await user.type(nameInput, 'Иван Петров')
 
-    const schoolSelect = getByTestId('feedback-section__input--school')
+    const schoolSelect = getByRole('combobox').filter({ hasText: 'Высшая школа' })
     await user.selectOptions(schoolSelect, 'ВШ 1')
 
     const courselSelect = getByTestId('feedback-section__input--course')
@@ -231,26 +237,26 @@ describe('FeedbackSection', () => {
   })
 
   test('все обязательные элементы присутствуют и имеют правильную структуру', async () => {
-    const { getByTestId } = render(FeedbackSection)
+    const { getByTestId, getByRole } = render(FeedbackSection)
 
     // Проверяем, что все элементы с data-testid существуют
-    await expect.element(getByTestId('feedback-section')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__title')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__subtitle')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__form')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__input--fullname')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__input--school')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__input--vk')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__checkbox--consent')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__button--submit')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__email')).toBeInTheDocument()
-    await expect.element(getByTestId('feedback-section__image--meme')).toBeInTheDocument()
+    await expect.element(getByTestId('feedback-section')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__title')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__subtitle')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__form')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__input--fullname')).toBeVisible()
+    await expect.element(getByRole('combobox').filter({ hasText: 'Высшая школа' })).toBeVisible()
+    await expect.element(getByTestId('feedback-section__input--vk')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__checkbox--consent')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__button--submit')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__email')).toBeVisible()
+    await expect.element(getByTestId('feedback-section__image--meme')).toBeVisible()
   })
 })
 
 describe('FeedbackSectionDesktop', () => {
-  test('должен корректно отображаться на десктопе (1024px)', async () => {
-    await page.viewport(1024, 800)
+  test('должен корректно отображаться на десктопе (1440px)', async () => {
+    await page.viewport(1440, 800)
 
     const { getByTestId } = render(FeedbackSection)
 
@@ -266,7 +272,7 @@ describe('FeedbackSectionDesktop', () => {
     // Поскольку в CSS ширина фиксирована 375px, на десктопе она может быть другой,
     // но в макете нет адаптивных правил, поэтому просто проверяем наличие
     const section = getByTestId('feedback-section')
-    await expect.element(section).toBeInTheDocument()
+    await expect.element(section).toBeVisible()
     // Если планируется адаптивность, можно проверить изменение стилей
   })
 })

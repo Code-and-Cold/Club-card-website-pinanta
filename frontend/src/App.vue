@@ -5,37 +5,39 @@ import PhraseSection from './components/PhraseSection.vue'
 import PhraseBottomSection from './components/PhraseBottomSection.vue'
 import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
 import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
-import Team from './components/Team.vue'
+import TeamSection from './components/TeamSection.vue'
 import RecentEvents from './components/RecentEvents.vue'
+import FooterSection from './components/FooterSection.vue'
+import CookieMessageModal from './components/CookieMessageModal.vue'
 
 const team = [
   {
     id: 1,
-    photo: "src/assets/images/1.png",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     name: 'За Лупкин',
     position: 'Директор',
   },
   {
     id: 2,
-    photo: "src/assets/images/1.png",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     name: 'Яша Лава',
     position: 'Уже уволен',
   },
   {
     id: 3,
-    photo: "src/assets/images/3.jpg",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     name: 'Спайдер мент',
     position: 'Офицер',
   },
   {
     id: 4,
-    photo: "src/assets/images/4.png",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     name: 'Пупу Пу',
     position: 'ОАО',
   },
   {
     id: 5,
-    photo: "src/assets/images/5.png",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     name: 'ААААААААААААААА',
     position: 'ААААААААА',
   },
@@ -44,29 +46,30 @@ const team = [
 const recentEvents = [
   {
     id: 1,
-    photo: "src/assets/images/1.png",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
-    fullText: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
+    fullText:
+      'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза. Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 2,
-    photo: "src/assets/images/6.jpg",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 3,
-    photo: "src/assets/images/6.jpg",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
   },
   {
     id: 4,
-    photo: "src/assets/images/6.jpg",
+    photo: new URL('./assets/images/cheremsha.png', import.meta.url).href,
     title: 'Проекты, которыми пользуются',
     text: 'Мы не делаем калькуляторы и todo-моды. Мы берём в работу живые проекты, решаем настоящие проблемы и доводим продукт до релиза.',
     data: '23.07.2026',
@@ -81,14 +84,16 @@ const recentEvents = [
 
   <body>
     <div class="main">
+      <CookieMessageModal />
       <HeroSection />
       <PhraseSection />
       <ClubAdvantagesSection />
-      <Team :items="team" />
+      <TeamSection :items="team" />
       <MemberBenefitsSection />
       <PhraseBottomSection />
       <RecentEvents :items="recentEvents" />
       <FeedbackSection />
+      <FooterSection />
     </div>
   </body>
 </template>
