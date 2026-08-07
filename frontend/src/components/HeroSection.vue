@@ -208,6 +208,7 @@ h1 {
   text-decoration: none;
   position: relative;
   padding: auto;
+  transition: all 0.3s ease;  
 }
 
 .hero__register-btn {
@@ -304,7 +305,6 @@ h1 {
   z-index: 100;
   display: flex;
   justify-content: flex-end;
-  animation: fadeIn 0.3s ease;
 }
 
 .hero__mobile-nav {
@@ -345,6 +345,11 @@ h1 {
   display: block;
   position: relative;
   overflow: hidden;
+
+}
+
+.hero__nav-link:hover, .hero__mobile-link:hover {
+  color: #3BB0E3;
 }
 
 .hero__content {
@@ -415,28 +420,9 @@ h1 {
   .hero__logo-text {
     font-size: 20px;
   }
-
-  .hero__title {
-    font-size: 35px;
-  }
-
-  .hero__subtitle {
-    font-size: 14px;
-  }
-
-  .hero__register-btn--mobile {
-    min-width: 160px;
-    padding: 12px 30px;
-    font-size: 22px;
-  }
-
   .hero__mobile-nav {
     padding: 80px 20px 20px;
   }
 
-  .hero__mobile-link {
-    font-size: 18px;
-    padding: 12px 16px;
-  }
 }
 </style>
