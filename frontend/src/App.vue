@@ -103,6 +103,9 @@ const recentEvents = [
 
 .main {
   background-image: url('./assets/images/Space-Background-Images.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   background-attachment: fixed;
 }
 </style>
