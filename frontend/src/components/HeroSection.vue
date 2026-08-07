@@ -149,7 +149,7 @@ h1 {
   align-items: center;
   justify-content: center;
 
-  padding: clamp(15px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 30px);
+  padding: clamp(15px, calc((100vw - 375px) / (1440px - 375px) * (30px - 15px) + 15px), 30px);
 }
 
 .hero {

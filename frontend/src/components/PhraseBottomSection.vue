@@ -14,23 +14,23 @@
 <script setup></script>
 <style scoped>
 .bottom-phrase__wrapper {
-  max-height: 100vh;
+  height: 100vh;
   background-color: rgba(0, 47, 85, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(15px, calc((100vw - 375px) / (1440px - 375px) * (30px - 15px) + 15px), 30px);
 }
 
 .bottom-phrase {
   width: 100%;
   min-height: calc(100vh - 60px);
-  padding: 20px 40px;
+  padding: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (40px - 20px) + 20px), 40px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin: clamp(10px, 2.5vw, 30px);
   border-radius: 30px;
   /*Блок будет находится между белыми блоками,
     так что грницы тени видно быть не должно (наверное)*/
@@ -40,10 +40,9 @@
 }
 
 .bottom-phrase__text {
-  font-size: clamp(25px, 3vw, 50px);
+  font-size: clamp(25px, calc((100vw - 375px) / (1440px - 375px) * (60px - 25px) + 25px), 50px);
   box-sizing: content-box;
   max-width: 1024px;
-  max-height: 430px;
   line-height: 1.2;
   color: white;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
