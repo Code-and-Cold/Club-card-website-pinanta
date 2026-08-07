@@ -7,6 +7,7 @@ import ClubAdvantagesSection from './components/ClubAdvantagesSection.vue'
 import MemberBenefitsSection from './components/MemberBenefitsSection.vue'
 import TeamSection from './components/TeamSection.vue'
 import RecentEvents from './components/RecentEvents.vue'
+import CookieMessageModal from './components/CookieMessageModal.vue'
 
 const team = [
   {
@@ -82,6 +83,7 @@ const recentEvents = [
 
   <body>
     <div class="main">
+      <CookieMessageModal />
       <HeroSection />
       <PhraseSection />
       <ClubAdvantagesSection />
