@@ -19,7 +19,11 @@ defineProps({
       <h2 id="advantages-title" class="advantages__title">{{ title }}</h2>
 
       <div class="advantages__grid">
-        <article v-for="(item, index) in items" :key="item.id ?? index" class="advantage-card">
+        <article
+          v-for="(item, index) in items"
+          :key="item.id ?? index"
+          class="advantage-card"
+        >
           <ClubIcon variant="badge" />
 
           <div class="advantage-card__content">
@@ -131,12 +135,12 @@ defineProps({
 
   .advantages__grid {
     grid-template-columns: 1fr;
-    width: min(100%, 320px);
+    width: min(100%, 310px);
     margin-inline: auto;
   }
 
   .advantage-card {
-    min-height: 200px;
+    min-height: 190px;
   }
 }
 
