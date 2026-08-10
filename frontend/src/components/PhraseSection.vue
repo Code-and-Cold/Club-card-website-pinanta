@@ -27,5 +27,4 @@
   color: #3bb0e3;
   background-color: rgba(0, 0, 0, 0);
 }
-
 </style>

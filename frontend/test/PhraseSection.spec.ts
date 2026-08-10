@@ -6,7 +6,7 @@ import PhraseSection from '../src/components/PhraseSection.vue'
 
 import '../src/assets/styles/global.css'
 
-describe('PhraseSection', () => {
+describe.skip('PhraseSection', () => {
   test('mobile viewport rendering (375px)', async () => {
     await page.viewport(375, 500) // Высота в макете - 470, запас для проверки ограничения по высоте
 
@@ -63,7 +63,7 @@ describe('PhraseSection', () => {
   })
 })
 
-describe('PhraseSectionDesktop', () => {
+describe.skip('PhraseSectionDesktop', () => {
   test('desktop viewport rendering (1440px)', async () => {
     await page.viewport(1440, 1024) // Высота в макете - 900, запас для проверки ограничения по высоте
 

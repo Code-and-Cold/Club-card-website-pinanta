@@ -66,7 +66,9 @@
 
       <div class="hero__content">
         <div class="hero__content-row">
-          <h1 class="hero__title title">Пишем код. Согреваем атмосферой. Создаём твоё портфолио.</h1>
+          <h1 class="hero__title title">
+            Пишем код. Согреваем атмосферой. Создаём твоё портфолио.
+          </h1>
           <button v-if="isDesktop" class="hero__vk-content-btn" @click="goToVKGroup">
             <p>Подписывайтесь на группу Вконтакте</p>
             <img class="vk-logo-blue" src="../assets/vector/Vector.svg" />
@@ -159,11 +161,15 @@ h1 {
   display: flex;
   flex-direction: column;
   position: relative;
-  
+
   margin: 0;
   padding-left: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
   padding-right: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
-  padding-bottom: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px), 40px);
+  padding-bottom: clamp(
+    20px,
+    calc((100vw - 375px) / (1440px - 375px) * (75px - 20px) + 20px),
+    40px
+  );
   padding-top: 0;
 
   border-radius: 30px;
@@ -208,7 +214,7 @@ h1 {
   text-decoration: none;
   position: relative;
   padding: auto;
-  transition: all 0.3s ease;  
+  transition: all 0.3s ease;
 }
 
 .hero__register-btn {
@@ -225,7 +231,7 @@ h1 {
 }
 
 .hero__register-btn:hover {
-  background: #3BB0E3;
+  background: #3bb0e3;
 }
 
 .hero__register-btn--desktop {
@@ -345,11 +351,11 @@ h1 {
   display: block;
   position: relative;
   overflow: hidden;
-
 }
 
-.hero__nav-link:hover, .hero__mobile-link:hover {
-  color: #3BB0E3;
+.hero__nav-link:hover,
+.hero__mobile-link:hover {
+  color: #3bb0e3;
 }
 
 .hero__content {
@@ -406,7 +412,6 @@ h1 {
 }
 
 @media (max-width: 950px) {
-
   .hero__header {
     height: 75px;
   }
@@ -423,6 +428,5 @@ h1 {
   .hero__mobile-nav {
     padding: 80px 20px 20px;
   }
-
 }
 </style>

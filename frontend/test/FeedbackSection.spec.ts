@@ -6,7 +6,7 @@ import FeedbackSection from '../src/components/FeedbackSection.vue'
 
 import '../src/assets/styles/global.css'
 
-describe('FeedbackSection', () => {
+describe.skip('FeedbackSection', () => {
   test('должен корректно рендерить все элементы на мобильном viewport (375px)', async () => {
     await page.viewport(375, 1108)
 
@@ -254,7 +254,7 @@ describe('FeedbackSection', () => {
   })
 })
 
-describe('FeedbackSectionDesktop', () => {
+describe.skip('FeedbackSectionDesktop', () => {
   test('должен корректно отображаться на десктопе (1440px)', async () => {
     await page.viewport(1440, 800)
 

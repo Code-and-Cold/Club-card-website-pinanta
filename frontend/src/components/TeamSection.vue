@@ -39,10 +39,7 @@ defineProps({
         <Swiper
           :modules="[Navigation, Pagination]"
           :breakpoints="{
-            350: { slidesPerView: 1.2, 
-              spaceBetween: 0,
-              centeredSlides: false, 
-            },
+            350: { slidesPerView: 1.2, spaceBetween: 0, centeredSlides: false },
             640: { slidesPerView: 3, spaceBetween: 0 },
             950: { slidesPerView: 4, spaceBetween: 0 },
           }"
@@ -145,7 +142,7 @@ defineProps({
 
 .member-card__name,
 .member-card__position {
-  color: #002F55;
+  color: #002f55;
   margin-left: 5px;
   margin-bottom: 5px;
 }
@@ -187,12 +184,12 @@ defineProps({
 }
 
 .swiper-button-disabled {
-    opacity: 0;
+  opacity: 0;
 }
 
 .swiper-wrapper {
-  transform: translate3d(-361px, 0px, 0px); 
-  transition-duration: 0ms; 
+  transform: translate3d(-361px, 0px, 0px);
+  transition-duration: 0ms;
   transition-delay: 0ms;
   display: flex;
   align-items: center;
