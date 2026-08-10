@@ -131,10 +131,6 @@ defineProps({
   height: 100%;
 }
 
-.member-card:hover {
-  background-color: #e8e8e8;
-  transform: translateY(-4px);
-}
 .member-card__content {
   margin: auto;
 }
@@ -173,11 +169,6 @@ defineProps({
   justify-content: center;
 }
 
-.team__swiper-button-prev:hover,
-.team__swiper-button-next:hover {
-  color: #3bb0e3;
-}
-
 .team__swiper-button-prev {
   left: -20px;
   right: auto;
@@ -206,6 +197,17 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 901px) {
+  .member-card:hover {
+    background-color: #e8e8e8;
+    transform: translateY(-4px);
+  }
+  .team__swiper-button-prev:hover,
+  .team__swiper-button-next:hover {
+    color: #3bb0e3;
+  }
 }
 
 @media (max-width: 900px) {

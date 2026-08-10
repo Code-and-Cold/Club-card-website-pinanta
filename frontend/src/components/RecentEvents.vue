@@ -197,11 +197,6 @@ const handleKeydown = (e) => {
   backface-visibility: hidden;
 }
 
-.event-card:hover {
-  background-color: #e8e8e8;
-  transform: translateY(-4px) translateZ(0);
-}
-
 .event-card__content {
   margin-top: auto;
 }
@@ -278,7 +273,7 @@ const handleKeydown = (e) => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 20px;
+  padding: 10px;
 }
 
 .modal-content {
@@ -286,7 +281,7 @@ const handleKeydown = (e) => {
   border-radius: 24px;
   max-width: 1220px;
   width: 100%;
-  height: 70%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -313,23 +308,12 @@ const handleKeydown = (e) => {
   z-index: 1;
 }
 
-.modal-close:hover {
-  background: rgba(0, 0, 0, 0.1);
-  transform: rotate(90deg);
-}
-
 .modal-body {
   display: flex;
   flex-direction: column;
   max-height: 90vh;
   overflow: hidden;
-}
-
-.modal-alltext-content {
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
-  overflow: hidden;
+  padding-right: 10px;
 }
 
 .modal-image-wrapper {
@@ -344,12 +328,6 @@ const handleKeydown = (e) => {
 }
 
 .modal-text-content {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc #f5f5f5;
   margin-top: 10px;
 }
 
@@ -375,15 +353,35 @@ const handleKeydown = (e) => {
 @media (min-width: 901px) {
   .modal-body {
     flex-direction: row;
-    height: 680px;
   }
+
   .modal-image {
     width: 485px;
     height: 326px;
     margin-right: 30px;
   }
+
   .modal-title {
     font-size: 60px;
+  }
+
+  .modal-text-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f5f5f5;
+  }
+
+  .event-card:hover {
+    background-color: #e8e8e8;
+    transform: translateY(-4px) translateZ(0);
+  }
+  
+  .modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
   }
 }
 
@@ -391,7 +389,9 @@ const handleKeydown = (e) => {
   .modal-content {
     padding: 24px;
     margin: 10px;
+    height: 95%;
   }
+
   .event-card:hover {
     transform: none;
     background-color: #f0f0f1;
@@ -421,6 +421,15 @@ const handleKeydown = (e) => {
   .event__swiper-button-next {
     right: 10px;
     top: 40%;
+  }
+  
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f5f5f5;
   }
 }
 
