@@ -1,0 +1,102 @@
+.checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create custom checkbox */
+.checkbox .checkmark {
+  display: inline-block;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  background-color: #003b6b;
+  border: 1px solid #3bb0e3;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox:hover input ~ .checkmark {
+  filter: brightness(0.95);
+}
+
+/* Checked state */
+.checkbox input:checked ~ .checkmark {
+  background-color: #003b6b;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkbox .checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Show the checkmark when checked */
+.checkbox input:checked ~ .checkmark::after {
+  display: block;
+
+  background-image: url('@/assets/vector/blue_checkmark.svg');
+  min-height: 100%;
+  min-width: 100%;
+}
+
+/* Disabled state */
+.checkbox input:disabled ~ .checkmark {
+  background-color: #e2e8f0;
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.checkbox input:disabled ~ .checkmark::after {
+  opacity: 1; /* Inherits opacity from parent, but can be adjusted if needed */
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
