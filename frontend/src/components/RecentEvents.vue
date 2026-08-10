@@ -48,7 +48,7 @@ const handleKeydown = (e) => {
 </script>
 
 <template>
-  <section class="events" aria-labelledby="events-title">
+  <section class="events section" aria-labelledby="events-title">
     <div class="events__container">
       <h2 id="events-title" class="events__title title">{{ title }}</h2>
       <div class="events__slider-wraper">
@@ -123,6 +123,11 @@ const handleKeydown = (e) => {
           tabindex="0"
         >
           <div class="modal-content" role="dialog" aria-modal="true">
+            <button class="modal-close" @click="closeModal" aria-label="Закрыть новость">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
             <div v-if="selectedItem" class="modal-body">
                 <div class="modal-image-wrapper">
                 <img 
@@ -131,17 +136,15 @@ const handleKeydown = (e) => {
                   :alt="selectedItem.title"
                 >
               </div>
-              <div class="modal-alltext-content">
-                <h2 class="modal-title">{{ selectedItem.title }}</h2>
                 <div class="modal-text-content">
-                    <p class="modal-text">{{ selectedItem.text }}</p>
-                    <p v-if="selectedItem.fullText" class="modal-full-text">
-                    {{ selectedItem.fullText }}
-                    </p>
-                    <p class="modal-date">{{ selectedItem.data }}</p>
+                  <h2 class="modal-title">{{ selectedItem.title }}</h2>
+                  <p v-if="selectedItem.fullText" class="modal-text">
+                  {{ selectedItem.fullText }}
+                  </p>
+                  <p v-else class="modal-text">{{ selectedItem.text }}</p>
+                  <p class="modal-date">{{ selectedItem.data }}</p>
                 </div>
-            </div>
-          </div>
+              </div>
           </div>
         </div>
       </Transition>
@@ -151,7 +154,6 @@ const handleKeydown = (e) => {
 
 <style scoped>
 .events {
-  padding-block: clamp(48px, 7vw, 108px);
   flex: 0 0 auto;
   background-color: #f0f0f1;
 }
@@ -190,10 +192,14 @@ const handleKeydown = (e) => {
   height: 100%;
   cursor: pointer;
   width: 430px;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .event-card:hover {
   background-color: #e8e8e8;
+  transform: translateY(-4px) translateZ(0);
 }
 
 .event-card__content {
@@ -207,6 +213,7 @@ const handleKeydown = (e) => {
   margin: auto;
   clip-path: inset(2% 2% 2% 2% round 20px);
   margin-bottom: 15px;
+  margin-top: 5px;
 }
 .event-card__name,
 .event-card__text,
@@ -343,7 +350,7 @@ const handleKeydown = (e) => {
   flex-direction: column;
   scrollbar-width: thin;
   scrollbar-color: #ccc #f5f5f5;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .modal-text-content::-webkit-scrollbar-track {
@@ -352,7 +359,7 @@ const handleKeydown = (e) => {
 
 .modal-title {
   color: #002f55;
-  margin: 8px 0 0 0;
+  margin: 0 0 10px 0;
 }
 
 .modal-date {
@@ -363,11 +370,6 @@ const handleKeydown = (e) => {
 .modal-text {
   color: #002f55;
   margin: 0;
-}
-
-.modal-full-text {
-  color: #002f55;
-  margin: 8px 0 0 0;
 }
 
 @media (min-width: 901px) {
@@ -389,6 +391,10 @@ const handleKeydown = (e) => {
   .modal-content {
     padding: 24px;
     margin: 10px;
+  }
+  .event-card:hover {
+    transform: none;
+    background-color: #f0f0f1;
   }
 }
 

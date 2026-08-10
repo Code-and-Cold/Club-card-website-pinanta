@@ -18,7 +18,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="team" id="team-section" aria-labelledby="team-title">
+  <section class="team section" id="team-section" aria-labelledby="team-title">
     <div class="team__container">
       <h2 id="team-title" class="team__title title">{{ title }}</h2>
       <div class="team__slider-wraper">
@@ -85,7 +85,6 @@ defineProps({
 
 <style scoped>
 .team {
-  padding-block: clamp(48px, 7vw, 108px);
   flex: 0 0 auto;
   background-color: #f0f0f1;
 }
@@ -134,6 +133,7 @@ defineProps({
 
 .member-card:hover {
   background-color: #e8e8e8;
+  transform: translateY(-4px);
 }
 .member-card__content {
   margin: auto;
