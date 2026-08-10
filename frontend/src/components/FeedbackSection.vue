@@ -248,8 +248,6 @@ async function submitForm() {
   align-items: center;
   flex-wrap: wrap;
   gap: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (50px - 20px) + 20px), 50px);
-
-  border: 1px red solid;
 }
 
 .feedback__content {
