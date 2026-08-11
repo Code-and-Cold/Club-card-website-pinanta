@@ -8,7 +8,7 @@
     </div>
     <hr class="footer__divider" />
     <div class="footer__row footer__bottom text">
-      <p>Политика конфиденциальности</p>
+      <a class="text" href="https://www.example.com">Политика конфиденциальности</a>
       <p>© Код и Холод 2026</p>
     </div>
   </section>
@@ -16,7 +16,11 @@
 
 <style>
 .footer {
-  min-height: clamp(221px, 30vh, 300px);
+  min-height: clamp(
+    221px,
+    calc((100vh - 667px) / (1024px - 667px) * (300px - 221px) + 221px),
+    300px
+  );
 
   background-color: #002f55;
 
@@ -53,6 +57,12 @@
 
 .footer__bottom {
   flex-wrap: wrap;
+}
+
+@media (min-width: 510px) {
+  .footer__bottom {
+    flex-direction: row-reverse;
+  }
 }
 
 .footer__vk-icon {
