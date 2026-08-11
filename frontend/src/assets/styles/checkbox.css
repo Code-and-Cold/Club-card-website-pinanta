@@ -6,6 +6,8 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  line-height: 0; /* FIXME: Костыль, проблема в том, что чекбокс масштабируется вместе со шрифтом */
 }
 
 /* Hide default checkbox */
