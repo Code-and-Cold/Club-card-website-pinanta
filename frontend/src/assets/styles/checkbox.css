@@ -34,7 +34,7 @@
 
 /* On mouse-over, add a grey background color */
 .checkbox:hover input ~ .checkmark {
-  filter: brightness(0.95);
+  filter: brightness(0.85);
 }
 
 /* Checked state */
