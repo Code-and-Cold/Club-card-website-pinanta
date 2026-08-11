@@ -42,3 +42,19 @@
   line-height: 1.5;
   color: white;
 }
+
+.button {
+  width: fit-content;
+  height: fit-content;
+
+  border-radius: 20px;
+  border: 0px solid #e3953b;
+
+  padding: 15px 25px;
+
+  background-color: #e3953b;
+}
+
+.button:hover {
+  background-color: #3bb0e3;
+}

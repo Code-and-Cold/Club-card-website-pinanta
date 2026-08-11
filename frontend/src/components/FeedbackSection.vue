@@ -321,16 +321,4 @@ async function submitForm() {
 .horizontial-overcompensator {
   padding-top: 10px;
 }
-
-.button {
-  width: fit-content;
-  height: fit-content;
-
-  border-radius: 20px;
-  border: 0px solid #e3953b;
-
-  padding: 15px 25px;
-
-  background-color: #e3953b;
-}
 </style>
