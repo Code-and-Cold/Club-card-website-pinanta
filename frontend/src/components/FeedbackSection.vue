@@ -156,9 +156,9 @@ async function submitForm() {
             </label>
 
             <span class="">
-              Даю <a class="text--attention" href="https://www.example.com">согласие</a> на
+              Даю <a class="link text--attention" href="https://www.example.com">согласие</a> на
               обработку
-              <a class="text--attention" href="https://www.example.com">персональных данных</a>
+              <a class="link text--attention" href="https://www.example.com">персональных данных</a>
             </span>
           </label>
           <div v-if="errors.agreement" class="form__error-wrapper">
@@ -193,7 +193,7 @@ async function submitForm() {
 
       <p class="text">
         Или напиши на почту руководителю: <br />
-        <a class="text--attention" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
+        <a class="link text--attention" href="mailto:ivan@cold-code.ru">ivan@cold-code.ru</a>
       </p>
     </div>
 
@@ -210,6 +210,14 @@ async function submitForm() {
 
 .text--attention {
   color: #e3953b;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 .text--danger {
