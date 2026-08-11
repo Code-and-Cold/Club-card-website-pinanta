@@ -11,7 +11,7 @@ import (
 
 var (
 	fullNameRe = regexp.MustCompile(`^[A-Za-zА-Яа-яЁё]+([ \-][A-Za-zА-Яа-яЁё]+)*$`)
-	vkLinkRe   = regexp.MustCompile(`^https?://(www\.)?vk\.com/.+$`)
+	vkLinkRe   = regexp.MustCompile(`(?i)https?://(?:www\.)?(?:vk\.com|vk\.ru)/[^\s]+`)
 )
 
 // GET /api/site - агрегированные данные для главной страницы (все блоки одним запросом)

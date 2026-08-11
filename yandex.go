@@ -38,6 +38,8 @@ var yandexSyncMu sync.Mutex
 
 // yandexEnabled проверяет, настроена ли синхронизация
 func yandexEnabled() bool {
+	log.Println(os.Getenv("YANDEX_DISK_TOKEN"))
+	log.Println(os.Getenv("YANDEX_TABLE_PATH"))
 	return os.Getenv("YANDEX_DISK_TOKEN") != "" && os.Getenv("YANDEX_TABLE_PATH") != ""
 }
 
@@ -69,17 +71,16 @@ func appendApplicationToYandexTable(app Application) error {
 	if err != nil {
 		return fmt.Errorf("чтение строк xlsx: %w", err)
 	}
-	nextRow := len(rows) + 1
-	if nextRow < 2 {
-		nextRow = 2 // первая строка - заголовки
-	}
+	nextRow := max(len(rows)+1,
+		// первая строка - заголовки
+		2)
 
 	agreementText := "нет"
 	if app.Agreement {
 		agreementText = "да"
 	}
 
-	values := []interface{}{
+	values := []any{
 		app.FullName,
 		app.School,
 		app.Course,
@@ -199,11 +200,14 @@ func uploadYandexFile(token, path string, content []byte) error {
 // чтобы отправитель формы не ждал ответа от Яндекс Диска и не терял заявку из-за таймаута.
 func syncApplicationToYandexAsync(app Application) {
 	if !yandexEnabled() {
+		log.Printf("Яндекс Диск не настроен, заявка #%d сохранена только в БД", app.ID)
 		return
 	}
 	go func() {
 		if err := appendApplicationToYandexTable(app); err != nil {
-			log.Printf("не удалось синхронизировать заявку #%d с Яндекс Диском: %v", app.ID, err)
+			log.Printf("⚠️ ОШИБКА синхронизации с Яндекс Диском (заявка #%d): %v", app.ID, err)
+		} else {
+			log.Printf("✅ Заявка #%d успешно синхронизирована с Яндекс таблицей", app.ID)
 		}
 	}()
 }
