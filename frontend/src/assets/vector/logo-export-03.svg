@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 278.81">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #002f55;
+        font-family: JetBrainsMono-Regular, 'JetBrains Mono';
+        font-size: 174.15px;
+        font-variation-settings: 'wght' 400;
+      }
+
+      .cls-2 {
+        fill: #3bb0e3;
+        font-family: Inter-Regular, Inter;
+        font-size: 200.51px;
+        font-variation-settings: 'opsz' 14, 'wght' 400;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(62.63 184.41)"><tspan x="0" y="0">код</tspan></text>
+  <text class="cls-2" transform="translate(386.59 241.8)"><tspan x="0" y="0">*</tspan></text>
+  <text class="cls-1" transform="translate(494.92 185.95)"><tspan x="0" y="0">холод</tspan></text>
+</svg>

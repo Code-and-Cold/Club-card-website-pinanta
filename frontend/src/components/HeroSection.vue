@@ -2,7 +2,14 @@
   <section class="hero-wrapper">
     <div class="hero">
       <header class="hero__header">
-        <div class="hero__logo">Лого сафу и клуба</div>
+        <div class="hero__logos">
+          <button class="logo-btn">
+            <img class="logo" id="narfu-logo" src="../assets/vector/logo-narfu-white-01 1.svg" alt="Лого САФУ">
+          </button>
+          <button class="logo-btn">
+            <img class="logo" id="club-logo" src="../assets/vector/logo-export-01.svg" alt="Лого клуба"></img>
+          </button>
+        </div>
         <nav v-if="isDesktop" class="hero__nav-desktop">
           <ul class="hero__nav-list">
             <li v-for="item in menuItems" :key="item.id">
@@ -183,10 +190,29 @@ h1 {
   z-index: 101;
 }
 
-.hero__logo {
+.hero__logos {
   /* Пока настройки текста*/
-  color: white;
-  font-size: 26px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: auto;
+}
+
+.logo-btn {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.logo {
+  /*ыыы*/
+  object-fit: contain;
+}
+
+#narfu-logo {}
+
+#club-logo {
+
 }
 
 .hero__nav-desktop {
@@ -208,7 +234,8 @@ h1 {
   text-decoration: none;
   position: relative;
   padding: auto;
-  transition: all 0.3s ease;  
+  transition: all 0.3s ease; 
+  font-family: Inter; 
 }
 
 .hero__register-btn {
