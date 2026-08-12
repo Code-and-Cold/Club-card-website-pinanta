@@ -1,10 +1,8 @@
 <script setup>
-import ClubIcon from './ClubIcon.vue'
-
 defineProps({
   titleLines: {
     type: Array,
-    default: () => ['Что ты получишь,', 'вступив к нам', 'и круто с нами', 'поработав'],
+    default: () => ['Твой профит', 'от участия в', 'клубе'],
   },
   items: {
     type: Array,
@@ -14,19 +12,19 @@ defineProps({
 </script>
 
 <template>
-  <section class="member-benefits" aria-labelledby="member-benefits-title">
+  <section class="member-benefits section" aria-labelledby="member-benefits-title">
     <div class="member-benefits__container">
-      <h2 id="member-benefits-title" class="member-benefits__title">
+      <h2 id="member-benefits-title" class="member-benefits__title title">
         <span v-for="line in titleLines" :key="line">{{ line }}</span>
       </h2>
 
       <div class="member-benefits__list">
         <article v-for="(item, index) in items" :key="item.id ?? index" class="member-benefit">
-          <ClubIcon variant="cat" />
+          <img class="member-benefit__icon" :src="item.icon" alt="" aria-hidden="true" />
 
-          <div>
-            <h3 class="member-benefit__title">{{ item.title }}</h3>
-            <p class="member-benefit__text">{{ item.text }}</p>
+          <div class="member-benefit__content">
+            <h3 class="member-benefit__title subtitle">{{ item.title }}</h3>
+            <p class="member-benefit__text text">{{ item.text }}</p>
           </div>
         </article>
       </div>
@@ -35,24 +33,16 @@ defineProps({
 </template>
 
 <style scoped>
-.member-benefits {
-  padding-block: clamp(56px, 8vw, 118px);
-}
-
 .member-benefits__container {
   display: grid;
-  grid-template-columns: minmax(280px, 0.9fr) minmax(420px, 1.1fr);
+  grid-template-columns: minmax(300px, 0.9fr) minmax(480px, 1.1fr);
   align-items: center;
   gap: clamp(48px, 8vw, 120px);
-  width: min(100% - 40px, 1180px);
-  margin-inline: auto;
+  width: 100%;
 }
 
-.member-benefits__title {
-  font-size: clamp(31px, 4.6vw, 58px);
-  font-weight: 400;
-  line-height: 1.03;
-  letter-spacing: 0.015em;
+.member-benefits__title.title {
+  color: var(--text-main);
 }
 
 .member-benefits__title span {
@@ -61,30 +51,40 @@ defineProps({
 
 .member-benefits__list {
   display: grid;
-  gap: clamp(22px, 3vw, 38px);
+  gap: clamp(22px, 2.6vw, 34px);
 }
 
 .member-benefit {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 65px minmax(0, 1fr);
   align-items: start;
-  gap: 18px;
+  gap: clamp(16px, 1.8vw, 24px);
 }
 
-.member-benefit__title {
+.member-benefit__icon {
+  display: block;
+  width: 65px;
+  height: 65px;
+}
+
+.member-benefit__content {
+  min-width: 0;
+}
+
+.member-benefit__title.subtitle,
+.member-benefit__text.text {
+  color: var(--text-main);
+}
+
+.member-benefit__title.subtitle {
   margin-bottom: 6px;
-  font-size: clamp(16px, 1.55vw, 21px);
-  font-weight: 500;
-  line-height: 1.15;
 }
 
-.member-benefit__text {
+.member-benefit__text.text {
   max-width: 620px;
-  font-size: clamp(11px, 0.95vw, 14px);
-  line-height: 1.4;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .member-benefits__container {
     grid-template-columns: 1fr;
     align-items: start;
@@ -97,13 +97,14 @@ defineProps({
 }
 
 @media (max-width: 520px) {
-  .member-benefits__container {
-    width: min(100% - 24px, 1180px);
+  .member-benefit {
+    grid-template-columns: 55px minmax(0, 1fr);
+    gap: 14px;
   }
 
-  .member-benefit {
-    grid-template-columns: 38px minmax(0, 1fr);
-    gap: 13px;
+  .member-benefit__icon {
+    width: 55px;
+    height: 55px;
   }
 }
 </style>
