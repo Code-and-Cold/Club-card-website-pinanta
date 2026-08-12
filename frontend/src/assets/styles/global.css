@@ -4,6 +4,8 @@
   padding: 0;
   box-sizing: border-box;
 
+  scroll-behavior: smooth;
+
   /* Шрифт такой основной, поэтому кидаем сюда. В частных случаях описываем по блокам */
   font-family: 'JetBrains Mono';
   font-style: normal; /* FIXME */
@@ -39,4 +41,21 @@
   font-weight: 400; /* Regular */
   line-height: 1.5;
   color: white;
+}
+
+.button {
+  width: fit-content;
+  height: fit-content;
+
+  border-radius: 20px;
+  border: 0px solid #e3953b;
+
+  padding: 15px 25px;
+
+  background-color: #e3953b;
+  transition: background-color 0.4s ease;
+}
+
+.button:hover {
+  background-color: #3bb0e3;
 }

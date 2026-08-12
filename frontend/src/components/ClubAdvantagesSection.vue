@@ -24,7 +24,7 @@ const advantages = [
 </script>
 
 <template>
-  <div class="club-advantages-section">
+  <div class="club-advantages-section" id="advantages-section">
     <ClubAdvantages :items="advantages" />
   </div>
 </template>
