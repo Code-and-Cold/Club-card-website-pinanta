@@ -300,6 +300,10 @@ a {
   color: inherit;
 }
 
+.form__field::placeholder {
+  color: #3bb0e3;
+}
+
 .form__field--danger {
   border-color: #d33434 !important;
 }
