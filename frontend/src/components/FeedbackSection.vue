@@ -255,11 +255,13 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (50px - 20px) + 20px), 50px);
+  gap: clamp(20px, calc((100vw - 375px) / (950px - 375px) * (50px - 20px) + 20px), 50px);
 }
 
 .feedback__content {
-  width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (550px - 335px) + 335px), 550px);
+  flex: 1;
+  min-width: clamp(335px, calc((100vw - 375px) / (950px - 375px) * (550px - 335px) + 335px), 550px);
+  max-width: 950px;
 
   display: flex;
   flex-direction: column;
@@ -271,7 +273,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(25px, calc((100vw - 375px) / (1440px - 375px) * (30px - 25px) + 25px), 30px);
+  gap: clamp(25px, calc((100vw - 375px) / (950px - 375px) * (30px - 25px) + 25px), 30px);
 }
 
 .form {
@@ -300,6 +302,10 @@ a {
   color: inherit;
 }
 
+.form__field::placeholder {
+  color: #3bb0e3;
+}
+
 .form__field--danger {
   border-color: #d33434 !important;
 }
@@ -319,8 +325,10 @@ a {
 }
 
 .feedback__image {
-  height: clamp(356px, calc((100vw - 375px) / (1440px - 375px) * (730px - 356px) + 335px), 730px);
-  width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (686px - 335px) + 335px), 686px);
+  flex-shrink: 0;
+
+  height: clamp(356px, calc((100vw - 375px) / (950px - 375px) * (730px - 356px) + 335px), 730px);
+  width: clamp(335px, calc((100vw - 375px) / (950px - 375px) * (686px - 335px) + 335px), 686px);
 
   border-radius: 30px;
   border: 0px solid #e3953b;
