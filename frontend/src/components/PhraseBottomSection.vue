@@ -2,11 +2,10 @@
   <section class="bottom-phrase__wrapper">
     <div class="bottom-phrase">
       <p class="bottom-phrase__text">
-        Как говорил <mark class="mark--blue">Владимир Путин</mark>: <br />
-        <br />
-        «Мне не стыдно перед гражданами, которые голосовали за меня дважды на президентских выборах.
-        Все эти восемь лет я пахал, как раб на галерах, с утра до ночи.
-        <mark class="mark--yellow">Я доволен результатами своей работы</mark>.»
+        «Собраться вместе — это <mark class="mark--blue">начало</mark>.<br />
+        Держаться вместе — это <mark class="mark--blue">прогресс</mark>.<br />
+        Работать вместе — это <mark class="mark--blue">успех</mark>.» <br /><br />
+        — Генри Форд, американский промышленник, основатель Ford.
       </p>
     </div>
   </section>
@@ -33,8 +32,8 @@
   position: relative;
   border-radius: 30px;
   /*Блок будет находится между белыми блоками,
-    так что грницы тени видно быть не должно (наверное)*/
-  box-shadow: 0px 0px 0px 50px #f0f0f1;
+    так что границы тени видно быть не должно (наверное)*/
+  box-shadow: 0px 0px 0px 70px #f0f0f1;
   isolation: isolate;
   font-weight: 300;
 }
