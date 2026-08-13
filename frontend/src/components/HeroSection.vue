@@ -126,7 +126,11 @@ const closeMobileMenu = () => {
 }
 
 const handleRegister = () => {
-  // Пока ничего
+  const target = document.getElementById('feedback-section');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    console.warn('Элемент #reg-form отсутствует в DOM');}
 }
 
 const updateWidth = () => {
