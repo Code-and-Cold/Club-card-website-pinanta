@@ -69,7 +69,10 @@ const handleKeydown = (e) => {
         <Swiper
           :modules="[Navigation, Pagination]"
           :breakpoints="{
-            350: { slidesPerView: 1.2, spaceBetween: 0, centeredSlides: false },
+            350: { slidesPerView: 1.2, 
+              spaceBetween: 0,
+              centeredSlides: false, 
+            },
             640: { slidesPerView: 2, spaceBetween: 0 },
             950: { slidesPerView: 3, spaceBetween: 0 },
           }"
@@ -122,27 +125,26 @@ const handleKeydown = (e) => {
           <div class="modal-content" role="dialog" aria-modal="true">
             <button class="modal-close" @click="closeModal" aria-label="Закрыть новость">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M18 6L6 18M6 6L18 18"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </button>
             <div v-if="selectedItem" class="modal-body">
-              <div class="modal-image-wrapper">
-                <img :src="selectedItem.photo" class="modal-image" :alt="selectedItem.title" />
+                <div class="modal-image-wrapper">
+                <img 
+                  :src="selectedItem.photo" 
+                  class="modal-image" 
+                  :alt="selectedItem.title"
+                >
               </div>
-              <div class="modal-text-content">
-                <h2 class="modal-title">{{ selectedItem.title }}</h2>
-                <p v-if="selectedItem.fullText" class="modal-text">
+                <div class="modal-text-content">
+                  <h2 class="modal-title">{{ selectedItem.title }}</h2>
+                  <p v-if="selectedItem.fullText" class="modal-text">
                   {{ selectedItem.fullText }}
-                </p>
-                <p v-else class="modal-text">{{ selectedItem.text }}</p>
-                <p class="modal-date">{{ selectedItem.data }}</p>
+                  </p>
+                  <p v-else class="modal-text">{{ selectedItem.text }}</p>
+                  <p class="modal-date">{{ selectedItem.data }}</p>
+                </div>
               </div>
-            </div>
           </div>
         </div>
       </Transition>
@@ -157,13 +159,11 @@ const handleKeydown = (e) => {
 }
 
 .events__container {
-  width: min(100% - 32px, 1180px);
-  margin-inline: auto;
+  width: 100%;
 }
 
 .events__title {
   color: #002f55;
-  margin-left: 5px;
 }
 
 .events__slider-wraper {
@@ -171,7 +171,7 @@ const handleKeydown = (e) => {
   align-items: center;
   position: relative;
   width: 100%;
-  height: 486px;
+  height: auto;
 }
 
 .event__swiper {
@@ -189,10 +189,6 @@ const handleKeydown = (e) => {
     box-shadow 180ms ease;
   height: 100%;
   cursor: pointer;
-  width: 430px;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .event-card__content {
@@ -201,19 +197,20 @@ const handleKeydown = (e) => {
 
 .event-card__photo {
   width: 100%;
-  height: 209px;
+  aspect-ratio: 416/278;
   object-fit: cover;
   margin: auto;
   clip-path: inset(2% 2% 2% 2% round 20px);
   margin-bottom: 15px;
   margin-top: 5px;
 }
+
 .event-card__name,
 .event-card__text,
 .event-card__data {
   color: #002f55;
   margin-left: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 5px;  
 }
 
 .event__swiper-button-prev,
@@ -235,10 +232,6 @@ const handleKeydown = (e) => {
   justify-content: center;
 }
 
-.event__swiper-button-prev:hover,
-.event__swiper-button-next:hover {
-  color: #3bb0e3;
-}
 .event__swiper-button-prev {
   left: -50px;
   right: auto;
@@ -257,7 +250,7 @@ const handleKeydown = (e) => {
 }
 
 .swiper-button-disabled {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-overlay {
@@ -330,7 +323,7 @@ const handleKeydown = (e) => {
 }
 
 .modal-text-content::-webkit-scrollbar-track {
-  color: orange;
+    color: orange;
 }
 
 .modal-title {
@@ -372,14 +365,25 @@ const handleKeydown = (e) => {
     scrollbar-color: #ccc #f5f5f5;
   }
 
+  .event-card {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   .event-card:hover {
     background-color: #e8e8e8;
     transform: translateY(-4px) translateZ(0);
   }
-
+  
   .modal-close:hover {
     background: rgba(0, 0, 0, 0.1);
     transform: rotate(90deg);
+  }
+
+  .event__swiper-button-prev:hover,
+  .event__swiper-button-next:hover {
+    color: #3bb0e3;
   }
 }
 
@@ -389,18 +393,9 @@ const handleKeydown = (e) => {
     margin: 10px;
     height: 95%;
   }
-
-  .event-card:hover {
-    transform: none;
-    background-color: #f0f0f1;
-  }
 }
 
 @media (max-width: 600px) {
-  .events__container {
-    width: 100%;
-    margin-left: 10px;
-  }
   .modal-content {
     padding: 20px;
   }
@@ -420,7 +415,7 @@ const handleKeydown = (e) => {
     right: 10px;
     top: 40%;
   }
-
+  
   .modal-body {
     flex: 1;
     overflow-y: auto;
@@ -438,11 +433,5 @@ const handleKeydown = (e) => {
   .modal-leave-active {
     transition: none;
   }
-}
-</style>
-
-<style>
-::-webkit-scrollbar-track {
-  color: orange;
 }
 </style>
