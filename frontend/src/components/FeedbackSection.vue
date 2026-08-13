@@ -81,7 +81,7 @@ async function submitForm() {
 </script>
 
 <template>
-  <section class="section feedback">
+  <section class="section feedback" id="feedback-section">
     <div class="feedback__content">
       <h1 class="title">Хочешь тусить с нами?</h1>
 

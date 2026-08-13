@@ -2,7 +2,17 @@
   <section class="hero-wrapper">
     <div class="hero">
       <header class="hero__header">
-        <div class="hero__logo">Лого сафу и клуба</div>
+        <div class="hero__logos">
+          <button v-if="isFullLogo" class="logo-btn">
+            <img class="logo" :style="{ height: fullLogoHeight }" id="club-logo" src="../assets/vector/logo-01.svg" alt="Лого клуба"></img>
+          </button>
+          <button v-else class="logo-btn">
+            <img  class="logo" :style="{ height: fullLogoHeight }" id="club-logo" src="../assets/vector/logo-02.svg" alt="Лого клуба"></img>
+          </button>
+          <button class="logo-btn">
+            <img class="logo" id="narfu-logo" src="../assets/vector/logo-narfu-white-01 1.svg" alt="Лого САФУ">
+          </button>
+        </div>
         <nav v-if="isDesktop" class="hero__nav-desktop">
           <ul class="hero__nav-list">
             <li v-for="item in menuItems" :key="item.id">
@@ -116,7 +126,11 @@ const closeMobileMenu = () => {
 }
 
 const handleRegister = () => {
-  // Пока ничего
+  const target = document.getElementById('feedback-section');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    console.warn('Элемент #reg-form отсутствует в DOM');}
 }
 
 const updateWidth = () => {
@@ -126,6 +140,18 @@ const updateWidth = () => {
     closeMobileMenu()
   }
 }
+
+const isFullLogo = computed(() => {
+  const w = windowWidth.value;
+  return w > 1200 || (w > 575 && w < 1000);
+});
+
+const fullLogoHeight = computed(() => {
+  const w = windowWidth.value;
+  if (w > 1200) return '70px';
+  if (w > 575 && w < 1000) return '70px';
+  return '50px';
+});
 
 onMounted(() => {
   window.addEventListener('resize', updateWidth)
@@ -189,11 +215,32 @@ h1 {
   z-index: 101;
 }
 
-.hero__logo {
+.hero__logos {
   /* Пока настройки текста*/
-  color: white;
-  font-size: 26px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: auto;
 }
+
+.logo-btn {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.logo {
+  /*ыыы*/
+  box-sizing: content-box;
+  width: auto;  
+
+}
+
+#narfu-logo {
+    
+}
+
+
 
 .hero__nav-desktop {
   display: flex;
@@ -214,7 +261,8 @@ h1 {
   text-decoration: none;
   position: relative;
   padding: auto;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; 
+  font-family: Inter; 
 }
 
 .hero__register-btn {
@@ -403,6 +451,8 @@ h1 {
   padding: 15px 25px;
   max-width: 400px;
 }
+
+
 
 @media (min-width: 950px) {
   .vk-logo-blue {
