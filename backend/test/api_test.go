@@ -10,21 +10,19 @@ import (
 const baseURL = "http://localhost:8080"
 
 type ApplyRequest struct {
-	Name       string `json:"name"`
-	Department string `json:"department"`
-	Course     string `json:"course"`
-	Link       string `json:"link"`
-	Agreement  bool   `json:"agreement"`
+	"full_name"       string `json:"name"`
+	"school" string `json:"department"`
+	"course"     string `json:"course"`
+	"vk_link"       string `json:"link"`
+	"agreement"  bool   `json:"agreement"`
 }
-
 func TestAPIApplySuccess(t *testing.T) {
-	t.Skip("пропускаем, потому что API ещё не готов")
 	reqBody := ApplyRequest{
-		Name:       "Иван Петров",
-		Department: "1",
-		Course:     "1",
-		Link:       "https://vk.com/ivan_petrov",
-		Agreement:  true,
+		"full_name":       "Иван Петров",
+		"school": "1",
+		"course":     "1",
+		"vk_link":       "https://vk.com/ivan_petrov",
+		"agreement":  true,
 	}
 
 	jsonData, err := json.Marshal(reqBody)
