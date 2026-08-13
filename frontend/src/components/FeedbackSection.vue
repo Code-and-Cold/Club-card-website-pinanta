@@ -259,7 +259,13 @@ a {
 }
 
 .feedback__content {
-  width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (550px - 335px) + 335px), 550px);
+  flex: 1;
+  min-width: clamp(
+    335px,
+    calc((100vw - 375px) / (1440px - 375px) * (550px - 335px) + 335px),
+    550px
+  );
+  max-width: 950px;
 
   display: flex;
   flex-direction: column;
@@ -323,6 +329,8 @@ a {
 }
 
 .feedback__image {
+  flex-shrink: 0;
+
   height: clamp(356px, calc((100vw - 375px) / (1440px - 375px) * (730px - 356px) + 335px), 730px);
   width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (686px - 335px) + 335px), 686px);
 

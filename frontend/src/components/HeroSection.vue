@@ -4,13 +4,30 @@
       <header class="hero__header">
         <div class="hero__logos">
           <button v-if="isFullLogo" class="logo-btn">
-            <img class="logo" :style="{ height: fullLogoHeight }" id="club-logo" src="../assets/vector/logo-01.svg" alt="Лого клуба"></img>
+            <img
+              class="logo"
+              :style="{ height: fullLogoHeight }"
+              id="club-logo"
+              src="../assets/vector/logo-01.svg"
+              alt="Лого клуба"
+            />
           </button>
           <button v-else class="logo-btn">
-            <img  class="logo" :style="{ height: fullLogoHeight }" id="club-logo" src="../assets/vector/logo-02.svg" alt="Лого клуба"></img>
+            <img
+              class="logo"
+              :style="{ height: fullLogoHeight }"
+              id="club-logo"
+              src="../assets/vector/logo-02.svg"
+              alt="Лого клуба"
+            />
           </button>
           <button class="logo-btn">
-            <img class="logo" id="narfu-logo" src="../assets/vector/logo-narfu-white-01 1.svg" alt="Лого САФУ">
+            <img
+              class="logo"
+              id="narfu-logo"
+              src="../assets/vector/logo-narfu-white-01 1.svg"
+              alt="Лого САФУ"
+            />
           </button>
         </div>
         <nav v-if="isDesktop" class="hero__nav-desktop">
@@ -126,11 +143,12 @@ const closeMobileMenu = () => {
 }
 
 const handleRegister = () => {
-  const target = document.getElementById('feedback-section');
+  const target = document.getElementById('feedback-section')
   if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
   } else {
-    console.warn('Элемент #reg-form отсутствует в DOM');}
+    console.warn('Элемент #reg-form отсутствует в DOM')
+  }
 }
 
 const updateWidth = () => {
@@ -142,16 +160,16 @@ const updateWidth = () => {
 }
 
 const isFullLogo = computed(() => {
-  const w = windowWidth.value;
-  return w > 1200 || (w > 575 && w < 1000);
-});
+  const w = windowWidth.value
+  return w > 1200 || (w > 575 && w < 1000)
+})
 
 const fullLogoHeight = computed(() => {
-  const w = windowWidth.value;
-  if (w > 1200) return '70px';
-  if (w > 575 && w < 1000) return '70px';
-  return '50px';
-});
+  const w = windowWidth.value
+  if (w > 1200) return '70px'
+  if (w > 575 && w < 1000) return '70px'
+  return '50px'
+})
 
 onMounted(() => {
   window.addEventListener('resize', updateWidth)
@@ -232,15 +250,11 @@ h1 {
 .logo {
   /*ыыы*/
   box-sizing: content-box;
-  width: auto;  
-
+  width: auto;
 }
 
 #narfu-logo {
-    
 }
-
-
 
 .hero__nav-desktop {
   display: flex;
@@ -261,8 +275,8 @@ h1 {
   text-decoration: none;
   position: relative;
   padding: auto;
-  transition: all 0.3s ease; 
-  font-family: Inter; 
+  transition: all 0.3s ease;
+  font-family: Inter;
 }
 
 .hero__register-btn {
@@ -451,8 +465,6 @@ h1 {
   padding: 15px 25px;
   max-width: 400px;
 }
-
-
 
 @media (min-width: 950px) {
   .vk-logo-blue {
