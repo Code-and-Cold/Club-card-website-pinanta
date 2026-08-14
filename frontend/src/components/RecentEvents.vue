@@ -69,10 +69,7 @@ const handleKeydown = (e) => {
         <Swiper
           :modules="[Navigation, Pagination]"
           :breakpoints="{
-            350: { slidesPerView: 1.2, 
-              spaceBetween: 0,
-              centeredSlides: false, 
-            },
+            350: { slidesPerView: 1.2, spaceBetween: 0, centeredSlides: false },
             640: { slidesPerView: 2, spaceBetween: 0 },
             950: { slidesPerView: 3, spaceBetween: 0 },
           }"
@@ -125,26 +122,27 @@ const handleKeydown = (e) => {
           <div class="modal-content" role="dialog" aria-modal="true">
             <button class="modal-close" @click="closeModal" aria-label="Закрыть новость">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
               </svg>
             </button>
             <div v-if="selectedItem" class="modal-body">
-                <div class="modal-image-wrapper">
-                <img 
-                  :src="selectedItem.photo" 
-                  class="modal-image" 
-                  :alt="selectedItem.title"
-                >
+              <div class="modal-image-wrapper">
+                <img :src="selectedItem.photo" class="modal-image" :alt="selectedItem.title" />
               </div>
-                <div class="modal-text-content">
-                  <h2 class="modal-title">{{ selectedItem.title }}</h2>
-                  <p v-if="selectedItem.fullText" class="modal-text">
+              <div class="modal-text-content">
+                <h2 class="modal-title">{{ selectedItem.title }}</h2>
+                <p v-if="selectedItem.fullText" class="modal-text">
                   {{ selectedItem.fullText }}
-                  </p>
-                  <p v-else class="modal-text">{{ selectedItem.text }}</p>
-                  <p class="modal-date">{{ selectedItem.data }}</p>
-                </div>
+                </p>
+                <p v-else class="modal-text">{{ selectedItem.text }}</p>
+                <p class="modal-date">{{ selectedItem.data }}</p>
               </div>
+            </div>
           </div>
         </div>
       </Transition>
@@ -210,7 +208,7 @@ const handleKeydown = (e) => {
 .event-card__data {
   color: #002f55;
   margin-left: 5px;
-  margin-bottom: 5px;  
+  margin-bottom: 5px;
 }
 
 .event__swiper-button-prev,
@@ -250,7 +248,7 @@ const handleKeydown = (e) => {
 }
 
 .swiper-button-disabled {
-    opacity: 0;
+  opacity: 0;
 }
 
 .modal-overlay {
@@ -323,7 +321,7 @@ const handleKeydown = (e) => {
 }
 
 .modal-text-content::-webkit-scrollbar-track {
-    color: orange;
+  color: orange;
 }
 
 .modal-title {
@@ -375,7 +373,7 @@ const handleKeydown = (e) => {
     background-color: #e8e8e8;
     transform: translateY(-4px) translateZ(0);
   }
-  
+
   .modal-close:hover {
     background: rgba(0, 0, 0, 0.1);
     transform: rotate(90deg);
@@ -415,7 +413,7 @@ const handleKeydown = (e) => {
     right: 10px;
     top: 40%;
   }
-  
+
   .modal-body {
     flex: 1;
     overflow-y: auto;
