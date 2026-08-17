@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+const API_BASE_URL = 'http://195.133.11.12:8081/api' // FIXME
 
 export const api = {
   async submitFeedback(data) {
@@ -8,6 +8,21 @@ export const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  },
+
+  async getSiteData() {
+    const response = await fetch(`${API_BASE_URL}/site`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
     if (!response.ok) {
