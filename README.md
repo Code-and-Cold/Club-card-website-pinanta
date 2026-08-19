@@ -31,7 +31,7 @@
 Развертывание проекта через Docker Compose:
 
 ```
-cp .env.example .env
+cp .env.dev .env
 docker compose up -d
 ```
 
@@ -63,8 +63,7 @@ docker run -d --name clubsite-postgres \
   -p 5432:5432 postgres:17-alpine
 
 cd backend
-cp .env.example .env
-go run .
+go run . -env=../.env.dev
 ```
 
 # Сценарий разработки

@@ -1,6 +1,7 @@
 package main
 
 import (
+        "flag"
 	"log"
 	"os"
 
@@ -10,7 +11,11 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
+        var envFile string
+        flag.StringVar(&envFile, "env", ".env", "path to .env file")
+        flag.Parse()
+
+	if err := godotenv.Load(envFile); err != nil { // переменная cli или текущая директория
 		log.Println(".env не найден, используются переменные окружения")
 	}
 	
