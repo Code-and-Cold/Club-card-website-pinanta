@@ -1,40 +1,39 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import { api } from '@/api.js'
 
 const formData = reactive({
-  name: '',
-  department: '',
+  full_name: '',
+  school: '',
   course: '',
-  link: '',
+  vk_link: '',
   agreement: false,
 })
 
 const errors = reactive({
-  name: '',
-  department: '',
+  full_name: '',
+  school: '',
   course: '',
-  link: '',
+  vk_link: '',
   agreement: false,
 })
 
 const errorMessages = {
-  name: 'Это поле обязательно к заполнению.',
-  department: 'Пожалуйста, выберите высшую школу.',
-  link: '',
+  full_name: 'Это поле обязательно к заполнению.',
+  school: 'Пожалуйста, выберите высшую школу.',
+  vk_link: '',
   course: 'Пожалуйста, выберите курс.',
   agreement: 'Необходимо дать согласие на обработку данных.',
 }
 
-const requiredFields = ['name', 'department', 'course', 'agreement']
+const requiredFields = ['full_name', 'school', 'course', 'agreement']
 
 const message = ref('')
 const isLoading = ref(false)
 const messageType = ref('')
 
-const email = 'ivan@example.com' // FIXME: Только для текущего API, удалить по изменению
-
 async function submitForm() {
-  Object.assign(errors, { name: '', department: '', course: '', link: '', agreement: false })
+  Object.assign(errors, { full_name: '', school: '', course: '', vk_link: '', agreement: false })
 
   let hasError = false
 
@@ -52,26 +51,21 @@ async function submitForm() {
   messageType.value = ''
 
   try {
-    const res = await fetch('/api/apply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      // body: JSON.stringify(formData)
-      body: JSON.stringify({ name: formData.name, mail: email }), // FIXME: обновить вместе с API
-    })
-
-    if (!res.ok) throw new Error()
+    await api.submitFeedback(formData)
 
     message.value = 'Форма успешно отправлена, скоро с тобой свяжутся!'
     messageType.value = 'success'
 
+    // Очищаем форму
     Object.assign(formData, {
-      name: '',
-      department: '',
+      full_name: '',
+      school: '',
       course: '',
-      link: '',
+      vk_link: '',
       agreement: false,
     })
-  } catch {
+  } catch (error) {
+    console.error('Submit error:', error)
     message.value = 'Форма не отправлена:('
     messageType.value = 'error'
   } finally {
@@ -81,7 +75,7 @@ async function submitForm() {
 </script>
 
 <template>
-  <section class="section feedback">
+  <section class="section feedback" id="feedback-section">
     <div class="feedback__content">
       <h1 class="title">Хочешь тусить с нами?</h1>
 
@@ -94,20 +88,20 @@ async function submitForm() {
         <form class="form text text--form" @submit.prevent="submitForm" id="feedbackForm">
           <input
             class="form__field"
-            :class="{ 'form__field--danger': errors.name }"
-            v-model="formData.name"
+            :class="{ 'form__field--danger': errors.full_name }"
+            v-model="formData.full_name"
             placeholder="ФИО"
           />
-          <div v-if="errors.name" class="form__error-wrapper">
+          <div v-if="errors.full_name" class="form__error-wrapper">
             <span class="icon icon--danger"></span>
-            <span class="text--danger">{{ errors.name }}</span>
+            <span class="text--danger">{{ errors.full_name }}</span>
           </div>
 
           <select
             class="form__field"
-            :class="{ 'form__field--danger': errors.department }"
+            :class="{ 'form__field--danger': errors.school }"
             name="Высшая школа"
-            v-model="formData.department"
+            v-model="formData.school"
           >
             <option class="form__select-item" value="" disabled selected>Высшая школа</option>
             <option class="form__select-item" value="ВШСГНиМК">ВШСГНиМК</option>
@@ -115,9 +109,9 @@ async function submitForm() {
             <option class="form__select-item" value="ВШППиФК">ВШППиФК</option>
             <option class="form__select-item" value="ВИШ">ВИШ</option>
           </select>
-          <div v-if="errors.department" class="form__error-wrapper">
+          <div v-if="errors.school" class="form__error-wrapper">
             <span class="icon icon--danger"></span>
-            <span class="text--danger">{{ errors.name }}</span>
+            <span class="text--danger">{{ errors.school }}</span>
           </div>
 
           <select
@@ -140,13 +134,13 @@ async function submitForm() {
 
           <input
             class="form__field"
-            :class="{ 'form__field--danger': errors.link }"
-            v-model="formData.link"
+            :class="{ 'form__field--danger': errors.vk_link }"
+            v-model="formData.vk_link"
             placeholder="Страница Вконтакте"
           />
-          <div v-if="errors.link" class="form__error-wrapper">
+          <div v-if="errors.vk_link" class="form__error-wrapper">
             <span class="icon icon--danger"></span>
-            <span class="text--danger">{{ errors.link }}</span>
+            <span class="text--danger">{{ errors.vk_link }}</span>
           </div>
 
           <label class="form__checkbox-wrapper">
@@ -255,11 +249,13 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: clamp(20px, calc((100vw - 375px) / (1440px - 375px) * (50px - 20px) + 20px), 50px);
+  gap: clamp(20px, calc((100vw - 375px) / (950px - 375px) * (50px - 20px) + 20px), 50px);
 }
 
 .feedback__content {
-  width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (550px - 335px) + 335px), 550px);
+  flex: 1;
+  min-width: clamp(335px, calc((100vw - 375px) / (950px - 375px) * (550px - 335px) + 335px), 550px);
+  max-width: 950px;
 
   display: flex;
   flex-direction: column;
@@ -271,7 +267,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(25px, calc((100vw - 375px) / (1440px - 375px) * (30px - 25px) + 25px), 30px);
+  gap: clamp(25px, calc((100vw - 375px) / (950px - 375px) * (30px - 25px) + 25px), 30px);
 }
 
 .form {
@@ -300,6 +296,10 @@ a {
   color: inherit;
 }
 
+.form__field::placeholder {
+  color: #3bb0e3;
+}
+
 .form__field--danger {
   border-color: #d33434 !important;
 }
@@ -319,8 +319,10 @@ a {
 }
 
 .feedback__image {
-  height: clamp(356px, calc((100vw - 375px) / (1440px - 375px) * (730px - 356px) + 335px), 730px);
-  width: clamp(335px, calc((100vw - 375px) / (1440px - 375px) * (686px - 335px) + 335px), 686px);
+  flex-shrink: 0;
+
+  height: clamp(356px, calc((100vw - 375px) / (950px - 375px) * (730px - 356px) + 335px), 730px);
+  width: clamp(335px, calc((100vw - 375px) / (950px - 375px) * (686px - 335px) + 335px), 686px);
 
   border-radius: 30px;
   border: 0px solid #e3953b;

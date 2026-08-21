@@ -5,20 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Клуб — админка</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; color: #222; }
+  body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 16px; color: #222; }
   h1 { text-align: center; }
   h2 { border-bottom: 2px solid #333; padding-bottom: 4px; margin-top: 40px; }
+  h3 { margin-bottom: 4px; }
   .card { border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card.hidden-item { opacity: 0.5; }
   .card .info { flex: 1; }
+  .card .actions { display: flex; gap: 6px; flex-wrap: wrap; }
   .muted { color: #777; font-size: 0.9em; }
-  form { display: flex; flex-direction: column; gap: 8px; max-width: 400px; margin-bottom: 16px; }
-  input, textarea, button { padding: 8px; font-size: 1em; font-family: inherit; }
+  form { display: flex; flex-direction: column; gap: 8px; max-width: 420px; margin-bottom: 16px; }
+  input, textarea, select, button { padding: 8px; font-size: 1em; font-family: inherit; }
   button { cursor: pointer; background: #333; color: #fff; border: none; border-radius: 4px; }
   button.danger { background: #a33; }
+  button.secondary { background: #777; }
   button:hover { opacity: 0.85; }
   #loginBox { max-width: 300px; margin: 100px auto; }
   #app { display: none; }
   #loginMsg { color: red; }
+  .block-form { max-width: 420px; border: 1px dashed #aaa; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -36,21 +41,131 @@
 <div id="app">
   <h1>Админ-панель</h1>
 
+  <!-- ===== Простые блоки ===== -->
+  <h2>Hero</h2>
+  <div class="block-form">
+    <form id="heroForm">
+      <input type="text" id="heroTitle" placeholder="Заголовок">
+      <input type="text" id="heroSubtitle" placeholder="Подзаголовок">
+      <input type="text" id="heroPhoto" placeholder="Ссылка на фото">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Разогрев</h2>
+  <div class="block-form">
+    <form id="warmupForm">
+      <input type="text" id="warmupSlogan" placeholder="Текст-лозунг">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Заголовок блока "почему у нас классно"</h2>
+  <div class="block-form">
+    <form id="whyUsBlockForm">
+      <input type="text" id="whyUsBlockTitle" placeholder="Заголовок блока">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Карточки "почему у нас классно"</h2>
+  <form id="whyUsCardForm">
+    <input type="text" id="whyUsIcon" placeholder="Ссылка на иконку">
+    <input type="text" id="whyUsCardTitle" placeholder="Заголовок карточки" required>
+    <textarea id="whyUsCardDesc" placeholder="Описание" rows="2"></textarea>
+    <button type="submit">Добавить карточку</button>
+  </form>
+  <div id="whyUsCardsList">Загрузка...</div>
+
+  <h2>Заголовок блока "наша команда"</h2>
+  <div class="block-form">
+    <form id="teamBlockForm">
+      <input type="text" id="teamBlockTitle" placeholder="Заголовок блока">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
   <h2>Команда</h2>
   <form id="teamForm">
     <input type="text" id="teamName" placeholder="Имя" required>
-    <input type="text" id="teamRole" placeholder="Роль" >
+    <input type="text" id="teamRole" placeholder="Роль">
+    <input type="text" id="teamPhoto" placeholder="Ссылка на фото">
+    <textarea id="teamDescription" placeholder="Описание" rows="2"></textarea>
+    <input type="text" id="teamHoverInfo" placeholder="Инфо при наведении (необязательно)">
+    <input type="text" id="teamContacts" placeholder="Контакты">
     <button type="submit">Добавить участника</button>
   </form>
   <div id="teamList">Загрузка...</div>
 
+  <h2>Заголовок блока "что ты получишь"</h2>
+  <div class="block-form">
+    <form id="benefitsBlockForm">
+      <input type="text" id="benefitsBlockTitle" placeholder="Заголовок блока">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Преимущества</h2>
+  <form id="benefitForm">
+    <input type="text" id="benefitIcon" placeholder="Ссылка на иконку">
+    <input type="text" id="benefitTitle" placeholder="Заголовок" required>
+    <textarea id="benefitDesc" placeholder="Описание" rows="2"></textarea>
+    <button type="submit">Добавить преимущество</button>
+  </form>
+  <div id="benefitsList">Загрузка...</div>
+
+  <h2>Цитата</h2>
+  <div class="block-form">
+    <form id="quoteForm">
+      <textarea id="quoteText" placeholder="Текст цитаты" rows="2"></textarea>
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Заголовок блока "новости"</h2>
+  <div class="block-form">
+    <form id="newsBlockForm">
+      <input type="text" id="newsBlockTitle" placeholder="Заголовок блока">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
   <h2>Новости</h2>
   <form id="newsForm">
+    <input type="text" id="newsImage" placeholder="Ссылка на картинку">
     <input type="text" id="newsTitle" placeholder="Заголовок" required>
-    <textarea id="newsContent" placeholder="Текст новости" rows="3"></textarea>
+    <textarea id="newsShort" placeholder="Краткое описание" rows="2"></textarea>
+    <textarea id="newsFull" placeholder="Подробное описание" rows="3"></textarea>
+    <label class="muted">Отложить публикацию (необязательно):
+      <input type="datetime-local" id="newsPublishAt">
+    </label>
     <button type="submit">Добавить новость</button>
   </form>
   <div id="newsList">Загрузка...</div>
+
+  <h2>Блок "форма заявки"</h2>
+  <div class="block-form">
+    <form id="applyBlockForm">
+      <input type="text" id="applyBlockTitle" placeholder="Заголовок блока">
+      <textarea id="applyBlockDesc" placeholder="Описание блока" rows="2"></textarea>
+      <input type="text" id="applyBlockPhoto" placeholder="Ссылка на фото">
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <h2>Выпадающие списки формы заявки</h2>
+  <form id="dropdownForm">
+    <select id="dropdownKind">
+      <option value="school">Высшая школа</option>
+      <option value="course">Курс</option>
+    </select>
+    <input type="text" id="dropdownValue" placeholder="Значение" required>
+    <button type="submit">Добавить пункт списка</button>
+  </form>
+  <h3>Высшие школы</h3>
+  <div id="schoolsList">Загрузка...</div>
+  <h3>Курсы</h3>
+  <div id="coursesList">Загрузка...</div>
 
   <h2>Заявки на вступление</h2>
   <div id="appsList">Загрузка...</div>
@@ -59,6 +174,17 @@
 <script>
 let authHeader = '';
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+function authedFetch(url, options = {}) {
+  options.headers = Object.assign({}, options.headers, { Authorization: authHeader });
+  return fetch(url, options);
+}
+
 // ---- Вход ----
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -66,7 +192,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
   authHeader = 'Basic ' + btoa(login + ':' + password);
 
-  const res = await fetch('/api/admin/applications', { headers: { Authorization: authHeader } });
+  const res = await authedFetch('/api/admin/applications');
   if (res.ok) {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('app').style.display = 'block';
@@ -77,95 +203,281 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 });
 
 function loadAll() {
+  loadContentBlock('hero', ['heroTitle:title', 'heroSubtitle:subtitle', 'heroPhoto:photo_url']);
+  loadContentBlock('warmup', ['warmupSlogan:slogan']);
+  loadContentBlock('why_us', ['whyUsBlockTitle:title']);
+  loadContentBlock('team', ['teamBlockTitle:title']);
+  loadContentBlock('benefits', ['benefitsBlockTitle:title']);
+  loadContentBlock('quote', ['quoteText:text']);
+  loadContentBlock('news_block', ['newsBlockTitle:title']);
+  loadContentBlock('apply_block', ['applyBlockTitle:title', 'applyBlockDesc:description', 'applyBlockPhoto:photo_url']);
+
+  loadWhyUsCards();
   loadTeam();
+  loadBenefits();
   loadNews();
+  loadDropdownOptions();
   loadApplications();
 }
 
+// ---- Простые блоки (hero/warmup/why_us/team/benefits/quote/news_block/apply_block) ----
+async function loadContentBlock(key, fieldMap) {
+  const res = await authedFetch('/api/admin/content/' + key);
+  if (!res.ok) return;
+  const data = await res.json();
+  const content = data.content || {};
+  fieldMap.forEach(pair => {
+    const [elId, field] = pair.split(':');
+    const el = document.getElementById(elId);
+    if (el) el.value = content[field] || '';
+  });
+}
+
+function bindBlockForm(formId, key, fieldMap) {
+  document.getElementById(formId).addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const content = {};
+    fieldMap.forEach(pair => {
+      const [elId, field] = pair.split(':');
+      content[field] = document.getElementById(elId).value;
+    });
+    await authedFetch('/api/admin/content/' + key, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
+    });
+  });
+}
+
+bindBlockForm('heroForm', 'hero', ['heroTitle:title', 'heroSubtitle:subtitle', 'heroPhoto:photo_url']);
+bindBlockForm('warmupForm', 'warmup', ['warmupSlogan:slogan']);
+bindBlockForm('whyUsBlockForm', 'why_us', ['whyUsBlockTitle:title']);
+bindBlockForm('teamBlockForm', 'team', ['teamBlockTitle:title']);
+bindBlockForm('benefitsBlockForm', 'benefits', ['benefitsBlockTitle:title']);
+bindBlockForm('quoteForm', 'quote', ['quoteText:text']);
+bindBlockForm('newsBlockForm', 'news_block', ['newsBlockTitle:title']);
+bindBlockForm('applyBlockForm', 'apply_block', ['applyBlockTitle:title', 'applyBlockDesc:description', 'applyBlockPhoto:photo_url']);
+
+// ---- Карточки "почему у нас классно" ----
+async function loadWhyUsCards() {
+  const res = await authedFetch('/api/admin/why-us-cards');
+  const data = await res.json();
+  const el = document.getElementById('whyUsCardsList');
+  el.innerHTML = data.length ? data.map(card => `
+    <div class="card ${card.hidden ? 'hidden-item' : ''}">
+      <div class="info"><b>${escapeHtml(card.title)}</b><br><span class="muted">${escapeHtml(card.description)}</span></div>
+      <div class="actions">
+        <button class="secondary" onclick="toggleHidden('why-us-cards', ${card.id}, ${!card.hidden}, loadWhyUsCards)">${card.hidden ? 'Показать' : 'Скрыть'}</button>
+        <button class="danger" onclick="deleteItem('why-us-cards', ${card.id}, loadWhyUsCards)">Удалить</button>
+      </div>
+    </div>
+  `).join('') : '<p class="muted">Пока пусто.</p>';
+}
+
+document.getElementById('whyUsCardForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  await authedFetch('/api/admin/why-us-cards', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      icon_url: document.getElementById('whyUsIcon').value,
+      title: document.getElementById('whyUsCardTitle').value,
+      description: document.getElementById('whyUsCardDesc').value,
+    })
+  });
+  e.target.reset();
+  loadWhyUsCards();
+});
+
 // ---- Команда ----
 async function loadTeam() {
-  const res = await fetch('/api/team');
+  const res = await authedFetch('/api/admin/team');
   const data = await res.json();
   const el = document.getElementById('teamList');
   el.innerHTML = data.length ? data.map(m => `
-    <div class="card">
-      <div class="info"><b>${escapeHtml(m.name)}</b> <span class="muted">${escapeHtml(m.role)}</span></div>
-      <button class="danger" onclick="deleteTeam(${m.id})">Удалить</button>
+    <div class="card ${m.hidden ? 'hidden-item' : ''}">
+      <div class="info"><b>${escapeHtml(m.name)}</b> <span class="muted">${escapeHtml(m.role)}</span><br><span class="muted">${escapeHtml(m.description)}</span></div>
+      <div class="actions">
+        <button class="secondary" onclick="toggleHidden('team', ${m.id}, ${!m.hidden}, loadTeam)">${m.hidden ? 'Показать' : 'Скрыть'}</button>
+        <button class="danger" onclick="deleteItem('team', ${m.id}, loadTeam)">Удалить</button>
+      </div>
     </div>
   `).join('') : '<p class="muted">Пока никого нет.</p>';
 }
 
 document.getElementById('teamForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('teamName').value;
-  const role = document.getElementById('teamRole').value;
-  await fetch('/api/admin/team', {
+  await authedFetch('/api/admin/team', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: authHeader },
-    body: JSON.stringify({ name, role })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: document.getElementById('teamName').value,
+      role: document.getElementById('teamRole').value,
+      photo_url: document.getElementById('teamPhoto').value,
+      description: document.getElementById('teamDescription').value,
+      hover_info: document.getElementById('teamHoverInfo').value,
+      contacts: document.getElementById('teamContacts').value,
+    })
   });
   e.target.reset();
   loadTeam();
 });
 
-async function deleteTeam(id) {
-  await fetch('/api/admin/team/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
-  loadTeam();
+// ---- Преимущества ----
+async function loadBenefits() {
+  const res = await authedFetch('/api/admin/benefits');
+  const data = await res.json();
+  const el = document.getElementById('benefitsList');
+  el.innerHTML = data.length ? data.map(b => `
+    <div class="card ${b.hidden ? 'hidden-item' : ''}">
+      <div class="info"><b>${escapeHtml(b.title)}</b><br><span class="muted">${escapeHtml(b.description)}</span></div>
+      <div class="actions">
+        <button class="secondary" onclick="toggleHidden('benefits', ${b.id}, ${!b.hidden}, loadBenefits)">${b.hidden ? 'Показать' : 'Скрыть'}</button>
+        <button class="danger" onclick="deleteItem('benefits', ${b.id}, loadBenefits)">Удалить</button>
+      </div>
+    </div>
+  `).join('') : '<p class="muted">Пока пусто.</p>';
 }
+
+document.getElementById('benefitForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  await authedFetch('/api/admin/benefits', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      icon_url: document.getElementById('benefitIcon').value,
+      title: document.getElementById('benefitTitle').value,
+      description: document.getElementById('benefitDesc').value,
+    })
+  });
+  e.target.reset();
+  loadBenefits();
+});
 
 // ---- Новости ----
 async function loadNews() {
-  const res = await fetch('/api/news');
+  const res = await authedFetch('/api/admin/news');
   const data = await res.json();
   const el = document.getElementById('newsList');
-  el.innerHTML = data.length ? data.map(n => `
-    <div class="card">
-      <div class="info"><b>${escapeHtml(n.title)}</b><br><span class="muted">${escapeHtml(n.content)}</span></div>
-      <button class="danger" onclick="deleteNews(${n.id})">Удалить</button>
+  const now = new Date();
+  el.innerHTML = data.length ? data.map(n => {
+    const scheduled = n.publish_at && new Date(n.publish_at) > now;
+    return `
+    <div class="card ${n.hidden ? 'hidden-item' : ''}">
+      <div class="info">
+        <b>${escapeHtml(n.title)}</b>${scheduled ? ' <span class="muted">(отложено до ' + new Date(n.publish_at).toLocaleString() + ')</span>' : ''}<br>
+        <span class="muted">${escapeHtml(n.short_desc)}</span>
+      </div>
+      <div class="actions">
+        <button class="secondary" onclick="toggleHidden('news', ${n.id}, ${!n.hidden}, loadNews)">${n.hidden ? 'Показать' : 'Скрыть'}</button>
+        <button class="secondary" onclick="postponeNews(${n.id})">Отложить</button>
+        <button class="danger" onclick="deleteItem('news', ${n.id}, loadNews)">Удалить</button>
+      </div>
     </div>
-  `).join('') : '<p class="muted">Новостей пока нет.</p>';
+  `; }).join('') : '<p class="muted">Новостей пока нет.</p>';
 }
 
 document.getElementById('newsForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const title = document.getElementById('newsTitle').value;
-  const content = document.getElementById('newsContent').value;
-  await fetch('/api/admin/news', {
+  const publishAtRaw = document.getElementById('newsPublishAt').value; // "2026-08-01T10:00"
+  const publish_at = publishAtRaw ? new Date(publishAtRaw).toISOString() : '';
+  await authedFetch('/api/admin/news', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: authHeader },
-    body: JSON.stringify({ title, content })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      image_url: document.getElementById('newsImage').value,
+      title: document.getElementById('newsTitle').value,
+      short_desc: document.getElementById('newsShort').value,
+      full_desc: document.getElementById('newsFull').value,
+      publish_at,
+    })
   });
   e.target.reset();
   loadNews();
 });
 
-async function deleteNews(id) {
-  await fetch('/api/admin/news/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
+async function postponeNews(id) {
+  const raw = prompt('Дата и время публикации (например, 2026-08-01T10:00), пусто = опубликовать сразу:');
+  if (raw === null) return;
+  const publish_at = raw ? new Date(raw).toISOString() : '';
+  await authedFetch('/api/admin/news/' + id + '/postpone', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ publish_at })
+  });
   loadNews();
 }
 
+// ---- Выпадающие списки ----
+async function loadDropdownOptions() {
+  const [schoolsRes, coursesRes] = await Promise.all([
+    authedFetch('/api/admin/dropdown-options?kind=school'),
+    authedFetch('/api/admin/dropdown-options?kind=course'),
+  ]);
+  const schools = await schoolsRes.json();
+  const courses = await coursesRes.json();
+  renderDropdownList('schoolsList', schools);
+  renderDropdownList('coursesList', courses);
+}
+
+function renderDropdownList(elId, items) {
+  const el = document.getElementById(elId);
+  el.innerHTML = items.length ? items.map(o => `
+    <div class="card ${o.active ? '' : 'hidden-item'}">
+      <div class="info">${escapeHtml(o.value)}</div>
+      <div class="actions">
+        <button class="danger" onclick="deleteItem('dropdown-options', ${o.id}, loadDropdownOptions)">Удалить</button>
+      </div>
+    </div>
+  `).join('') : '<p class="muted">Пока пусто.</p>';
+}
+
+document.getElementById('dropdownForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  await authedFetch('/api/admin/dropdown-options', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      kind: document.getElementById('dropdownKind').value,
+      value: document.getElementById('dropdownValue').value,
+      active: true,
+    })
+  });
+  e.target.reset();
+  loadDropdownOptions();
+});
+
 // ---- Заявки ----
 async function loadApplications() {
-  const res = await fetch('/api/admin/applications', { headers: { Authorization: authHeader } });
+  const res = await authedFetch('/api/admin/applications');
   const data = await res.json();
   const el = document.getElementById('appsList');
   el.innerHTML = data.length ? data.map(a => `
     <div class="card">
-      <div class="info"><b>${escapeHtml(a.name)}</b> — ${escapeHtml(a.email)}<br><span class="muted">${new Date(a.created_at).toLocaleString()}</span></div>
-      <button class="danger" onclick="deleteApp(${a.id})">Удалить</button>
+      <div class="info">
+        <b>${escapeHtml(a.full_name)}</b><br>
+        <span class="muted">${escapeHtml(a.school)}, ${escapeHtml(a.course)}</span><br>
+        <a href="${escapeHtml(a.vk_link)}" target="_blank">${escapeHtml(a.vk_link)}</a><br>
+        <span class="muted">${new Date(a.created_at).toLocaleString()}</span>
+      </div>
+      <button class="danger" onclick="deleteItem('applications', ${a.id}, loadApplications)">Удалить</button>
     </div>
   `).join('') : '<p class="muted">Заявок пока нет.</p>';
 }
 
-async function deleteApp(id) {
-  await fetch('/api/admin/applications/' + id, { method: 'DELETE', headers: { Authorization: authHeader } });
-  loadApplications();
+// ---- Общие действия ----
+async function toggleHidden(resource, id, hidden, reload) {
+  await authedFetch(`/api/admin/${resource}/${id}/hidden`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ hidden })
+  });
+  reload();
 }
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+async function deleteItem(resource, id, reload) {
+  await authedFetch(`/api/admin/${resource}/${id}`, { method: 'DELETE' });
+  reload();
 }
 </script>
 

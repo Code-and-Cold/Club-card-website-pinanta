@@ -157,13 +157,11 @@ const handleKeydown = (e) => {
 }
 
 .events__container {
-  width: min(100% - 32px, 1180px);
-  margin-inline: auto;
+  width: 100%;
 }
 
 .events__title {
   color: #002f55;
-  margin-left: 5px;
 }
 
 .events__slider-wraper {
@@ -171,7 +169,7 @@ const handleKeydown = (e) => {
   align-items: center;
   position: relative;
   width: 100%;
-  height: 486px;
+  height: auto;
 }
 
 .event__swiper {
@@ -189,10 +187,6 @@ const handleKeydown = (e) => {
     box-shadow 180ms ease;
   height: 100%;
   cursor: pointer;
-  width: 430px;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .event-card__content {
@@ -201,13 +195,14 @@ const handleKeydown = (e) => {
 
 .event-card__photo {
   width: 100%;
-  height: 209px;
+  aspect-ratio: 416/278;
   object-fit: cover;
   margin: auto;
   clip-path: inset(2% 2% 2% 2% round 20px);
   margin-bottom: 15px;
   margin-top: 5px;
 }
+
 .event-card__name,
 .event-card__text,
 .event-card__data {
@@ -235,10 +230,6 @@ const handleKeydown = (e) => {
   justify-content: center;
 }
 
-.event__swiper-button-prev:hover,
-.event__swiper-button-next:hover {
-  color: #3bb0e3;
-}
 .event__swiper-button-prev {
   left: -50px;
   right: auto;
@@ -372,6 +363,12 @@ const handleKeydown = (e) => {
     scrollbar-color: #ccc #f5f5f5;
   }
 
+  .event-card {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   .event-card:hover {
     background-color: #e8e8e8;
     transform: translateY(-4px) translateZ(0);
@@ -381,6 +378,11 @@ const handleKeydown = (e) => {
     background: rgba(0, 0, 0, 0.1);
     transform: rotate(90deg);
   }
+
+  .event__swiper-button-prev:hover,
+  .event__swiper-button-next:hover {
+    color: #3bb0e3;
+  }
 }
 
 @media (max-width: 900px) {
@@ -389,18 +391,9 @@ const handleKeydown = (e) => {
     margin: 10px;
     height: 95%;
   }
-
-  .event-card:hover {
-    transform: none;
-    background-color: #f0f0f1;
-  }
 }
 
 @media (max-width: 600px) {
-  .events__container {
-    width: 100%;
-    margin-left: 10px;
-  }
   .modal-content {
     padding: 20px;
   }
@@ -438,11 +431,5 @@ const handleKeydown = (e) => {
   .modal-leave-active {
     transition: none;
   }
-}
-</style>
-
-<style>
-::-webkit-scrollbar-track {
-  color: orange;
 }
 </style>

@@ -87,8 +87,7 @@ defineProps({
 }
 
 .team__container {
-  width: min(100% - 32px, 1180px);
-  margin-inline: auto;
+  width: 100%;
 }
 
 .team__title {
@@ -101,7 +100,7 @@ defineProps({
   align-items: center;
   position: relative;
   width: 100%;
-  height: 486px;
+  height: auto;
 }
 
 .team__swiper {
@@ -129,12 +128,12 @@ defineProps({
 }
 
 .member-card__content {
-  margin: auto;
+  margin: 0;
 }
 
 .member-card__photo {
   width: 100%;
-  height: 407px;
+  aspect-ratio: 3/4;
   object-fit: cover;
   margin: auto;
   clip-path: inset(2% 2% 2% 2% round 20px);
@@ -197,10 +196,16 @@ defineProps({
 }
 
 @media (min-width: 901px) {
+  .member-card {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
   .member-card:hover {
     background-color: #e8e8e8;
-    transform: translateY(-4px);
+    transform: translateY(-4px) translateZ(0);
   }
+
   .team__swiper-button-prev:hover,
   .team__swiper-button-next:hover {
     color: #3bb0e3;

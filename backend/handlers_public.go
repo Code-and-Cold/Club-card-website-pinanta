@@ -2,74 +2,170 @@ package main
 
 import (
 	"net/http"
+	"regexp"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
 
-// GET /api/team
-func getTeam(c echo.Context) error {
-	rows, err := db.Query(`SELECT id, name, role, photo_url, sort_order, created_at
-		FROM team_members ORDER BY sort_order ASC, id ASC`)
+var (
+	fullNameRe = regexp.MustCompile(`^[A-Za-zА-Яа-яЁё]+([ \-][A-Za-zА-Яа-яЁё]+)*$`)
+	vkLinkRe   = regexp.MustCompile(`(?i)https?://(?:www\.)?(?:vk\.com|vk\.ru)/[^\s]+`)
+)
+
+// GET /api/site - агрегированные данные для главной страницы (все блоки одним запросом)
+func getSite(c echo.Context) error {
+	resp := echo.Map{}
+
+	blocks, err := loadAllSiteBlocks()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения блоков сайта"})
+	}
+	for key, content := range blocks {
+		resp[key] = content
+	}
+
+	whyUsCards, err := listWhyUsCards(false)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения карточек"})
+	}
+	resp["why_us_cards"] = whyUsCards
+
+	team, err := listTeamMembers(false)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения команды"})
 	}
-	defer rows.Close()
+	resp["team_members"] = team
 
-	members := []TeamMember{}
-	for rows.Next() {
-		var m TeamMember
-		if err := rows.Scan(&m.ID, &m.Name, &m.Role, &m.PhotoURL, &m.SortOrder, &m.CreatedAt); err != nil {
-			return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения строки"})
-		}
-		members = append(members, m)
+	benefits, err := listBenefits(false)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения преимуществ"})
 	}
-	return c.JSON(http.StatusOK, members)
-}
+	resp["benefits_items"] = benefits
 
-// GET /api/news
-func getNews(c echo.Context) error {
-	rows, err := db.Query(`SELECT id, title, content, created_at
-		FROM news ORDER BY created_at DESC`)
+	news, err := listNews(false)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения новостей"})
 	}
-	defer rows.Close()
+	resp["news"] = news
 
-	items := []News{}
-	for rows.Next() {
-		var n News
-		if err := rows.Scan(&n.ID, &n.Title, &n.Content, &n.CreatedAt); err != nil {
-			return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения строки"})
-		}
-		items = append(items, n)
+	schools, err := listDropdownOptions("school", false)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения списка школ"})
 	}
-	return c.JSON(http.StatusOK, items)
+	resp["schools"] = schools
+
+	courses, err := listDropdownOptions("course", false)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения списка курсов"})
+	}
+	resp["courses"] = courses
+
+	return c.JSON(http.StatusOK, resp)
 }
 
-// POST /api/apply - форма заявки на вступление в клуб (без верификации)
+// POST /api/apply - заявка на вступление в клуб
 func postApply(c echo.Context) error {
-	var in struct {
-		Name  string `json:"name"`
-		Email string `json:"email"`
-	}
+	var in ApplyRequest
 	if err := c.Bind(&in); err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
+		return c.JSON(http.StatusBadRequest, echo.Map{"error": "формат данных не подходит", "message": "Не удалось прочитать данные формы. Проверьте, что все поля заполнены корректно."})
 	}
 
-	in.Name = strings.TrimSpace(in.Name)
-	in.Email = strings.TrimSpace(in.Email)
+	in.FullName = strings.TrimSpace(in.FullName)
+	in.School = strings.TrimSpace(in.School)
+	in.Course = strings.TrimSpace(in.Course)
+	in.VKLink = strings.TrimSpace(in.VKLink)
 
-	if in.Name == "" || in.Email == "" {
-		return c.JSON(http.StatusBadRequest, echo.Map{"error": "имя и почта обязательны"})
+	if in.FullName == "" || !fullNameRe.MatchString(in.FullName) {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_full_name",
+			"message": "ФИО должно содержать только буквы и пробелы (без цифр и спецсимволов).",
+		})
+	}
+	if len([]rune(in.FullName)) < 5 {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_full_name",
+			"message": "Укажите, пожалуйста, ФИО полностью.",
+		})
 	}
 
-	var id int
-	err := db.QueryRow(`INSERT INTO applications (name, email) VALUES ($1, $2) RETURNING id`,
-		in.Name, in.Email).Scan(&id)
+	if in.School == "" {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_school",
+			"message": "Выберите высшую школу из списка.",
+		})
+	}
+	schoolOK, err := dropdownOptionExists("school", in.School)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "не удалось сохранить заявку"})
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "внутренняя ошибка", "message": "Форма не отправлена, попробуйте ещё раз позже."})
+	}
+	if !schoolOK {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_school",
+			"message": "Выбранная высшая школа недоступна. Обновите страницу и выберите значение из списка.",
+		})
 	}
 
-	return c.JSON(http.StatusCreated, echo.Map{"id": id, "status": "ok"})
+	if in.Course == "" {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_course",
+			"message": "Выберите курс из списка.",
+		})
+	}
+	courseOK, err := dropdownOptionExists("course", in.Course)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "внутренняя ошибка", "message": "Форма не отправлена, попробуйте ещё раз позже."})
+	}
+	if !courseOK {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_course",
+			"message": "Выбранный курс недоступен. Обновите страницу и выберите значение из списка.",
+		})
+	}
+
+	if in.VKLink == "" || !vkLinkRe.MatchString(in.VKLink) {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "invalid_vk_link",
+			"message": "Укажите корректную ссылку на страницу ВКонтакте (https://vk.com/...).",
+		})
+	}
+
+	if !in.Agreement {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"error":   "agreement_required",
+			"message": "Необходимо подтвердить согласие для отправки формы.",
+		})
+	}
+
+	app := Application{
+		FullName:  in.FullName,
+		School:    in.School,
+		Course:    in.Course,
+		VKLink:    in.VKLink,
+		Agreement: true,
+		CreatedAt: time.Now(),
+	}
+
+	err = db.QueryRow(
+		`INSERT INTO applications (full_name, school, course, vk_link, agreement)
+		 VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at`,
+		app.FullName, app.School, app.Course, app.VKLink, app.Agreement,
+	).Scan(&app.ID, &app.CreatedAt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"error":   "save_failed",
+			"message": "Не удалось сохранить заявку. Форма не отправлена, попробуйте ещё раз позже.",
+		})
+	}
+
+	// Синхронизация с таблицей на Яндекс Диске - в фоне, чтобы не задерживать ответ пользователю.
+	// Заявка уже надёжно сохранена в БД, даже если Яндекс Диск временно недоступен.
+	syncApplicationToYandexAsync(app)
+
+	return c.JSON(http.StatusCreated, echo.Map{
+		"id":      app.ID,
+		"status":  "ok",
+		"message": "Заявка успешно отправлена!",
+	})
 }

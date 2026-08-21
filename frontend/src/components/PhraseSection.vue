@@ -1,9 +1,9 @@
 <template>
   <section class="phrase section" data-testid="phrase-section">
     <span class="phrase__text title" data-testid="phrase-section__phrase">
-      Хватит писать учебные лабы «в стол».
-      <mark class="phrase__mark" data-testid="phrase-section__highlight">Присоединяйся к нам</mark>,
-      чтобы делать реальные проекты в кайфовой компании и прокачать резюме еще до выпуска.
+      Устал от сухой теории, заброшенных пет-проектов и мыслей о том, кому ты нужен без опыта?
+      <mark class="phrase__mark" data-testid="phrase-section__highlight">Присоединяйся к нам,</mark>
+      чтобы решать боевые задачи и собирать портфолио в команде таких же, как ты.
     </span>
   </section>
 </template>
