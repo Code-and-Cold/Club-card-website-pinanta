@@ -32,7 +32,7 @@ import (
 // Если переменные не заданы, синхронизация просто отключена - заявки всё равно сохраняются
 // в Postgres, сайт продолжает работать.
 
-var yandexAPIBase = os.Getenv("YANDEX_API_BASE")
+const yandexAPIBase = "https://cloud-api.yandex.net/v1/disk/resources"
 
 var yandexSyncMu sync.Mutex
 
