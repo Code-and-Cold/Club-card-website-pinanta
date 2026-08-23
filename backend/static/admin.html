@@ -70,7 +70,11 @@
 
   <h2>Карточки "почему у нас классно"</h2>
   <form id="whyUsCardForm">
-    <input type="text" id="whyUsIcon" placeholder="Ссылка на иконку">
+    <label for="whyUsIcon">Иконка из frontend/src/assets/icons</label>
+    <select id="whyUsIcon">
+      <option value="">Без иконки</option>
+    </select>
+    <img id="whyUsIconPreview" alt="" hidden style="width: 48px; height: 48px;">
     <input type="text" id="whyUsCardTitle" placeholder="Заголовок карточки" required>
     <textarea id="whyUsCardDesc" placeholder="Описание" rows="2"></textarea>
     <button type="submit">Добавить карточку</button>
@@ -107,7 +111,11 @@
 
   <h2>Преимущества</h2>
   <form id="benefitForm">
-    <input type="text" id="benefitIcon" placeholder="Ссылка на иконку">
+    <label for="benefitIcon">Иконка из frontend/src/assets/icons</label>
+    <select id="benefitIcon">
+      <option value="">Без иконки</option>
+    </select>
+    <img id="benefitIconPreview" alt="" hidden style="width: 48px; height: 48px;">
     <input type="text" id="benefitTitle" placeholder="Заголовок" required>
     <textarea id="benefitDesc" placeholder="Описание" rows="2"></textarea>
     <button type="submit">Добавить преимущество</button>
@@ -185,6 +193,39 @@ function authedFetch(url, options = {}) {
   return fetch(url, options);
 }
 
+function assetUrl(path) {
+  return path ? new URL('/assets/' + path, window.location.origin).href : '';
+}
+
+function setupIconPreview(selectId, previewId) {
+  const select = document.getElementById(selectId);
+  const preview = document.getElementById(previewId);
+  select.addEventListener('change', () => {
+    preview.src = assetUrl(select.value);
+    preview.hidden = !select.value;
+  });
+}
+
+async function loadIconOptions() {
+  const res = await authedFetch('/api/admin/assets');
+  if (!res.ok) return;
+  const assets = await res.json();
+  ['whyUsIcon', 'benefitIcon'].forEach(selectId => {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="">Без иконки</option>';
+    assets.forEach(asset => {
+      const option = document.createElement('option');
+      option.value = asset.path;
+      option.textContent = asset.name;
+      option.title = asset.path;
+      select.appendChild(option);
+    });
+  });
+}
+
+setupIconPreview('whyUsIcon', 'whyUsIconPreview');
+setupIconPreview('benefitIcon', 'benefitIconPreview');
+
 // ---- Вход ----
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -196,6 +237,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   if (res.ok) {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    loadIconOptions();
     loadAll();
   } else {
     document.getElementById('loginMsg').textContent = 'Неверный логин или пароль';
@@ -280,7 +322,7 @@ document.getElementById('whyUsCardForm').addEventListener('submit', async (e) =>
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      icon_url: document.getElementById('whyUsIcon').value,
+      icon_url: assetUrl(document.getElementById('whyUsIcon').value),
       title: document.getElementById('whyUsCardTitle').value,
       description: document.getElementById('whyUsCardDesc').value,
     })
@@ -345,7 +387,7 @@ document.getElementById('benefitForm').addEventListener('submit', async (e) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      icon_url: document.getElementById('benefitIcon').value,
+      icon_url: assetUrl(document.getElementById('benefitIcon').value),
       title: document.getElementById('benefitTitle').value,
       description: document.getElementById('benefitDesc').value,
     })

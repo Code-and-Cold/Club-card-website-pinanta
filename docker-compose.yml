@@ -26,6 +26,7 @@ services:
       - "${BACKEND_PORT}:8080"
     volumes:
       - ./backend:/app
+      - ./frontend/src/assets:/frontend-assets:ro
     environment:
       - DB_HOST=postgres
       - DB_PORT=${POSTGRES_PORT}
@@ -33,6 +34,7 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${POSTGRES_DB}
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
+      - ASSETS_DIR=/frontend-assets
     depends_on:
       postgres:
         condition: service_healthy
