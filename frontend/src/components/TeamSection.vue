@@ -1,11 +1,12 @@
 <script setup>
+import { computed } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: 'Наша команда',
@@ -15,6 +16,15 @@ defineProps({
     required: true,
   },
 })
+
+const teamMembers = computed(() =>
+  props.items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    photo: item.photo_url || item.photo,
+    position: item.role || item.position,
+  })),
+)
 </script>
 
 <template>
@@ -49,7 +59,7 @@ defineProps({
           }"
           class="team__swiper"
         >
-          <SwiperSlide v-for="(item, index) in items" :key="item.id ?? index" class="member-card">
+          <SwiperSlide v-for="(item, index) in teamMembers" :key="item.id ?? index" class="member-card">
             <div class="member-card__content">
               <img
                 :src="item.photo"

@@ -57,3 +57,39 @@ func isIconFile(name string) bool {
 		return false
 	}
 }
+
+func listImages(c echo.Context) error {
+	items := []assetItem{}
+	err := filepath.WalkDir(filepath.Join(assetsDir(), "images"), func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || !isImageFile(entry.Name()) {
+			return nil
+		}
+
+		relativePath, err := filepath.Rel(assetsDir(), path)
+		if err != nil {
+			return err
+		}
+		items = append(items, assetItem{
+			Name: entry.Name(),
+			Path: filepath.ToSlash(relativePath),
+		})
+		return nil
+	})
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения фотографий"})
+	}
+
+	return c.JSON(http.StatusOK, items)
+}
+
+func isImageFile(name string) bool {
+	switch strings.ToLower(filepath.Ext(name)) {
+	case ".png", ".jpg", ".jpeg", ".webp", ".gif":
+		return true
+	default:
+		return false
+	}
+}

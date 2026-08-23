@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -6,7 +7,7 @@ import 'swiper/css'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: 'Недавние события',
@@ -16,6 +17,17 @@ defineProps({
     required: true,
   },
 })
+
+const events = computed(() =>
+  props.items.map((item) => ({
+    id: item.id,
+    photo: item.image_url || item.photo,
+    title: item.title,
+    text: item.short_desc || item.text,
+    fullText: item.full_desc || item.fullText,
+    data: item.created_at ? new Date(item.created_at).toLocaleDateString('ru-RU') : '',
+  })),
+)
 
 const selectedItem = ref(null)
 const isModalOpen = ref(false)
@@ -80,7 +92,7 @@ const handleKeydown = (e) => {
           class="event__swiper"
         >
           <SwiperSlide
-            v-for="(item, index) in items"
+            v-for="(item, index) in events"
             :key="item.id ?? index"
             class="event-card"
             @click="openModal(item)"
