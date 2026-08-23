@@ -24,6 +24,7 @@ func main() {
 	e.Use(middleware.CORS()) // на случай, если фронт будет открыт отдельно от сервера
 
 	// Статика: index.html - публичная страница, admin.html - админка
+	e.Static("/assets", assetsDir())
 	e.Static("/", "static")
 
 	api := e.Group("/api")
@@ -45,6 +46,7 @@ func main() {
 	// Простые текстовые/JSON блоки: hero, warmup, why_us, team, benefits, quote, news_block, apply_block
 	admin.GET("/content/:key", getSiteBlock)
 	admin.PUT("/content/:key", putSiteBlock)
+	admin.GET("/assets", listAssets)
 
 	// Команда
 	admin.GET("/team", adminListTeam)
