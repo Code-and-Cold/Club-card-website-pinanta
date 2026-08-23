@@ -47,7 +47,8 @@
     <form id="heroForm">
       <input type="text" id="heroTitle" placeholder="Заголовок">
       <input type="text" id="heroSubtitle" placeholder="Подзаголовок">
-      <input type="text" id="heroPhoto" placeholder="Ссылка на фото">
+      <select id="heroPhoto"><option value="">Без фото</option></select>
+      <img id="heroPhotoPreview" alt="" hidden style="width: 160px; max-height: 100px; object-fit: cover;">
       <button type="submit">Сохранить</button>
     </form>
   </div>
@@ -93,7 +94,8 @@
   <form id="teamForm">
     <input type="text" id="teamName" placeholder="Имя" required>
     <input type="text" id="teamRole" placeholder="Роль">
-    <input type="text" id="teamPhoto" placeholder="Ссылка на фото">
+    <select id="teamPhoto"><option value="">Без фото</option></select>
+    <img id="teamPhotoPreview" alt="" hidden style="width: 100px; height: 100px; object-fit: cover;">
     <textarea id="teamDescription" placeholder="Описание" rows="2"></textarea>
     <input type="text" id="teamHoverInfo" placeholder="Инфо при наведении (необязательно)">
     <input type="text" id="teamContacts" placeholder="Контакты">
@@ -140,7 +142,8 @@
 
   <h2>Новости</h2>
   <form id="newsForm">
-    <input type="text" id="newsImage" placeholder="Ссылка на картинку">
+    <select id="newsImage"><option value="">Без изображения</option></select>
+    <img id="newsImagePreview" alt="" hidden style="width: 160px; max-height: 100px; object-fit: cover;">
     <input type="text" id="newsTitle" placeholder="Заголовок" required>
     <textarea id="newsShort" placeholder="Краткое описание" rows="2"></textarea>
     <textarea id="newsFull" placeholder="Подробное описание" rows="3"></textarea>
@@ -156,7 +159,8 @@
     <form id="applyBlockForm">
       <input type="text" id="applyBlockTitle" placeholder="Заголовок блока">
       <textarea id="applyBlockDesc" placeholder="Описание блока" rows="2"></textarea>
-      <input type="text" id="applyBlockPhoto" placeholder="Ссылка на фото">
+      <select id="applyBlockPhoto"><option value="">Без фото</option></select>
+      <img id="applyBlockPhotoPreview" alt="" hidden style="width: 160px; max-height: 100px; object-fit: cover;">
       <button type="submit">Сохранить</button>
     </form>
   </div>
@@ -197,7 +201,26 @@ function assetUrl(path) {
   return path ? new URL('/assets/' + path, window.location.origin).href : '';
 }
 
+function assetPath(value) {
+  if (!value) return '';
+  try {
+    const path = new URL(value, window.location.origin).pathname;
+    return path.startsWith('/assets/') ? path.slice('/assets/'.length) : value;
+  } catch {
+    return value;
+  }
+}
+
 function setupIconPreview(selectId, previewId) {
+  const select = document.getElementById(selectId);
+  const preview = document.getElementById(previewId);
+  select.addEventListener('change', () => {
+    preview.src = assetUrl(select.value);
+    preview.hidden = !select.value;
+  });
+}
+
+function setupImagePreview(selectId, previewId) {
   const select = document.getElementById(selectId);
   const preview = document.getElementById(previewId);
   select.addEventListener('change', () => {
@@ -223,8 +246,29 @@ async function loadIconOptions() {
   });
 }
 
+async function loadImageOptions() {
+  const res = await authedFetch('/api/admin/images');
+  if (!res.ok) return;
+  const images = await res.json();
+  ['heroPhoto', 'teamPhoto', 'newsImage', 'applyBlockPhoto'].forEach(selectId => {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="">Без фото</option>';
+    images.forEach(image => {
+      const option = document.createElement('option');
+      option.value = image.path;
+      option.textContent = image.name;
+      option.title = image.path;
+      select.appendChild(option);
+    });
+  });
+}
+
 setupIconPreview('whyUsIcon', 'whyUsIconPreview');
 setupIconPreview('benefitIcon', 'benefitIconPreview');
+setupImagePreview('heroPhoto', 'heroPhotoPreview');
+setupImagePreview('teamPhoto', 'teamPhotoPreview');
+setupImagePreview('newsImage', 'newsImagePreview');
+setupImagePreview('applyBlockPhoto', 'applyBlockPhotoPreview');
 
 // ---- Вход ----
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -237,7 +281,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   if (res.ok) {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    loadIconOptions();
+    await Promise.all([loadIconOptions(), loadImageOptions()]);
     loadAll();
   } else {
     document.getElementById('loginMsg').textContent = 'Неверный логин или пароль';
@@ -271,7 +315,7 @@ async function loadContentBlock(key, fieldMap) {
   fieldMap.forEach(pair => {
     const [elId, field] = pair.split(':');
     const el = document.getElementById(elId);
-    if (el) el.value = content[field] || '';
+    if (el) el.value = el.tagName === 'SELECT' ? assetPath(content[field]) : content[field] || '';
   });
 }
 
@@ -281,7 +325,8 @@ function bindBlockForm(formId, key, fieldMap) {
     const content = {};
     fieldMap.forEach(pair => {
       const [elId, field] = pair.split(':');
-      content[field] = document.getElementById(elId).value;
+      const el = document.getElementById(elId);
+      content[field] = el.tagName === 'SELECT' ? assetUrl(el.value) : el.value;
     });
     await authedFetch('/api/admin/content/' + key, {
       method: 'PUT',
@@ -355,7 +400,7 @@ document.getElementById('teamForm').addEventListener('submit', async (e) => {
     body: JSON.stringify({
       name: document.getElementById('teamName').value,
       role: document.getElementById('teamRole').value,
-      photo_url: document.getElementById('teamPhoto').value,
+      photo_url: assetUrl(document.getElementById('teamPhoto').value),
       description: document.getElementById('teamDescription').value,
       hover_info: document.getElementById('teamHoverInfo').value,
       contacts: document.getElementById('teamContacts').value,
@@ -427,7 +472,7 @@ document.getElementById('newsForm').addEventListener('submit', async (e) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      image_url: document.getElementById('newsImage').value,
+      image_url: assetUrl(document.getElementById('newsImage').value),
       title: document.getElementById('newsTitle').value,
       short_desc: document.getElementById('newsShort').value,
       full_desc: document.getElementById('newsFull').value,

@@ -47,6 +47,7 @@ func main() {
 	admin.GET("/content/:key", getSiteBlock)
 	admin.PUT("/content/:key", putSiteBlock)
 	admin.GET("/assets", listAssets)
+	admin.GET("/images", listImages)
 
 	// Команда
 	admin.GET("/team", adminListTeam)
