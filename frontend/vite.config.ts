@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  base: "/Club-card-website-pinanta/",
+  base: process.env.VITE_BASE_PATH || '/',
   plugins: [vue()],
 
   resolve: {

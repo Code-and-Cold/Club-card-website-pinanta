@@ -1,15 +1,34 @@
-let siteDataPromise = null
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
-export function getSiteData() {
-  if (!siteDataPromise) {
-    siteDataPromise = fetch('/api/site').then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to load site data: ${response.status}`)
-      }
-
-      return response.json()
+export const api = {
+  async submitFeedback(data) {
+    const response = await fetch(`${API_BASE_URL}/apply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     })
-  }
 
-  return siteDataPromise
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  },
+
+  async getSiteData() {
+    const response = await fetch(`${API_BASE_URL}/site`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  },
 }

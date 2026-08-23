@@ -12,8 +12,13 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:${BACKEND_PORT}/api
+      - VITE_BASE_PATH=/
+      - ADMIN_LOGIN=${FRONTEND_ADMIN_LOGIN}
+      - ADMIN_PASSWORD=${FRONTEND_ADMIN_PASSWORD}
     depends_on:
-      backend:
+      back:
         condition: service_healthy
     restart: unless-stopped
 
