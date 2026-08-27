@@ -6,19 +6,14 @@ services:
     env_file:
       - ./.env # Вынести в переменную окружения типа ENV_FILE, для разделения dev/stage/prod
     environment:
-      - VITE_API_TARGET="http://backend:${BACKEND_INTERNAL_PORT}" # Если не указано (dev), используется default в коде (localhost:8080)
+      - VITE_API_TARGET=http://backend:${BACKEND_INTERNAL_PORT} # Если не указано (dev), используется default в коде (localhost:8080)
     ports:
       - "${FRONTEND_EXTERNAL_PORT}:${FRONTEND_INTERNAL_PORT}"
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:${BACKEND_PORT}/api
-      - VITE_BASE_PATH=/
-      - ADMIN_LOGIN=${FRONTEND_ADMIN_LOGIN}
-      - ADMIN_PASSWORD=${FRONTEND_ADMIN_PASSWORD}
     depends_on:
-      back:
+      backend:
         condition: service_healthy
     restart: unless-stopped
 
@@ -28,19 +23,19 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./.env
-#    ports:
-#      - "${BACKEND_EXTERNAL_PORT}:${BACKEND_INTERNAL_PORT}"
+    ports:
+      - "${BACKEND_EXTERNAL_PORT}:${BACKEND_INTERNAL_PORT}"
     volumes:
       - ./backend:/app
       - ./frontend/src/assets:/frontend-assets:ro
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=${POSTGRES_PORT}
-      - DB_USER=${POSTGRES_USER}
-      - DB_PASSWORD=${POSTGRES_PASSWORD}
-      - DB_NAME=${POSTGRES_DB}
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
-      - ASSETS_DIR=/frontend-assets
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_INTERNAL_PORT}/${POSTGRES_DB}?sslmode=disable
+      - PORT=${BACKEND_INTERNAL_PORT}
+      - ADMIN_LOGIN=${BACKEND_ADMIN_LOGIN}
+      - ADMIN_PASSWORD=${BACKEND_ADMIN_PASSWORD}
+      - YANDEX_API_BASE=${YANDEX_API_BASE}
+      - YANDEX_DISK_TOKEN=${YANDEX_DISK_TOKEN}
+      - YANDEX_TABLE_PATH=${YANDEX_TABLE_PATH}
     depends_on:
       db:
         condition: service_healthy

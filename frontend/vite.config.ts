@@ -15,10 +15,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_API_TARGET || 'http://localhost:8080',
         changeOrigin: true,
-        // если бэкенд на /apply, можно переписать путь:
-        // rewrite: (path) => path.replace(/^\/api/, '/apply'),
       },
     },
   },
