@@ -39,7 +39,10 @@
             </li>
           </ul>
         </nav>
+        <!--
+        ВРЕМЕННО!!!
 
+        Убрана вместе с FeedbackSection. Подробнее в App.vue
         <button
           v-if="isDesktop"
           class="hero__register-btn hero_register-btn--desktop"
@@ -47,6 +50,8 @@
         >
           Вступить в клуб
         </button>
+        -->
+        
 
         <div class="hero__mobile-buttons" v-if="!isDesktop">
           <button v-if="!isMobileMenuOpen" class="hero__vk-link-btn" @click="goToVKGroup">
@@ -101,6 +106,11 @@
             <img class="vk-logo-blue" src="../assets/vector/Vector.svg" />
           </button>
         </div>
+
+        <!--
+        ВРЕМЕННО!!!
+
+        Убрана вместе с FeedbackSection. Подробнее в App.vue
         <button
           v-if="!isDesktop"
           class="hero__register-btn hero__register-btn--mobile"
@@ -108,6 +118,8 @@
         >
           Вступить в клуб
         </button>
+        -->
+        
       </div>
     </div>
   </section>

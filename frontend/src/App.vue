@@ -42,11 +42,18 @@ onMounted(async () => {
     <MemberBenefitsSection :items="siteData.benefits_items" :title="siteData.benefits?.title" />
     <PhraseBottomSection :text="siteData.quote?.text" />
     <RecentEvents :items="siteData.news" :title="siteData.news_block?.title" />
+    <!--
+    ВРЕМЕННО!!!
+
+    Убрали FeedbackSection, воизбежание юридических проблем, пока не готовы документы по 152-ФЗ
+
     <FeedbackSection
       :schools="siteData.schools"
       :courses="siteData.courses"
       :apply-block="siteData.apply_block"
     />
+    -->
+    
     <FooterSection />
   </div>
 </template>
