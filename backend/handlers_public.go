@@ -23,6 +23,7 @@ func getSite(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "ошибка чтения блоков сайта"})
 	}
 	for key, content := range blocks {
+		normalizeSiteBlockContent(content)
 		resp[key] = content
 	}
 

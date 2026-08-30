@@ -69,6 +69,7 @@ func listTeamMembers(includeHidden bool) ([]TeamMember, error) {
 		if err := rows.Scan(&m.ID, &m.Name, &m.Role, &m.PhotoURL, &m.HoverInfo, &m.Description, &m.Contacts, &m.Hidden, &m.SortOrder, &m.CreatedAt); err != nil {
 			return nil, err
 		}
+		m.PhotoURL = normalizeAssetURL(m.PhotoURL)
 		items = append(items, m)
 	}
 	return items, nil
@@ -101,6 +102,7 @@ func listNews(includeHiddenOrScheduled bool) ([]News, error) {
 			t := publishAt.Time
 			n.PublishAt = &t
 		}
+		n.ImageURL = normalizeAssetURL(n.ImageURL)
 		items = append(items, n)
 	}
 	return items, nil
@@ -127,6 +129,7 @@ func listWhyUsCards(includeHidden bool) ([]WhyUsCard, error) {
 		if err := rows.Scan(&card.ID, &card.IconURL, &card.Title, &card.Description, &card.Hidden, &card.SortOrder); err != nil {
 			return nil, err
 		}
+		card.IconURL = normalizeAssetURL(card.IconURL)
 		items = append(items, card)
 	}
 	return items, nil
@@ -153,6 +156,7 @@ func listBenefits(includeHidden bool) ([]Benefit, error) {
 		if err := rows.Scan(&b.ID, &b.IconURL, &b.Title, &b.Description, &b.Hidden, &b.SortOrder); err != nil {
 			return nil, err
 		}
+		b.IconURL = normalizeAssetURL(b.IconURL)
 		items = append(items, b)
 	}
 	return items, nil

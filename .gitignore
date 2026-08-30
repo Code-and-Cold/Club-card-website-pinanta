@@ -1,5 +1,9 @@
 .env
 
+# SSL certificates (Let's Encrypt)
+nginx/ssl/**/*
+!nginx/ssl/.gitkeep
+
 # -------------------------------------
 # -------------Frontend----------------
 # -------------------------------------

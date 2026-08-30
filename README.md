@@ -26,13 +26,54 @@
 
 # Быстрый старт
 
-## Полный деплой
+## Dev (Docker Compose)
 
-Развертывание проекта через Docker Compose:
+Локальная разработка с hot-reload фронтенда и бекенда. Nginx проксирует HTTP на Vite и API.
 
 ```
 cp .env.dev .env
-docker compose up -d
+docker compose up -d --build
+```
+
+Сайт доступен на http://localhost (порт задаётся `NGINX_HTTP_PORT` в `.env`).
+
+Админка: http://localhost/admin.html (логин/пароль — `BACKEND_ADMIN_LOGIN` / `BACKEND_ADMIN_PASSWORD` из `.env`).
+С другого устройства в локальной сети: `http://<IP-хоста>/admin.html`.
+
+## Production (Docker Compose)
+
+Статическая сборка фронтенда. HTTPS включается после получения сертификата.
+
+1. Подготовьте окружение:
+
+```
+cp .env.prod .env
+# Задайте надёжные пароли, DOMAIN и токены в .env
+```
+
+2. **Проверка без SSL** (пока DNS/домен не готов):
+
+```
+docker compose -f docker-compose.prod.yml down   # остановите dev, если был запущен
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+Сайт и админка на HTTP: `http://<IP или DOMAIN>/`, `http://<IP или DOMAIN>/admin.html`.
+В `.env` должно быть `NGINX_SSL=off`.
+
+3. **HTTPS** (когда домен указывает на сервер):
+
+```
+chmod +x nginx/scripts/ssl-setup.sh
+./nginx/scripts/ssl-setup.sh
+```
+
+Скрипт получит сертификат и выставит `NGINX_SSL=on` в `.env`.
+
+При обновлении кода:
+
+```
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 ## Фронтенд

@@ -198,7 +198,7 @@ function authedFetch(url, options = {}) {
 }
 
 function assetUrl(path) {
-  return path ? new URL('/assets/' + path, window.location.origin).href : '';
+  return path ? '/assets/' + path : '';
 }
 
 function assetPath(value) {

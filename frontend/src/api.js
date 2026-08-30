@@ -1,3 +1,5 @@
+import { normalizeSiteData } from '@/utils/assets.js'
+
 const API_BASE_URL = '/api'
 
 export const api = {
@@ -29,6 +31,6 @@ export const api = {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    return response.json()
+    return normalizeSiteData(await response.json())
   },
 }

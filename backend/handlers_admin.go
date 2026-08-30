@@ -36,6 +36,7 @@ func putSiteBlock(c echo.Context) error {
 	if err := c.Bind(&body); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	normalizeSiteBlockContent(body.Content)
 	if err := updateSiteBlock(key, body.Content); err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "не удалось обновить блок"})
 	}
@@ -59,6 +60,7 @@ func createTeamMember(c echo.Context) error {
 	if err := c.Bind(&m); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	m.PhotoURL = normalizeAssetURL(m.PhotoURL)
 	err := db.QueryRow(
 		`INSERT INTO team_members (name, role, photo_url, hover_info, description, contacts, hidden, sort_order)
 		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, created_at`,
@@ -77,6 +79,7 @@ func updateTeamMember(c echo.Context) error {
 	if err := c.Bind(&m); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	m.PhotoURL = normalizeAssetURL(m.PhotoURL)
 	res, err := db.Exec(
 		`UPDATE team_members SET name=$1, role=$2, photo_url=$3, hover_info=$4, description=$5, contacts=$6, sort_order=$7 WHERE id=$8`,
 		m.Name, m.Role, m.PhotoURL, m.HoverInfo, m.Description, m.Contacts, m.SortOrder, id,
@@ -117,6 +120,7 @@ func createWhyUsCard(c echo.Context) error {
 	if err := c.Bind(&card); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	card.IconURL = normalizeAssetURL(card.IconURL)
 	err := db.QueryRow(
 		`INSERT INTO why_us_cards (icon_url, title, description, hidden, sort_order)
 		 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
@@ -135,6 +139,7 @@ func updateWhyUsCard(c echo.Context) error {
 	if err := c.Bind(&card); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	card.IconURL = normalizeAssetURL(card.IconURL)
 	res, err := db.Exec(
 		`UPDATE why_us_cards SET icon_url=$1, title=$2, description=$3, sort_order=$4 WHERE id=$5`,
 		card.IconURL, card.Title, card.Description, card.SortOrder, id,
@@ -175,6 +180,7 @@ func createBenefit(c echo.Context) error {
 	if err := c.Bind(&b); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	b.IconURL = normalizeAssetURL(b.IconURL)
 	err := db.QueryRow(
 		`INSERT INTO benefits (icon_url, title, description, hidden, sort_order)
 		 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
@@ -193,6 +199,7 @@ func updateBenefit(c echo.Context) error {
 	if err := c.Bind(&b); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	b.IconURL = normalizeAssetURL(b.IconURL)
 	res, err := db.Exec(
 		`UPDATE benefits SET icon_url=$1, title=$2, description=$3, sort_order=$4 WHERE id=$5`,
 		b.IconURL, b.Title, b.Description, b.SortOrder, id,
@@ -245,6 +252,7 @@ func createNews(c echo.Context) error {
 	if err := c.Bind(&in); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	in.ImageURL = normalizeAssetURL(in.ImageURL)
 	publishAt, err := parsePublishAt(in.PublishAt)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректная дата публикации (ожидается формат RFC3339)"})
@@ -270,6 +278,7 @@ func updateNews(c echo.Context) error {
 	if err := c.Bind(&in); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректные данные"})
 	}
+	in.ImageURL = normalizeAssetURL(in.ImageURL)
 	publishAt, err := parsePublishAt(in.PublishAt)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "некорректная дата публикации (ожидается формат RFC3339)"})

@@ -1,34 +1,16 @@
-# Dev-окружение: Vite HMR + hot-reload backend, nginx только на HTTP.
-# Запуск: cp .env.dev .env && docker compose up -d
+# Production: статическая сборка фронтенда, без hot-reload.
+# Без SSL (пока домен не готов): cp .env.prod .env && NGINX_SSL=off docker compose -f docker-compose.prod.yml up -d --build
+# С SSL: ./nginx/scripts/ssl-setup.sh (после настройки DNS), затем NGINX_SSL=on в .env
+
+name: club-card-website-pinanta
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    env_file:
-      - ./.env
-    environment:
-      - VITE_API_TARGET=http://backend:${BACKEND_INTERNAL_PORT}
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      backend:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - app_network
-
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     env_file:
       - ./.env
-    volumes:
-      - ./backend:/app
-      - ./frontend/src/assets:/frontend-assets:ro
     environment:
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_INTERNAL_PORT}/${POSTGRES_DB}?sslmode=disable
       - PORT=${BACKEND_INTERNAL_PORT}
@@ -37,6 +19,8 @@ services:
       - YANDEX_API_BASE=${YANDEX_API_BASE}
       - YANDEX_DISK_TOKEN=${YANDEX_DISK_TOKEN}
       - YANDEX_TABLE_PATH=${YANDEX_TABLE_PATH}
+    volumes:
+      - ./frontend/src/assets:/frontend-assets:ro
     depends_on:
       db:
         condition: service_healthy
@@ -72,17 +56,21 @@ services:
 
   nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: nginx/Dockerfile.prod
+      args:
+        VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
     ports:
       - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
     environment:
-      - NGINX_ENV=dev
+      - NGINX_ENV=prod
+      - NGINX_SSL=${NGINX_SSL:-off}
+      - DOMAIN=${DOMAIN}
       - BACKEND_INTERNAL_PORT=${BACKEND_INTERNAL_PORT}
-      - FRONTEND_INTERNAL_PORT=${FRONTEND_INTERNAL_PORT}
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
-      frontend:
-        condition: service_started
       backend:
         condition: service_healthy
     restart: unless-stopped
