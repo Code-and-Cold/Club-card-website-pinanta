@@ -163,6 +163,11 @@ const handleRegister = () => {
   }
 }
 
+const goToVKGroup = () => {
+  const link = 'https://vk.ru/cold_code'
+  window.open(link, '_blank')
+}
+
 const updateWidth = () => {
   windowWidth.value = window.innerWidth
 
@@ -476,6 +481,12 @@ h1 {
   gap: 15px;
   padding: 15px 25px;
   max-width: 400px;
+
+  transition: background 0.3s ease;
+}
+
+.hero__vk-content-btn:hover {
+  background: rgba(0, 47, 85, 0.9);
 }
 
 @media (min-width: 950px) {
