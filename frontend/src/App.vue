@@ -77,11 +77,17 @@ onMounted(async () => {
 }
 
 .main {
-  background-image: url('./assets/images/Space-Background-Images.jpg');
+  background-image: url('./assets/images/Artboard\ 1.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
   overflow-x: hidden;
+}
+
+@media (max-width: 1204px) {
+  .main {
+    background-image: url('./assets/images/Artboard\ 2.png');
+  }
 }
 </style>
