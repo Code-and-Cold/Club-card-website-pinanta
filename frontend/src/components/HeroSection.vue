@@ -39,10 +39,7 @@
             </li>
           </ul>
         </nav>
-        <!--
-        ВРЕМЕННО!!!
 
-        Убрана вместе с FeedbackSection. Подробнее в App.vue
         <button
           v-if="isDesktop"
           class="hero__register-btn hero_register-btn--desktop"
@@ -50,7 +47,6 @@
         >
           Вступить в клуб
         </button>
-        -->
         
 
         <div class="hero__mobile-buttons" v-if="!isDesktop">
@@ -107,10 +103,7 @@
           </button>
         </div>
 
-        <!--
-        ВРЕМЕННО!!!
 
-        Убрана вместе с FeedbackSection. Подробнее в App.vue
         <button
           v-if="!isDesktop"
           class="hero__register-btn hero__register-btn--mobile"
@@ -118,7 +111,7 @@
         >
           Вступить в клуб
         </button>
-        -->
+
         
       </div>
     </div>
@@ -155,12 +148,18 @@ const closeMobileMenu = () => {
 }
 
 const handleRegister = () => {
+  const link = 'https://vk.ru/app5708398_-227817816'
+  window.open(link, '_blank')
+  
+  /* 
+  
   const target = document.getElementById('feedback-section')
   if (target) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' })
   } else {
     console.warn('Элемент #reg-form отсутствует в DOM')
-  }
+  }*/
+  
 }
 
 const goToVKGroup = () => {
